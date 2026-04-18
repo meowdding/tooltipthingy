@@ -23,7 +23,6 @@ data object PetAbilities : TooltipFeature() {
             it.isAbilityLine()
         }
 
-
         while (canRead() && peek().isAbilityLine()) {
             originalMerger.destination.add(ComponentLike(read(), ComponentAlignment.Center, true))
             while (canRead() && peek().stripped.isNotBlank()) {
@@ -40,9 +39,7 @@ data object PetAbilities : TooltipFeature() {
 
         this.visualOrderText.accept { _, style, codepoint ->
             if (Character.isWhitespace(codepoint)) return@accept true
-
             colors.add(style.color?.value ?: TextColor.GRAY)
-
             true
         }
 

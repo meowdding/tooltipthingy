@@ -4,12 +4,17 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.meowdding.auto.mixins)
     `versioned-catalogues`
+    idea
 }
 
 val archiveName = "tooltipthingy"
 
 group = "me.owdding"
 version = "1.0.0"
+
+loom {
+    runs { forEach { it.ideConfigGenerated(it.environment == "client") } }
+}
 
 repositories {
     fun scopedMaven(url: String, vararg paths: String) = maven(url) { content { paths.forEach(::includeGroupAndSubgroups) } }
