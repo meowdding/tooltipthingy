@@ -6,8 +6,10 @@ plugins {
     `versioned-catalogues`
 }
 
+val archiveName = "tooltipthingy"
+
 group = "me.owdding"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     fun scopedMaven(url: String, vararg paths: String) = maven(url) { content { paths.forEach(::includeGroupAndSubgroups) } }
@@ -83,6 +85,19 @@ dependencies {
         capabilities { requireCapability("me.owdding.meowdding-lib:meowdding-lib-${stonecutter.current.version}") }
     }
      */
+}
+
+base {
+    archivesName = archiveName
+}
+
+tasks.build {
+    doLast {
+        val sourceFile = rootProject.projectDir.resolve("versions/${project.name}/build/libs/${archiveName}-$version.jar")
+        val targetFile = rootProject.projectDir.resolve("build/libs/${archiveName}-$version-${stonecutter.current.version}.jar")
+        targetFile.parentFile.mkdirs()
+        targetFile.writeBytes(sourceFile.readBytes())
+    }
 }
 
 autoMixins {
