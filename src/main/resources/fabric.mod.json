@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "tooltipthingy",
+  "version": "${version}",
+  "name": "ToolTipThingy",
+  "description": "",
+  "authors": [],
+  "license": "",
+  "icon": "",
+  "mixins": [
+    "tooltipthingy.mixins.json"
+  ],
+  "entrypoints": {
+    "client": [
+      {
+        "value": "me.owdding.tooltipthingy.TooltipThingy",
+        "adapter": "kotlin"
+      }
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "${minecraft_range}",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=${fabric_lang_kotlin}",
+    "skyblock-api": ">=${sbapi}"
+  },
+  "accessWidener": "tooltipthingy.accesswidener"
+}

@@ -1,0 +1,38 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "chars": [
+        "abcdefghijklmnopqrstuvwxyz"
+      ],
+      "file": "tooltipthingy:font/mc5.png",
+      "height": 5,
+      "ascent": 5
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      ],
+      "file": "tooltipthingy:font/mc5.png",
+      "height": 5,
+      "ascent": 5
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "1234567890."
+      ],
+      "file": "tooltipthingy:font/mc5_nums.png",
+      "height": 5,
+      "ascent": 5
+    },
+    {
+      "type": "space",
+      "advances": {
+        " ": 4,
+        "\u200c": 0
+      }
+    }
+  ]
+}
