@@ -96,7 +96,7 @@ data class TooltipHeader(
 
         val rotation = 45f + (System.currentTimeMillis() / 20) % 360
 
-        val slot = item[DataComponents.EQUIPPABLE]?.slot?.takeIf(EquipmentSlot::isArmor)
+        val slot = item[DataComponents.EQUIPPABLE]?.slot?.takeIf { it.type == EquipmentSlot.Type.HUMANOID_ARMOR }
 
         this.scissor(x..x + width, y..y + height) {
             if (slot != null) {
