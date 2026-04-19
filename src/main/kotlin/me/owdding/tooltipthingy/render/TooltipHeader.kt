@@ -129,7 +129,7 @@ data class TooltipHeader(
 
                 this.guiRenderState.addPicturesInPictureState(
                     ItemWidgetItemState(
-                        0, 0, width, height,
+                        x, y, x + width, y + height,
                         this.scissorStack.peek(),
                         Matrix3x2f(this.pose()),
                         rotation,

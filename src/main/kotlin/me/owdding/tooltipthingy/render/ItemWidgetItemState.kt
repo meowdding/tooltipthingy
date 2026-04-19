@@ -1,17 +1,24 @@
 package me.owdding.tooltipthingy.render
 
 import com.mojang.blaze3d.platform.Lighting
+import com.mojang.blaze3d.systems.RenderSystem
+import com.mojang.blaze3d.textures.FilterMode
+import com.mojang.blaze3d.textures.GpuTextureView
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.math.Axis
 import earth.terrarium.olympus.client.pipelines.pips.OlympusPictureInPictureRenderState
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.navigation.ScreenRectangle
+import net.minecraft.client.gui.render.TextureSetup
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer
 import net.minecraft.client.renderer.MultiBufferSource
+import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.item.TrackingItemStackRenderState
+import net.minecraft.client.renderer.state.gui.BlitRenderState
+import net.minecraft.client.renderer.state.gui.GuiRenderState
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.util.LightCoordsUtil
 import org.joml.Matrix3x2f
-import tech.thatgravyboat.skyblockapi.helpers.McClient
 import java.util.function.Function
 
 // Taken from SkyOcean
@@ -40,26 +47,63 @@ data class ItemWidgetItemState(
 
 class ItemWidgetRenderer(source: MultiBufferSource.BufferSource) : PictureInPictureRenderer<ItemWidgetItemState>(source) {
 
+    private var textureView: GpuTextureView? = null
+
     override fun getRenderStateClass(): Class<ItemWidgetItemState> = ItemWidgetItemState::class.java
     override fun getTextureLabel(): String = "tooltip_thingy_item_rotate"
 
     override fun renderToTexture(state: ItemWidgetItemState, stack: PoseStack) {
+        this.textureView = RenderSystem.outputColorTextureOverride
+
+        stack.scale(1.0f, -1.0f, -1.0f)
+
+        if (state.item.usesBlockLight()) {
+            Minecraft.getInstance().gameRenderer.lighting.setupFor(Lighting.Entry.ITEMS_3D)
+        } else {
+            Minecraft.getInstance().gameRenderer.lighting.setupFor(Lighting.Entry.ITEMS_FLAT)
+        }
+
         stack.pushPose()
-        stack.translate(0f, state.bounds().height() / -2f - 5f, 0f)
-        stack.scale(13f, -13f, 13f)
-        stack.mulPose(Axis.ZN.rotationDegrees(180f))
         stack.mulPose(Axis.YN.rotationDegrees(state.rotation))
 
-        McClient.self.gameRenderer.lighting.setupFor(if (state.item.usesBlockLight()) Lighting.Entry.ITEMS_3D else Lighting.Entry.ITEMS_FLAT)
+        stack.scale(13.0f, 13.0f, 13.0f)
+
+        val featureRenderDispatcher = Minecraft.getInstance().gameRenderer.featureRenderDispatcher
 
         state.item.submit(
             stack,
-            McClient.self.gameRenderer.featureRenderDispatcher.submitNodeStorage,
+            featureRenderDispatcher.submitNodeStorage,
             LightCoordsUtil.FULL_BRIGHT,
             OverlayTexture.NO_OVERLAY,
             0,
         )
 
+        featureRenderDispatcher.renderAllFeatures()
         stack.popPose()
+    }
+
+    override fun blitTexture(state: ItemWidgetItemState, gui: GuiRenderState) {
+        val view = this.textureView ?: return
+
+        gui.addBlitToCurrentLayer(
+            BlitRenderState(
+                RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
+                TextureSetup.singleTexture(
+                    view,
+                    RenderSystem.getSamplerCache().getRepeat(FilterMode.LINEAR)
+                ),
+                state.pose(),
+                state.x0, state.y0,
+                state.x1, state.y1,
+                0.0f, 1.0f, 1.0f, 0.0f,
+                -1,
+                state.scissorArea,
+                null
+            )
+        )
+    }
+
+    override fun getTranslateY(height: Int, guiScale: Int): Float {
+        return height / 2.0f
     }
 }
