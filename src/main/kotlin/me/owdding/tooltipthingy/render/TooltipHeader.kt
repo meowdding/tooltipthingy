@@ -25,6 +25,7 @@ import org.joml.Vector3f
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.helpers.McClient
 import tech.thatgravyboat.skyblockapi.helpers.McLevel
+import tech.thatgravyboat.skyblockapi.helpers.McPlayer
 import tech.thatgravyboat.skyblockapi.utils.extentions.scissor
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.width
 import kotlin.math.max
@@ -125,7 +126,7 @@ data class TooltipHeader(
                 )
             } else {
                 val itemState = TrackingItemStackRenderState()
-                McClient.self.itemModelResolver.updateForTopItem(itemState, item, ItemDisplayContext.NONE, McLevel.self, null, 0)
+                McClient.self.itemModelResolver.updateForTopItem(itemState, item, ItemDisplayContext.GUI, McLevel.self, McPlayer.self, 0)
 
                 this.guiRenderState.addPicturesInPictureState(
                     ItemWidgetItemState(

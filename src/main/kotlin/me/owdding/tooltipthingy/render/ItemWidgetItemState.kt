@@ -1,23 +1,18 @@
 package me.owdding.tooltipthingy.render
 
 import com.mojang.blaze3d.platform.Lighting
-import com.mojang.blaze3d.systems.RenderSystem
-import com.mojang.blaze3d.textures.FilterMode
-import com.mojang.blaze3d.textures.GpuTextureView
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.math.Axis
 import earth.terrarium.olympus.client.pipelines.pips.OlympusPictureInPictureRenderState
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.navigation.ScreenRectangle
-import net.minecraft.client.gui.render.TextureSetup
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.item.TrackingItemStackRenderState
-import net.minecraft.client.renderer.state.gui.BlitRenderState
-import net.minecraft.client.renderer.state.gui.GuiRenderState
+import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.util.LightCoordsUtil
+import net.minecraft.util.Mth
 import org.joml.Matrix3x2f
 import java.util.function.Function
 
@@ -32,6 +27,21 @@ data class ItemWidgetItemState(
     val rotation: Float,
     val item: TrackingItemStackRenderState,
 ) : OlympusPictureInPictureRenderState<ItemWidgetItemState> {
+
+    val itemBounds by lazy {
+        val aabb = item.modelBoundingBox
+        if (aabb.xsize <= 16 && aabb.ysize <= 16) {
+            ScreenRectangle(this.x0, this.y0, 16, 16)
+        } else {
+            ScreenRectangle(
+                this.x0 + Mth.floor(aabb.minX * 16f) + 8,
+                this.y0 - Mth.floor(aabb.maxY * 16f) + 8,
+                Mth.ceil(aabb.xsize * 16.0f),
+                Mth.ceil(aabb.ysize * 16.0f)
+            )
+        }
+    }
+
     override fun getFactory(): Function<MultiBufferSource.BufferSource, PictureInPictureRenderer<ItemWidgetItemState>> =
         Function { buffer -> ItemWidgetRenderer(buffer) }
 
@@ -39,71 +49,35 @@ data class ItemWidgetItemState(
     override fun y0() = y0
     override fun x1() = x1
     override fun y1() = y1
-    override fun scale() = 1f
-    override fun scissorArea() = scissorArea
+    override fun scale() = 16f
+    override fun scissorArea(): ScreenRectangle? = scissorArea
     override fun pose(): Matrix3x2f = pose
-    override fun bounds(): ScreenRectangle = ScreenRectangle(x0, y0, x1 - x0, y1 - y0).transformMaxBounds(pose)
+    override fun bounds(): ScreenRectangle? = PictureInPictureRenderState.getBounds(x0, y0, x1, y1, scissorArea)
 }
 
 class ItemWidgetRenderer(source: MultiBufferSource.BufferSource) : PictureInPictureRenderer<ItemWidgetItemState>(source) {
 
-    private var textureView: GpuTextureView? = null
-
     override fun getRenderStateClass(): Class<ItemWidgetItemState> = ItemWidgetItemState::class.java
     override fun getTextureLabel(): String = "tooltip_thingy_item_rotate"
+    override fun getTranslateY(height: Int, guiScale: Int): Float = height / 2f
 
     override fun renderToTexture(state: ItemWidgetItemState, stack: PoseStack) {
-        this.textureView = RenderSystem.outputColorTextureOverride
+        val renderer = Minecraft.getInstance().gameRenderer
 
         stack.scale(1.0f, -1.0f, -1.0f)
-
-        if (state.item.usesBlockLight()) {
-            Minecraft.getInstance().gameRenderer.lighting.setupFor(Lighting.Entry.ITEMS_3D)
-        } else {
-            Minecraft.getInstance().gameRenderer.lighting.setupFor(Lighting.Entry.ITEMS_FLAT)
-        }
-
-        stack.pushPose()
-        stack.mulPose(Axis.YN.rotationDegrees(state.rotation))
-
-        stack.scale(13.0f, 13.0f, 13.0f)
-
-        val featureRenderDispatcher = Minecraft.getInstance().gameRenderer.featureRenderDispatcher
-
-        state.item.submit(
-            stack,
-            featureRenderDispatcher.submitNodeStorage,
-            LightCoordsUtil.FULL_BRIGHT,
-            OverlayTexture.NO_OVERLAY,
-            0,
+        stack.mulPose(Axis.YP.rotationDegrees(state.rotation))
+        stack.translate(
+            ((state.x0 + 8) - (state.itemBounds.left() + state.itemBounds.right()) / 2f) / 16.0f,
+            ((state.itemBounds.top() + state.itemBounds.bottom()) / 2f - (state.y0 + 8)) / 16.0F,
+            0.0F
         )
 
-        featureRenderDispatcher.renderAllFeatures()
-        stack.popPose()
-    }
+        renderer.lighting.setupFor(if (state.item.usesBlockLight()) Lighting.Entry.ITEMS_3D else Lighting.Entry.ITEMS_FLAT)
 
-    override fun blitTexture(state: ItemWidgetItemState, gui: GuiRenderState) {
-        val view = this.textureView ?: return
+        val dispatcher = renderer.featureRenderDispatcher
+        val storage = dispatcher.submitNodeStorage
 
-        gui.addBlitToCurrentLayer(
-            BlitRenderState(
-                RenderPipelines.GUI_TEXTURED_PREMULTIPLIED_ALPHA,
-                TextureSetup.singleTexture(
-                    view,
-                    RenderSystem.getSamplerCache().getRepeat(FilterMode.LINEAR)
-                ),
-                state.pose(),
-                state.x0, state.y0,
-                state.x1, state.y1,
-                0.0f, 1.0f, 1.0f, 0.0f,
-                -1,
-                state.scissorArea,
-                null
-            )
-        )
-    }
-
-    override fun getTranslateY(height: Int, guiScale: Int): Float {
-        return height / 2.0f
+        state.item.submit(stack, storage, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0)
+        dispatcher.renderAllFeatures()
     }
 }
