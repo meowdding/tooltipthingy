@@ -90,6 +90,9 @@ dependencies {
         capabilities { requireCapability("me.owdding.meowdding-lib:meowdding-lib-${stonecutter.current.version}") }
     }
      */
+
+    implementation(versionedCatalog["olympus"])
+    include(versionedCatalog["olympus"])
 }
 
 base {
@@ -117,4 +120,6 @@ ksp {
 
 loom {
     accessWidenerPath = rootProject.file("src/main/resources/tooltipthingy.accesswidener")
+
+    runs { forEach { it.ideConfigGenerated(it.environment == "client") } }
 }

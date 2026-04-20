@@ -3,4 +3,6 @@ classTweaker v1 official
 accessible field net/minecraft/client/gui/screens/inventory/tooltip/ClientTextTooltip text Lnet/minecraft/util/FormattedCharSequence;
 accessible field net/minecraft/client/gui/screens/inventory/tooltip/ClientBundleTooltip contents Lnet/minecraft/world/item/component/BundleContents;
 
+accessible method net/minecraft/client/gui/screens/inventory/InventoryScreen extractRenderState (Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;
+
 inject-interface net/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipComponent me/owdding/tooltipthingy/TooltipLine
