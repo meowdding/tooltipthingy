@@ -9,9 +9,9 @@ import tech.thatgravyboat.skyblockapi.utils.extentions.get
 
 @RegisterFeature
 data object Defaults : TooltipFeature() {
+    override val enabled: Boolean = true
     override val priority: Int = Int.MIN_VALUE
 
     override fun ItemStack.rarityOverride(): SkyBlockRarity? = this[DataTypes.RARITY]
-
 
 }

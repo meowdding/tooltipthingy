@@ -1,6 +1,5 @@
-@file:Suppress("ConstPropertyName", "unused")
-
-package me.owdding.tooltipthingy.utils
+@file:Suppress("unused", "ConstPropertyName")
+package me.owdding.tooltipthingy.utils.chat
 
 // Names and colors are from https://catppuccin.com/palette/
 object CatppuccinColors {

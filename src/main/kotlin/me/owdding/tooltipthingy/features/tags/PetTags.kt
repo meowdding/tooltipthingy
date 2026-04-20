@@ -1,6 +1,7 @@
 package me.owdding.tooltipthingy.features.tags
 
 import me.owdding.tooltipthingy.TooltipLine
+import me.owdding.tooltipthingy.config.categories.tag.TagConfig
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.Result
 import me.owdding.tooltipthingy.system.TooltipFeatureWithContext
@@ -14,6 +15,7 @@ import kotlin.collections.MutableList
 
 @RegisterFeature
 data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
+    override val enabled: Boolean get() = TagConfig.pet
     override fun createContext(): MutableList<String> = mutableListOf()
     override val priority: Int = 2
 

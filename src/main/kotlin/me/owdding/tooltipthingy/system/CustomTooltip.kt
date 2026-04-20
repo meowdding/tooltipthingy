@@ -20,7 +20,7 @@ object CustomTooltip {
     }
 
     fun update(item: ItemStack, tooltipInfo: TooltipInformation): Tooltip {
-        val tooltipFeatures = features
+        val tooltipFeatures = features.filter { it.enabled }
 
         val name = tooltipInfo.entries.firstNotNullOfOrNull { (it as? ComponentLike)?.component } ?: CommonComponents.EMPTY
         val lines = tooltipInfo.entries.drop(1).toMutableList()

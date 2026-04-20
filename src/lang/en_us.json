@@ -1,0 +1,54 @@
+{
+  "@meowdding:metadata": {
+    "allowMultiline": true,
+    "allowReferences": true,
+    "allowTags": true,
+    "objectAsKeys": true
+  },
+  "tooltipthingy": {
+    "config": {
+      "enabled": {
+        "@value": "Main toggle",
+        "desc": "Toggles all the custom tooltip renderer."
+      },
+      "spinny": {
+        "@value": "Spinning Item",
+        "desc": "Whether the item in the top left corner should spin."
+      },
+      "tags": {
+        "@value": "Tag Config",
+        "breakingPower": {
+          "@value": "Breaking power",
+          "desc": "Adds a breaking power tag <dark_green>BP <bp></dark_green>."
+        },
+        "category": {
+          "@value": "Category",
+          "desc": "Adds the items category as tag."
+        },
+        "furniture": {
+          "@value": "Furniture",
+          "desc": "Adds a furniture tag on furniture items."
+        },
+        "pet": {
+          "@value": "Pet",
+          "desc": "Adds the pet type and skill as tags."
+        },
+        "rarity": {
+          "@value": "Rarity",
+          "desc": "Adds the items rarity as tag."
+        },
+        "stars": {
+          "@value": "Stars",
+          "desc": "Adds the items stars to the tags. <red>Not yet implemented!"
+        }
+      },
+      "misc": {
+        "@value": "Misc Config",
+        "petAbilities": {
+          "@value": "Pet abilities",
+          "desc": "Centers pet abilities and adds separators."
+        }
+      }
+    }
+  }
+}

@@ -1,8 +1,11 @@
+import java.io.ByteArrayOutputStream
+
 plugins {
     id("net.fabricmc.fabric-loom")
     kotlin("jvm") version "2.3.20"
     alias(libs.plugins.ksp)
     alias(libs.plugins.meowdding.auto.mixins)
+    alias(libs.plugins.buildconfig)
     `versioned-catalogues`
     idea
 }
@@ -41,6 +44,7 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xname-based-destructuring=complete")
         freeCompilerArgs.add("-Xcontext-parameters")
+        freeCompilerArgs.add("-Xnullability-annotations=@org.jspecify.annotations:warn")
     }
 }
 
@@ -65,6 +69,9 @@ tasks.processResources {
     filesMatching("fabric.mod.json") {
         expand(replacements)
     }
+    with(copySpec {
+        from(rootProject.file("src/lang")).include("*.json").into("assets/tooltipthingy/lang")
+    })
 }
 
 dependencies {
@@ -82,17 +89,23 @@ dependencies {
     "include"(versionedCatalog["skyblockapi"]) {
         capabilities { requireCapability("tech.thatgravyboat:skyblock-api-${stonecutter.current.version}") }
     }
-    /*
     "api"(versionedCatalog["meowdding.lib"]) {
         capabilities { requireCapability("me.owdding.meowdding-lib:meowdding-lib-${stonecutter.current.version}") }
     }
     "include"(versionedCatalog["meowdding.lib"]) {
         capabilities { requireCapability("me.owdding.meowdding-lib:meowdding-lib-${stonecutter.current.version}") }
     }
-     */
+
+    implementation(versionedCatalog["resourceful.config"])
+    include(versionedCatalog["resourceful.config"])
+    implementation(versionedCatalog["resourceful.configkt"])
+    include(versionedCatalog["resourceful.configkt"])
+    implementation(versionedCatalog["placeholders"])
 
     implementation(versionedCatalog["olympus"])
     include(versionedCatalog["olympus"])
+    implementation(versionedCatalog["resourceful.lib"])
+    include(versionedCatalog["resourceful.lib"])
 }
 
 base {
@@ -122,4 +135,32 @@ loom {
     accessWidenerPath = rootProject.file("src/main/resources/tooltipthingy.accesswidener")
 
     runs { forEach { it.ideConfigGenerated(it.environment == "client") } }
+}
+
+
+val gitRef = tasks.register<Exec>("gitRef") {
+    outputs.upToDateWhen { false }
+    standardOutput = ByteArrayOutputStream()
+    commandLine("git", "rev-parse", "HEAD")
+}
+
+val gitBranch = tasks.register<Exec>("getBranch") {
+    outputs.upToDateWhen { false }
+    standardOutput = ByteArrayOutputStream()
+    commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+}
+
+tasks.generateBuildConfig {
+    dependsOn(gitRef, gitBranch)
+    mustRunAfter(gitRef, gitBranch)
+}
+
+buildConfig {
+    packageName("me.owdding.tooltipthingy.generated")
+    className("BuildInfo")
+
+    buildConfigField("String", "VERSION", "\"${rootProject.version}\"")
+
+    buildConfigField("String", "GIT_BRANCH", gitBranch.map { "\"${it.standardOutput.toString().substringBefore("\n")}\"" })
+    buildConfigField("String", "GIT_REF", gitRef.map { "\"${it.standardOutput.toString().substringBefore("\n")}\"" })
 }

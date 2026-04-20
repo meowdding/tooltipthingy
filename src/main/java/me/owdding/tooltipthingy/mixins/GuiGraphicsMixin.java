@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.owdding.tooltipthingy.TooltipThingy;
+import me.owdding.tooltipthingy.config.Config;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -41,9 +42,11 @@ public class GuiGraphicsMixin {
         Runnable runnable = value;
         try {
             var item = TooltipThingy.extractingItemTooltip;
-            if (item != null) {
+            if (Config.isEnabled() && item != null) {
                 runnable = TooltipThingy.createTooltip(instance, item, font, lines, xo, yo, positioner, style);
             }
+        } catch (RuntimeException e) {
+            TooltipThingy.INSTANCE.error("Failed to build tooltip!", e);
         } finally {
             original.call(instance, runnable);
         }

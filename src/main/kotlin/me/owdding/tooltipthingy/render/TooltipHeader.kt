@@ -3,6 +3,7 @@ package me.owdding.tooltipthingy.render
 import me.owdding.tooltipthingy.ExtractableTooltipLine
 import me.owdding.tooltipthingy.Tooltip
 import me.owdding.tooltipthingy.TooltipThingy.id
+import me.owdding.tooltipthingy.config.Config
 import me.owdding.tooltipthingy.font
 import me.owdding.tooltipthingy.system.TooltipTag
 import net.minecraft.client.gui.Font
@@ -85,8 +86,7 @@ data class TooltipHeader(
 
     // Taken from SkyOcean
     private fun GuiGraphicsExtractor.extractItem(item: ItemStack, x: Int, y: Int) {
-        val renderFlatConfigOption = false // TODO: add config
-        if (renderFlatConfigOption) {
+        if (!Config.spinny) {
             this.item(item, x, y)
             return
         }

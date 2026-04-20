@@ -1,6 +1,7 @@
 package me.owdding.tooltipthingy.features.tags
 
 import me.owdding.tooltipthingy.TooltipLine
+import me.owdding.tooltipthingy.config.categories.tag.TagConfig
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.Result
 import me.owdding.tooltipthingy.system.TooltipFeatureWithContext
@@ -13,6 +14,7 @@ import kotlin.collections.MutableList
 
 @RegisterFeature
 data object BreakingPowerTag : TooltipFeatureWithContext<AtomicInteger>() {
+    override val enabled: Boolean get() = TagConfig.breakingPower
     override fun createContext(): AtomicInteger = AtomicInteger(-1)
     override val priority: Int = 2
 

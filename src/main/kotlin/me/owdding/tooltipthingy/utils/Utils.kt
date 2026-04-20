@@ -8,6 +8,9 @@ import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 import kotlin.math.floor
 
+@Suppress("UNCHECKED_CAST")
+fun <Result> Any?.unsafeCast(): Result = this as Result
+
 fun <T : Any> T?.otherwise(other: T): T = this ?: other
 
 fun Float.floorToInt() = floor(this).toInt()

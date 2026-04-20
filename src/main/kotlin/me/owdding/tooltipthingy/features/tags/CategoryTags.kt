@@ -1,6 +1,7 @@
 package me.owdding.tooltipthingy.features.tags
 
 import me.owdding.tooltipthingy.TooltipLine
+import me.owdding.tooltipthingy.config.categories.tag.TagConfig
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.Result
 import me.owdding.tooltipthingy.system.TooltipFeature
@@ -11,6 +12,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 
 @RegisterFeature
 data object CategoryTags : TooltipFeature() {
+    override val enabled: Boolean get() = TagConfig.category
     override val priority: Int = 0
 
     override fun ItemStack.leftTags(): List<TooltipTag> {

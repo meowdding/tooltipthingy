@@ -15,9 +15,12 @@ cats = "1.0.0-beta.1"
 meowdding-resources = "1.0.15"
 
 ksp = "2.2.10-2.0.2"
+meowdding-lib = "4.1.5"
 meowdding-ktmodules = "1.0.8"
 meowdding-ktcodecs = "1.1.10"
 meowdding-auto-mixins = "1.0.5"
+
+buildconfig = "5.6.5"
 
 [libraries]
 
@@ -31,8 +34,8 @@ devauth = { module = "me.djtheredstoner:DevAuth-fabric", version.ref = "devauth"
 
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
-cats = { module = "me.owdding:cats", version.ref = "cats" }
 
+meowdding-lib = { module = "me.owdding.meowdding-lib:meowdding-lib", version.ref = "meowdding-lib" }
 meowdding-resources = { module = "me.owdding.repo:compacting-resources", version.ref = "meowdding-resources" }
 meowdding-ktmodules = { module = "me.owdding.ktmodules:KtModules", version.ref = "meowdding-ktmodules" }
 meowdding-ktcodecs = { module = "me.owdding.ktcodecs:KtCodecs", version.ref = "meowdding-ktcodecs" }
@@ -40,3 +43,5 @@ meowdding-ktcodecs = { module = "me.owdding.ktcodecs:KtCodecs", version.ref = "m
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 meowdding-auto-mixins = { id = "me.owdding.auto-mixins", version.ref = "meowdding-auto-mixins" }
+
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig"}

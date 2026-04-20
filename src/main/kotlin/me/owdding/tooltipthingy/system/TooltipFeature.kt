@@ -20,6 +20,7 @@ annotation class RegisterFeature
 
 abstract class TooltipFeatureWithContext<ContextType> {
 
+    abstract val enabled: Boolean
     abstract fun createContext() : ContextType
     abstract val priority: Int
     abstract override fun toString(): String
