@@ -2,6 +2,7 @@ package me.owdding.tooltipthingy.utils
 
 import me.owdding.tooltipthingy.ComponentLike
 import me.owdding.tooltipthingy.TooltipLine
+import me.owdding.tooltipthingy.TooltipLine.Companion.asComponentOrNull
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
@@ -24,11 +25,6 @@ class ComponentLineListMerger(val originalMerger: ListMerger<TooltipLine>) : Lis
             originalMerger.index = value
         }
     override val original: List<Component> = originalMerger.original.map { it.asComponentOrNull() ?: CommonComponents.EMPTY }
-
-    fun TooltipLine.asComponentOrNull() = when (this) {
-        is ComponentLike -> this.component
-        else -> null
-    }
 
     fun TooltipLine.asComponent() = this.asComponentOrNull() ?: throw IllegalStateException("Expected next line to be a component but got ${this.toString()}")
 

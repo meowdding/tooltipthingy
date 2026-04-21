@@ -64,6 +64,13 @@ interface ExtractableTooltipLine : TooltipLine {
 interface TooltipLine {
     fun getWidth(font: Font): Int
     fun getHeight(font: Font): Int
+
+    companion object {
+        fun TooltipLine.asComponentOrNull() = when (this) {
+            is ComponentLike -> this.component
+            else -> null
+        }
+    }
 }
 
 inline val font get() = McFont.self
