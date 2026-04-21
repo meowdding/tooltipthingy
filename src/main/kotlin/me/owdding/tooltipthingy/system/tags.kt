@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.util.ARGB
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
 import me.owdding.tooltipthingy.font
+import me.owdding.tooltipthingy.utils.chat.ChatUtils
 import net.minecraft.network.chat.MutableComponent
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 
@@ -24,7 +25,7 @@ interface TooltipTag {
 data class TextTag private constructor(val text: Component, val color: Int) : TooltipTag {
     companion object {
         fun create(component: Component, color: Int): TooltipTag = TextTag(component.copy().also {
-            it.font = id("mc5")
+            it.font = ChatUtils.mc5
         }, ARGB.opaque(color))
     }
 

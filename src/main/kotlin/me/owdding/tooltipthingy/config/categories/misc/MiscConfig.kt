@@ -9,4 +9,5 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     override val name: TranslatableValue = Translated(translationBase)
 
     val petAbilities by autoBoolean(true)
+    val petLevel by autoBoolean(true)
 }

@@ -5,7 +5,6 @@ import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import me.owdding.ktmodules.AutoCollect
 import me.owdding.ktmodules.Module
 import me.owdding.lib.utils.MeowddingLogger
-import me.owdding.tooltipthingy.utils.debug.RegisterTttDebugEvent
 import me.owdding.tooltipthingy.TooltipInformation.Companion.toInformation
 import me.owdding.tooltipthingy.config.Config
 import me.owdding.tooltipthingy.generated.BuildInfo
@@ -16,6 +15,7 @@ import me.owdding.tooltipthingy.render.TooltipHeader
 import me.owdding.tooltipthingy.system.CustomTooltip
 import me.owdding.tooltipthingy.utils.debug.DebugBuilder
 import me.owdding.tooltipthingy.utils.debug.RegisterTttCommandEvent
+import me.owdding.tooltipthingy.utils.debug.RegisterTttDebugEvent
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.minecraft.client.gui.Font
@@ -101,31 +101,29 @@ object TooltipThingy : ClientModInitializer, MeowddingLogger by MeowddingLogger.
             totalHeight
         )
 
-            blitSprite(
-                RenderPipelines.GUI_TEXTURED,
-                id("background"),
-                x - 5,
-                y - 5,
-                totalWidth + 10,
-                totalHeight + 10,
-                ARGB.opaque(rarity.color)
-            )
+        blitSprite(
+            RenderPipelines.GUI_TEXTURED,
+            id("background"),
+            x - 5,
+            y - 5,
+            totalWidth + 10,
+            totalHeight + 10,
+            ARGB.opaque(rarity.color)
+        )
 
-            var yOffset = 0
-            for (line in entries) {
-                when (line) {
-                    is ExtractableTooltipLine -> {
-                        line.extract(this, totalWidth, x, y + yOffset)
-                        yOffset += line.getHeight(font)
-                    }
-
-                    is ClientTooltipComponent -> {
-                        line.extractText(this, font, x, y)
-                        line.extractImage(font, x, y, totalWidth, line.getHeight(font), this)
-                        yOffset += line.getHeight(font)
-                    }
+        var yOffset = 0
+        for (line in entries) {
+            when (line) {
+                is ExtractableTooltipLine -> {
+                    line.extract(this, totalWidth, x, y + yOffset)
                 }
 
+                is ClientTooltipComponent -> {
+                    line.extractText(this, font, x, y)
+                    line.extractImage(font, x, y, totalWidth, line.getHeight(font), this)
+                }
+            }
+            yOffset += line.getHeight(font)
         }
     }
 
@@ -161,5 +159,5 @@ object TooltipThingy : ClientModInitializer, MeowddingLogger by MeowddingLogger.
 @Target(AnnotationTarget.FUNCTION)
 internal annotation class ApiDebug(
     val name: String,
-    val commandName: String = ""
+    val commandName: String = "",
 )

@@ -47,6 +47,10 @@
         "petAbilities": {
           "@value": "Pet abilities",
           "desc": "Centers pet abilities and adds separators."
+        },
+        "petLevel": {
+          "@value": "Pet levels",
+          "desc": "Changes pet levels into a rendered element."
         }
       }
     }

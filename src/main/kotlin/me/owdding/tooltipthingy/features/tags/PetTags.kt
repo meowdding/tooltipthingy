@@ -45,18 +45,20 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
         pet("Fractured Soul")
     }.mapKeys { (key) -> key.lowercase() }
 
+    fun String.removeSkin() = if (this.endsWith("Skin")) this.substringBeforeLast(",") else this
+
     context(context: MutableList<String>)
     override fun ItemStack.leftTags(): List<TooltipTag> = context.map(TooltipTag::literal)
 
     context(context: MutableList<String>)
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
-        if (!hasNext { it.stripped.lowercase() in petCategories }) return@withComponentMerger Result.modified
+        if (!hasNext { it.stripped.removeSkin().lowercase() in petCategories }) return@withComponentMerger Result.modified
         addUntil {
-            it.stripped.lowercase() in petCategories
+            it.stripped.removeSkin().lowercase() in petCategories
         }
         if (!canRead()) return@withComponentMerger Result.unmodified
         val line = read()
-        val category = petCategories[line.stripped.trim().lowercase()] ?: return@withComponentMerger Result.unmodified
+        val category = petCategories[line.stripped.removeSkin().trim().lowercase()] ?: return@withComponentMerger Result.unmodified
 
         if (category.lineModifier != null) {
             add(category.lineModifier(line))

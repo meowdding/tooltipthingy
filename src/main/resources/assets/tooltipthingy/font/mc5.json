@@ -21,7 +21,7 @@
     {
       "type": "bitmap",
       "chars": [
-        "1234567890."
+        "1234567890./,"
       ],
       "file": "tooltipthingy:font/mc5_nums.png",
       "height": 5,

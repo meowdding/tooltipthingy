@@ -144,7 +144,7 @@ data class ComponentLike(
             val separatorWidth = ((totalWidth - font.width(charSequence)) - 2) / 2
             graphics.blitSprite(
                 RenderPipelines.GUI_TEXTURED,
-                id("separator_left"),
+                id("left_separator"),
                 x,
                 y,
                 separatorWidth,
@@ -153,7 +153,7 @@ data class ComponentLike(
             )
             graphics.blitSprite(
                 RenderPipelines.GUI_TEXTURED,
-                id("separator_right"),
+                id("right_separator"),
                 x + totalWidth - separatorWidth - 1,
                 y,
                 separatorWidth,
