@@ -35,6 +35,7 @@ data object CategoryTags : TooltipFeature() {
         }
 
         while (originalMerger.destination.lastOrNull()?.asComponentOrNull()?.stripped?.isBlank() == true) originalMerger.destination.removeLastOrNull()
+        if (!canRead()) return@withComponentMerger Result.unmodified
         read()
         Result.modified
     }
