@@ -15,10 +15,6 @@ val archiveName = "tooltipthingy"
 group = "me.owdding"
 version = "1.0.0"
 
-loom {
-    runs { forEach { it.ideConfigGenerated(it.environment == "client") } }
-}
-
 repositories {
     fun scopedMaven(url: String, vararg paths: String) = maven(url) { content { paths.forEach(::includeGroupAndSubgroups) } }
 
@@ -132,9 +128,13 @@ ksp {
 }
 
 loom {
-    accessWidenerPath = rootProject.file("src/main/resources/tooltipthingy.accesswidener")
+    runConfigs["client"].apply {
+        ideConfigGenerated(true)
+        runDir = "../../run"
+        vmArg("-Dfabric.modsFolder=" + '"' + rootProject.projectDir.resolve("run/${stonecutter.current.version.replace(".", "")}Mods").absolutePath + '"')
+    }
 
-    runs { forEach { it.ideConfigGenerated(it.environment == "client") } }
+    accessWidenerPath = rootProject.file("src/main/resources/tooltipthingy.accesswidener")
 }
 
 
