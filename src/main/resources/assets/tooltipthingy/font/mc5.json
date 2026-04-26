@@ -28,10 +28,20 @@
       "ascent": 5
     },
     {
+      "type": "bitmap",
+      "chars": [
+        "·"
+      ],
+      "file": "tooltipthingy:font/mc5_center_dot.png",
+      "height": 5,
+      "ascent": 5
+    },
+    {
       "type": "space",
       "advances": {
         " ": 4,
-        "\u200c": 0
+        "\u200c": 0,
+        " ": 1
       }
     }
   ]

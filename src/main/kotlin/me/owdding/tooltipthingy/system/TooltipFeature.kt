@@ -84,6 +84,13 @@ abstract class TooltipFeatureWithContext<ContextType> {
 
     context(stack: ItemStack)
     operator fun <Type> DataType<Type>.invoke() = stack[this]
+
+    fun Boolean.asResult(propagateFurther: Boolean = true) = when {
+        (this && propagateFurther) -> Result.modified
+        this -> Result.consume
+        propagateFurther -> Result.unmodified
+        else -> Result.cancelled
+    }
 }
 
 @Suppress("FunctionName", "PARAMETER_NAME_CHANGED_ON_OVERRIDE")

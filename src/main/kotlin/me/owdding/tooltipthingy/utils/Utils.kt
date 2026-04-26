@@ -119,7 +119,7 @@ class ComponentLineListMerger(val originalMerger: ListMerger<TooltipLine>) : Lis
         val name = rarity.displayName.uppercase()
         val index = original.indexOfLast { it.stripped.contains(name) }
         if (index == -1) return false
-        repeat(index + if (includeRarity) 1 else 0) { copy() }
+        repeat(index + if (includeRarity) 1 else 0) { originalMerger.copy() }
         return true
     }
 
