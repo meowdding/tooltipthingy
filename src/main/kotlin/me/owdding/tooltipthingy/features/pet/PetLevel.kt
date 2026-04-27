@@ -1,4 +1,4 @@
-package me.owdding.tooltipthingy.features
+package me.owdding.tooltipthingy.features.pet
 
 import me.owdding.lib.extensions.shorten
 import me.owdding.tooltipthingy.ExtractableTooltipLine

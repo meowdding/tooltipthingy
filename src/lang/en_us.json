@@ -51,6 +51,10 @@
         "petLevel": {
           "@value": "Pet levels",
           "desc": "Changes pet levels into a rendered element."
+        },
+        "petFavourite": {
+          "@value": "Favourite Pet",
+          "desc": "Changes favourite pet star into a rendered element."
         }
       }
     }

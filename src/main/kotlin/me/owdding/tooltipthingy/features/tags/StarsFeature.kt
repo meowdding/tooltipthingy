@@ -36,8 +36,6 @@ data object StarsFeature : TooltipFeature() {
 
         return buildList {
             val amount = min(5, stars)
-            //debug line
-            //add(TooltipTag.literal("$baseTier - $moreTier"))
             repeat(amount) {
                 val color = if (it < moreTier) colors[baseTier + 1] else colors[baseTier]
                 add(TooltipTag.identifier(id("star"), 11, 11, color))
