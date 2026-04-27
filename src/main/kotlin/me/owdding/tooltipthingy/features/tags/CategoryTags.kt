@@ -1,6 +1,7 @@
 package me.owdding.tooltipthingy.features.tags
 
 import me.owdding.tooltipthingy.TooltipLine
+import me.owdding.tooltipthingy.TooltipLine.Companion.asComponentOrNull
 import me.owdding.tooltipthingy.config.categories.tag.TagConfig
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.Result

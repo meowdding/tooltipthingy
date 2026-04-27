@@ -30,6 +30,7 @@ object CustomTooltip {
         var modifiedItem: ItemStack = item.copy()
         var topRightIcon: Identifier? = null
         var nameOverride: Component? = null
+        var nameReplacement: Component? = null
         var rarityOverride: SkyBlockRarity? = null
         var isRarityUpgraded = false
 
@@ -50,6 +51,7 @@ object CustomTooltip {
                     }
                     modifiedItem = addIfNotNull(modifiedItem.modify()) ?: modifiedItem
                     nameOverride = nameOverride ?: addIfNotNull(item.nameOverride())
+                    nameReplacement = nameReplacement ?: addIfNotNull(item.nameReplacement(name))
                     rightTags.addAll(item.rightTags().also {
                         addIfNotNull(it.takeUnless { it.isEmpty() })
                     })
@@ -72,7 +74,7 @@ object CustomTooltip {
 
         return Tooltip(
             item = modifiedItem,
-            name = nameOverride ?: name,
+            name = nameOverride ?: nameReplacement ?: name,
             leftTags = tags,
             rightTags = rightTags,
             topRightIcon = topRightIcon,

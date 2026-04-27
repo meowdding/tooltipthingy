@@ -10,4 +10,5 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
 
     val petAbilities by autoBoolean(true)
     val petLevel by autoBoolean(true)
+    val petFavourite by autoBoolean(true)
 }

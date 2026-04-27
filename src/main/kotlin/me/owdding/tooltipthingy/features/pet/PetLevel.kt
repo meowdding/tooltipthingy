@@ -1,4 +1,4 @@
-package me.owdding.tooltipthingy.features
+package me.owdding.tooltipthingy.features.pet
 
 import me.owdding.lib.extensions.shorten
 import me.owdding.tooltipthingy.ExtractableTooltipLine
@@ -29,12 +29,11 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 @RegisterFeature
-@Suppress("ConstPropertyName")
 data object PetLevel : TooltipFeature() {
     override val enabled: Boolean get() = MiscConfig.petLevel
     override val priority: Int = 10
 
-    const val arrow = "▸"
+    const val ARROW = "▸"
     val regex = Regex("^Progress to Level (?<level>\\d+): .*|MAX LEVEL$")
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
@@ -44,7 +43,7 @@ data object PetLevel : TooltipFeature() {
         read()
 
         val line = read().stripped.trim()
-        val petLevelLine = if (line.startsWith(arrow)) {
+        val petLevelLine = if (line.startsWith(ARROW)) {
             PetLevelLine(
                 line.filter { it.isDigit() }.toFloat(),
             )

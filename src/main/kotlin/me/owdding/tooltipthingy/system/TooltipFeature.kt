@@ -31,6 +31,9 @@ abstract class TooltipFeatureWithContext<ContextType> {
     open fun ItemStack.nameOverride(): Component? = null
 
     context(context: ContextType)
+    open fun ItemStack.nameReplacement(original: Component): Component? = null
+
+    context(context: ContextType)
     open fun ItemStack.leftTags(): List<TooltipTag> = emptyList()
 
     context(context: ContextType)
@@ -101,6 +104,8 @@ abstract class TooltipFeature : TooltipFeatureWithContext<Unit>() {
     context(_: Unit)
     final override fun ItemStack.nameOverride(): Component? = _nameOverride()
     context(_: Unit)
+    final override fun ItemStack.nameReplacement(original: Component): Component? = _nameReplacement(original)
+    context(_: Unit)
     final override fun ItemStack.leftTags(): List<TooltipTag> = _leftTags()
     context(_: Unit)
     final override fun ItemStack.rightTags(): List<TooltipTag> = _rightTags()
@@ -124,6 +129,8 @@ abstract class TooltipFeature : TooltipFeatureWithContext<Unit>() {
 
     private fun ItemStack._nameOverride(): Component? = nameOverride()
     open fun ItemStack.nameOverride(): Component? = null
+    private fun ItemStack._nameReplacement(original: Component): Component? = nameReplacement(original)
+    open fun ItemStack.nameReplacement(original: Component): Component? = null
     private fun ItemStack._leftTags(): List<TooltipTag> = leftTags()
     open fun ItemStack.leftTags(): List<TooltipTag> = emptyList()
     private fun ItemStack._rightTags(): List<TooltipTag> = rightTags()

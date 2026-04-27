@@ -1,5 +1,6 @@
 package me.owdding.tooltipthingy
 
+import com.google.gson.JsonParser
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import me.owdding.ktmodules.AutoCollect
@@ -31,7 +32,9 @@ import org.joml.component2
 import tech.thatgravyboat.skyblockapi.api.SkyBlockAPI
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.helpers.McClient
+import tech.thatgravyboat.skyblockapi.helpers.McPlayer
 import tech.thatgravyboat.skyblockapi.platform.Identifiers
+import tech.thatgravyboat.skyblockapi.utils.json.Json.toDataOrThrow
 import kotlin.math.max
 
 @Module
@@ -58,6 +61,12 @@ object TooltipThingy : ClientModInitializer, MeowddingLogger by MeowddingLogger.
     fun onCommands() {
         event.registerBaseCallback {
             McClient.setScreenAsync { ResourcefulConfigScreen.getFactory("tooltipthingy").apply(null) }
+        }
+
+        event.registerDevWithCallback("give") {
+            if (McPlayer.self?.gameMode()?.isCreative != true && McClient.self.isSingleplayer) return@registerDevWithCallback
+            val item = JsonParser.parseString(McClient.clipboard).toDataOrThrow(ItemStack.CODEC)
+            McClient.self.player?.inventory?.add(item)
         }
     }
 
