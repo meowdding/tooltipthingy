@@ -26,7 +26,7 @@ data object StarsFeature : TooltipFeature() {
     override fun ItemStack.applies(): Boolean = DataTypes.STAR_COUNT() != null
 
     override fun ItemStack.rightTags(): List<TooltipTag> {
-        val stars = DataTypes.STAR_COUNT() ?: return emptyList()
+        val stars = DataTypes.STAR_COUNT()?.takeUnless { it == 0 } ?: return emptyList()
 
         val baseTier = max(0, stars - 5) / 5
         val moreTier = stars - 5 * (baseTier + 1)
