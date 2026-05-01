@@ -1,6 +1,6 @@
 package me.owdding.tooltipthingy.features.tags
 
-import me.owdding.tooltipthingy.TooltipThingy.id
+import me.owdding.tooltipthingy.config.categories.misc.MiscConfig
 import me.owdding.tooltipthingy.config.categories.tag.TagConfig
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.TooltipFeature
@@ -38,7 +38,7 @@ data object StarsFeature : TooltipFeature() {
             val amount = min(5, stars)
             repeat(amount) {
                 val color = if (it < moreTier) colors[baseTier + 1] else colors[baseTier]
-                add(TooltipTag.identifier(id("star"), 11, 11, color))
+                add(TooltipTag.identifier(MiscConfig.starStyle.identifier, 11, 11, color))
             }
         }
     }

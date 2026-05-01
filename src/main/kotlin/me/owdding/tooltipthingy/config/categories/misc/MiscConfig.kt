@@ -3,6 +3,7 @@ package me.owdding.tooltipthingy.config.categories.misc
 import com.teamresourceful.resourcefulconfig.api.types.options.TranslatableValue
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import me.owdding.tooltipthingy.config.AutoTranslated
+import me.owdding.tooltipthingy.utils.StarStyle
 
 object MiscConfig : CategoryKt("misc"), AutoTranslated {
     override val translationBase: String = "tooltipthingy.config.misc"
@@ -11,4 +12,6 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     val petAbilities by autoBoolean(true)
     val petLevel by autoBoolean(true)
     val petFavourite by autoBoolean(true)
+
+    val starStyle by autoEnum(StarStyle.ONE)
 }
