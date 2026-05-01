@@ -1,6 +1,5 @@
 package me.owdding.tooltipthingy.features.pet
 
-import me.owdding.tooltipthingy.TooltipThingy.id
 import me.owdding.tooltipthingy.config.categories.misc.MiscConfig
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.TooltipFeatureWithContext
@@ -32,7 +31,7 @@ data object FavouritePet : TooltipFeatureWithContext<AtomicBoolean>() {
             return emptyList()
         }
 
-        return listOf((TooltipTag.identifier(id("star"), 11, 11, TextColor.YELLOW)))
+        return listOf((TooltipTag.identifier(MiscConfig.starStyle.identifier, 11, 11, TextColor.YELLOW)))
     }
 
     context(context: AtomicBoolean)
