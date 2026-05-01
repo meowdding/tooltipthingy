@@ -101,12 +101,12 @@ data class StatLine(
         val rightStart = totalWidth - rightWidth
         val fillerEnd = rightStart.nextLower(dotWidth)
         val fillerWidth = fillerEnd - fillerStart
-        graphics.text(font, Text.join(List(fillerWidth / dotWidth) { dot }), x + fillerStart, y, -1)
+        graphics.text(font, Text.join(List((fillerWidth / dotWidth).coerceAtLeast(0)) { dot }), x + fillerStart, y, -1)
         graphics.text(font, statValue, x + rightStart, y, -1)
     }
 
     override fun getWidth(font: Font): Int {
-        return font.width(statName) + 10 + font.width(statValue)
+        return font.width(statIcon) + 3 + font.width(statName) + 10 + font.width(statValue)
     }
 
     override fun getHeight(font: Font): Int = font.lineHeight
