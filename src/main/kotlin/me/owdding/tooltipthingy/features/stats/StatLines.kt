@@ -15,11 +15,14 @@ import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
+import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.width
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.shadowColor
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
 
 @RegisterFeature
 data object StatLines : TooltipFeature() {
@@ -31,6 +34,7 @@ data object StatLines : TooltipFeature() {
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         var modified = false
 
+        val maxIconWidth = AtomicInteger(0)
         while (canRead()) {
             val line = read()
 
@@ -51,19 +55,19 @@ data object StatLines : TooltipFeature() {
                 continue
             }
 
+            maxIconWidth.set(max(maxIconWidth.get(), stat.displayIcon.width))
+
             originalMerger.add(
                 StatLine(
-                Text.of {
-                    append(stat.displayIcon)
-                    append(" ")
-                    append(name)
-                },
-                Text.of {
-                    append(value)
-                    append(" ")
-                    append(extra ?: return@of)
-                }
-            ))
+                    maxIconWidth,
+                    stat.displayIcon,
+                    name,
+                    Text.of {
+                        append(value)
+                        append(" ")
+                        append(extra ?: return@of)
+                    }
+                ))
 
             modified = true
         }
@@ -79,6 +83,8 @@ val dot = Text.of("·") {
 }
 
 data class StatLine(
+    val maxIconWidth: AtomicInteger,
+    val statIcon: Component,
     val statName: Component,
     val statValue: Component,
 ) : ExtractableTooltipLine {
@@ -86,9 +92,10 @@ data class StatLine(
     fun Int.nextLower(multiple: Int) = (floor(this / multiple.toFloat()).toInt() * multiple)
 
     override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
-        graphics.text(font, statName, x, y, -1)
+        graphics.centeredText(font, statIcon, x + maxIconWidth.get() / 2, y, -1)
+        graphics.text(font, statName, maxIconWidth.get() + x + 3, y, -1)
         val dotWidth = font.width(dot)
-        val leftWidth = font.width(statName)
+        val leftWidth = maxIconWidth.get() + font.width(statName) + 3
         val rightWidth = font.width(statValue)
         val fillerStart = leftWidth.nextHighest(dotWidth)
         val rightStart = totalWidth - rightWidth
