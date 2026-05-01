@@ -36,11 +36,11 @@ data object FavouritePet : TooltipFeatureWithContext<AtomicBoolean>() {
     }
 
     context(context: AtomicBoolean)
-    override fun ItemStack.nameReplacement(original: Component): Component {
+    override fun ItemStack.nameReplacement(original: Component): Component? {
         val starInName = original.stripped.matches(starIconRegex)
         val hasPetData = this.getData(DataTypes.PET_DATA) != null
         context.set(starInName && hasPetData)
-        if (!context.get()) return original
+        if (!context.get()) return null
         return original.substring(2, original.stripped.length)
     }
 }
