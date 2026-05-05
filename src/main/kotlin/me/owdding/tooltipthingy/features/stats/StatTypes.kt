@@ -1,15 +1,18 @@
 package me.owdding.tooltipthingy.features.stats
 
+import me.owdding.tooltipthingy.TooltipThingy.id
+import me.owdding.tooltipthingy.utils.chat.ChatUtils
 import net.minecraft.network.chat.Component
 import tech.thatgravyboat.skyblockapi.utils.extentions.toFormattedName
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextBuilder.append
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
+import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
 
 
 @Suppress("unused")
 enum class StatType(
-    val icon: String,
+    icon: String?,
     val color: Int,
     vararg val names: String,
     val format: StatFormat = StatFormat.SIGNED_NUMBER
@@ -17,7 +20,7 @@ enum class StatType(
     // Combat stats
 
     HEALTH('❤', TextColor.RED),
-    DAMAGE("?", TextColor.RED),
+    DAMAGE(null, TextColor.RED),
     DEFENSE('❈', TextColor.GREEN),
     STRENGTH('❁', TextColor.RED),
     INTELLIGENCE('✎', TextColor.AQUA),
@@ -83,6 +86,9 @@ enum class StatType(
     FISHING_SPEED('☂', TextColor.AQUA),
     SEA_CREATURE_CHANCE('α', TextColor.DARK_AQUA),
     DOUBLE_HOOK_CHANCE('⚓', TextColor.BLUE),
+    TREASURE_CHANCE(null, TextColor.GOLD),
+    SHOT_COOLDOWN(null, TextColor.RED),
+    GEAR_SCORE(null, TextColor.PINK),
     TROPHY_FISH_CHANCE('♔', TextColor.GOLD),
     BONUS_PEST_CHANCE('ൠ', TextColor.DARK_GREEN),
     HEAT_RESISTANCE('♨', TextColor.RED),
@@ -103,18 +109,23 @@ enum class StatType(
         vararg names: String,
     ) : this(icon.toString(), color, names = names)
 
+    val id = 0xe800 + ordinal
+    val idComponent = Text.of {
+        append(id.toString(16))
+        font = ChatUtils.mc5
+    }
+    val isUnknown = icon == null
+    private val defaultIcon = Char(id)
+
+    val icon = icon ?: defaultIcon.toString()
+
     private val displayName: String = names.firstOrNull() ?: toFormattedName()
     val displayIcon = Text.of {
-        append(icon, this@StatType.color)
+        append(icon ?: defaultIcon.toString(), this@StatType.color)
+        this.font = ChatUtils.stats
     }
 
     override fun toString(): String = displayName
-
-    val displayText: Component = Text.of {
-        append(icon, this@StatType.color)
-        append(" ")
-        append(displayName, TextColor.GRAY)
-    }
 
     companion object {
         fun fromName(name: String): StatType? {

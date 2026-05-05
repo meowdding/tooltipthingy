@@ -2,14 +2,17 @@ package me.owdding.tooltipthingy.features.stats
 
 import me.owdding.tooltipthingy.ExtractableTooltipLine
 import me.owdding.tooltipthingy.TooltipLine
+import me.owdding.tooltipthingy.TooltipThingy.id
 import me.owdding.tooltipthingy.font
 import me.owdding.tooltipthingy.system.RegisterFeature
 import me.owdding.tooltipthingy.system.Result
 import me.owdding.tooltipthingy.system.TooltipFeature
 import me.owdding.tooltipthingy.utils.chat.ChatUtils.mc5
+import me.owdding.tooltipthingy.utils.debug.debugToggle
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.Text
@@ -60,6 +63,7 @@ data object StatLines : TooltipFeature() {
             originalMerger.add(
                 StatLine(
                     maxIconWidth,
+                    stat,
                     stat.displayIcon,
                     name,
                     Text.of {
@@ -76,6 +80,8 @@ data object StatLines : TooltipFeature() {
     }
 }
 
+val showStatIds by debugToggle("stat_ids", "Render stat ids next to the line")
+
 val dot = Text.of("·") {
     this.color = TextColor.GRAY
     this.font = mc5
@@ -84,7 +90,8 @@ val dot = Text.of("·") {
 
 data class StatLine(
     val maxIconWidth: AtomicInteger,
-    val statIcon: Component,
+    val stat: StatType,
+    val statIcon: MutableComponent,
     val statName: Component,
     val statValue: Component,
 ) : ExtractableTooltipLine {
@@ -98,6 +105,10 @@ data class StatLine(
         val leftWidth = maxIconWidth.get() + font.width(statName) + 3
         val rightWidth = font.width(statValue)
         val fillerStart = leftWidth.nextHighest(dotWidth)
+        val totalWidth = if (showStatIds) {
+            if (stat.isUnknown) graphics.text(font, stat.idComponent, x + totalWidth - 45, y, -1)
+            totalWidth - 50
+        } else totalWidth
         val rightStart = totalWidth - rightWidth
         val fillerEnd = rightStart.nextLower(dotWidth)
         val fillerWidth = fillerEnd - fillerStart
@@ -106,7 +117,7 @@ data class StatLine(
     }
 
     override fun getWidth(font: Font): Int {
-        return font.width(statIcon) + 3 + font.width(statName) + 10 + font.width(statValue)
+        return font.width(statIcon) + 3 + font.width(statName) + 10 + font.width(statValue) + if (showStatIds) 50 else 0
     }
 
     override fun getHeight(font: Font): Int = font.lineHeight
