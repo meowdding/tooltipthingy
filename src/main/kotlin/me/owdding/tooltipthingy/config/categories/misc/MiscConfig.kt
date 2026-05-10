@@ -13,5 +13,5 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     val petLevel by autoBoolean(true)
     val petFavourite by autoBoolean(true)
 
-    val starStyle by autoEnum(StarStyle.ONE)
+    val starStyle by autoEnum(StarStyle.FIVE_POINT)
 }
