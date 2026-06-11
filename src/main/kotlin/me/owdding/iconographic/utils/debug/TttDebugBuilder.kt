@@ -63,11 +63,6 @@ open class DebugBuilder : ApiDebugBuilder(CommonComponents.EMPTY, CommonComponen
     }
 
     @Suppress("NOTHING_TO_INLINE")
-    inline fun <Type> field(property: KProperty0<Type>, description: Component? = null, copyValue: String? = null) {
-        field(property.name, property.get(), description, copyValue)
-    }
-
-    @Suppress("NOTHING_TO_INLINE")
     context(receiver: Receiver)
     inline fun <Type, Receiver> field(property: KProperty1<Receiver, Type>, description: Component? = null, copyValue: String? = null) {
         field(property.name, property.get(receiver), description, copyValue)

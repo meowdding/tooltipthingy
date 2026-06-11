@@ -14,6 +14,7 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     val petFavourite by autoBoolean(true)
 
     val drillFuel by autoBoolean(true)
+    val drillComponents by autoBoolean(true)
 
     val starStyle by autoEnum(StarStyle.FIVE_POINT)
 }
