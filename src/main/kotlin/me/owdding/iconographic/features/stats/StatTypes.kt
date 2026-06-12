@@ -87,7 +87,7 @@ enum class StatType(
     TREASURE_CHANCE(null, TextColor.GOLD),
     SHOT_COOLDOWN(null, TextColor.RED),
     GEAR_SCORE(null, TextColor.PINK),
-    TROPHY_FISH_CHANCE('♔', TextColor.GOLD),
+    TROPHY_CHANCE('♔', TextColor.GOLD),
     BONUS_PEST_CHANCE('ൠ', TextColor.DARK_GREEN),
     HEAT_RESISTANCE('♨', TextColor.RED),
     COLD_RESISTANCE('❄', TextColor.AQUA),
