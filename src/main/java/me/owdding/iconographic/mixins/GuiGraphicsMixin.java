@@ -14,6 +14,7 @@ import org.jspecify.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import tech.thatgravyboat.skyblockapi.api.location.LocationAPI;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class GuiGraphicsMixin {
         Runnable runnable = value;
         try {
             var item = Iconographic.extractingItemTooltip;
-            if (Config.isEnabled() && item != null) {
+            if (Config.isEnabled() && item != null && (!Config.skyblockOnly() || LocationAPI.INSTANCE.isOnSkyBlock())) {
                 runnable = Iconographic.createTooltip(instance, item, font, lines, xo, yo, positioner, style);
             }
         } catch (RuntimeException e) {

@@ -11,6 +11,10 @@
         "@value": "Main toggle",
         "desc": "Toggles all the custom tooltip renderer."
       },
+      "onlyInSkyblock": {
+        "@value": "Only in Skyblock",
+        "desc": "Only activate Iconographic while in Skyblock."
+      },
       "spinny": {
         "@value": "Spinning Item",
         "desc": "Whether the item in the top left corner should spin."
