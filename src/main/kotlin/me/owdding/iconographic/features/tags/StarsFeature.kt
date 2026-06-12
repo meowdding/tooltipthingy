@@ -19,7 +19,7 @@ data object StarsFeature : TooltipFeature() {
     override val priority: Int = 2
 
     private val starIcons = setOf("✪", "➊", "➋", "➌", "➍", "➎")
-    private val starIconRegex = Regex("(.+?) (?:${starIcons.joinToString("|")})+")
+    private val starIconRegex = Regex("\\s*(?:${starIcons.joinToString("|")})+")
 
     private val colors = listOf(TextColor.GOLD, TextColor.RED, TextColor.PINK)
 
@@ -45,7 +45,7 @@ data object StarsFeature : TooltipFeature() {
 
         return Component.empty().withStyle(original.style).also { result ->
             original.siblings.forEach { sibling ->
-                val trimmed = starIconRegex.replace(sibling.stripped, "$1")
+                val trimmed = sibling.stripped.replace(starIconRegex, "")
                 result.append(Component.literal(trimmed).withStyle(sibling.style))
             }
         }
