@@ -27,6 +27,10 @@ object Config : ConfigKt("iconographic/config"), AutoTranslated {
 
     @JvmStatic @get:JvmName("isEnabled")
     val enabled by autoBoolean(true)
+
+    @JvmStatic @get:JvmName("skyblockOnly")
+    val onlyInSkyblock by autoBoolean(true)
+
     val spinny by autoBoolean(false)
     val vanillaBackground by autoBoolean(false)
 
