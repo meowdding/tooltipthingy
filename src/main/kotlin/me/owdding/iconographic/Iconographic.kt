@@ -45,6 +45,13 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
     @JvmField
     var extractingItemTooltip: ItemStack? = null
 
+    fun pushPop(item: ItemStack, runnable: () -> Unit) {
+        val current = this.extractingItemTooltip
+        this.extractingItemTooltip = item
+        runnable()
+        this.extractingItemTooltip = current
+    }
+
     override fun onInitializeClient() {
         info("Loaded Iconographic!")
 
