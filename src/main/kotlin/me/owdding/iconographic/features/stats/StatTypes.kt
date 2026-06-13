@@ -60,6 +60,7 @@ enum class StatType(
     OVERBLOOM('☀', TextColor.YELLOW),
     FIG_FORTUNE(BASE_FORTUNE),
     MANGROVE_FORTUNE(BASE_FORTUNE),
+    HUNTER_FORTUNE('☘', TextColor.PINK),
 
     // Wisdom Stats
 
@@ -88,7 +89,7 @@ enum class StatType(
     TREASURE_CHANCE(null, TextColor.GOLD),
     SHOT_COOLDOWN(null, TextColor.RED),
     GEAR_SCORE(null, TextColor.PINK),
-    TROPHY_CHANCE('♔', TextColor.GOLD),
+    TROPHY_CHANCE('♔', TextColor.GOLD, format = StatFormat.PERCENTAGE),
     BONUS_PEST_CHANCE('ൠ', TextColor.DARK_GREEN),
     HEAT_RESISTANCE('♨', TextColor.RED),
     COLD_RESISTANCE('❄', TextColor.AQUA),
@@ -106,7 +107,8 @@ enum class StatType(
         icon: Char,
         color: Int,
         vararg names: String,
-    ) : this(icon.toString(), color, names = names)
+        format: StatFormat = StatFormat.SIGNED_NUMBER,
+    ) : this(icon.toString(), color, names = names, format = format)
 
     val id = 0xe800 + ordinal
     val idComponent = Text.of {
