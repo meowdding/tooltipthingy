@@ -13,7 +13,6 @@ enum class StatType(
     icon: String?,
     val color: Int,
     vararg val names: String,
-    val format: StatFormat = StatFormat.SIGNED_NUMBER
 ) {
     // Combat stats
 
@@ -89,7 +88,7 @@ enum class StatType(
     TREASURE_CHANCE(null, TextColor.GOLD),
     SHOT_COOLDOWN(null, TextColor.RED),
     GEAR_SCORE(null, TextColor.PINK),
-    TROPHY_CHANCE('♔', TextColor.GOLD, format = StatFormat.PERCENTAGE),
+    TROPHY_CHANCE('♔', TextColor.GOLD),
     BONUS_PEST_CHANCE('ൠ', TextColor.DARK_GREEN),
     HEAT_RESISTANCE('♨', TextColor.RED),
     COLD_RESISTANCE('❄', TextColor.AQUA),
@@ -107,8 +106,7 @@ enum class StatType(
         icon: Char,
         color: Int,
         vararg names: String,
-        format: StatFormat = StatFormat.SIGNED_NUMBER,
-    ) : this(icon.toString(), color, names = names, format = format)
+    ) : this(icon.toString(), color, names = names)
 
     val id = 0xe800 + ordinal
     val idComponent = Text.of {
@@ -133,11 +131,4 @@ enum class StatType(
             return entries.find { it.displayName.equals(name, ignoreCase = true) || it.names.any { it.equals(name, ignoreCase = true) } }
         }
     }
-}
-
-
-enum class StatFormat {
-    NUMBER,
-    PERCENTAGE,
-    SIGNED_NUMBER,
 }
