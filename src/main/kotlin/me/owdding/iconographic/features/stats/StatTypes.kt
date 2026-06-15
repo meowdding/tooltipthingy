@@ -88,7 +88,7 @@ enum class StatType(
     FISHING_SPEED('☂', TextColor.AQUA),
     SEA_CREATURE_CHANCE('α', TextColor.DARK_AQUA),
     DOUBLE_HOOK_CHANCE('⚓', TextColor.BLUE),
-    TREASURE_CHANCE(null, TextColor.GOLD),
+    TREASURE_CHANCE('⛃', TextColor.GOLD),
     SHOT_COOLDOWN(null, TextColor.RED),
     GEAR_SCORE(null, TextColor.PINK),
     TROPHY_CHANCE('♔', TextColor.GOLD),

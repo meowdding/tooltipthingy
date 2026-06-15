@@ -67,6 +67,7 @@ data object StatLines : TooltipFeature() {
                     name,
                     Text.of {
                         append(value)
+                        result["icon"]?.let { append(it) }
                         append(" ")
                         append(extra ?: return@of)
                     }
