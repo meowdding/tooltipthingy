@@ -1,29 +1,22 @@
 package me.owdding.iconographic.render
 
 import me.owdding.iconographic.ExtractableTooltipLine
-import me.owdding.iconographic.Tooltip
 import me.owdding.iconographic.Iconographic.id
+import me.owdding.iconographic.Tooltip
 import me.owdding.iconographic.config.Config
 import me.owdding.iconographic.config.NonSkyBlockItemMode
 import me.owdding.iconographic.font
 import me.owdding.iconographic.system.TooltipTag
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
-import net.minecraft.client.gui.screens.inventory.InventoryScreen
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.item.TrackingItemStackRenderState
-import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.util.ARGB
-import net.minecraft.world.entity.EquipmentSlot
-import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.item.ItemDisplayContext
 import net.minecraft.world.item.ItemStack
 import org.joml.Matrix3x2f
-import org.joml.Quaternionf
-import org.joml.Vector3f
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.helpers.McClient
 import tech.thatgravyboat.skyblockapi.helpers.McLevel
@@ -52,8 +45,6 @@ data class TooltipHeader(
         leftTagWidth != 0 && rightTagWidth != 0 -> leftTagWidth + 5 + rightTagWidth
         else -> leftTagWidth + rightTagWidth
     }
-
-    private val entity = ArmorStand(McClient.self.level!!, 0.0, 0.0, 0.0)
 
     override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
         if (showIcon) {
@@ -99,7 +90,7 @@ data class TooltipHeader(
 
     override fun getHeight(font: Font): Int = if (showIcon) 26 else 24
 
-    // Taken from SkyOcean
+    // Taken and modified from SkyOcean
     private fun GuiGraphicsExtractor.extractItem(item: ItemStack, x: Int, y: Int) {
         if (!Config.spinny) {
             this.item(item, x, y)
@@ -111,65 +102,19 @@ data class TooltipHeader(
 
         val rotation = 45f + (System.currentTimeMillis() / 20) % 360
 
-        val slot = item[DataComponents.EQUIPPABLE]?.slot?.takeIf { it.type == EquipmentSlot.Type.HUMANOID_ARMOR }
-
         this.scissor(x..x + width, y..y + height) {
-            if (slot != null) {
-                entity.setItemSlot(slot, item)
-                entity.isInvisible = true
+            val itemState = TrackingItemStackRenderState()
+            McClient.self.itemModelResolver.updateForTopItem(itemState, item, ItemDisplayContext.GUI, McLevel.self, McPlayer.self, 0)
 
-                val yOffset = when (slot) {
-                    EquipmentSlot.HEAD -> 1.5f
-                    EquipmentSlot.CHEST -> 1.0f
-                    EquipmentSlot.LEGS -> 0.4f
-                    EquipmentSlot.FEET -> 0.0f
-                    else -> 1.0f
-                } + 0.25f
-
-                val angle = Quaternionf().rotateYXZ(rotation * 0.017453292f, 180 * 0.017453292f, 0f)
-                renderEntityInInventory(
-                    this,
-                    x,
-                    y,
-                    x + width,
-                    y + height,
-                    15f,
-                    Vector3f(0f, yOffset, 0f),
-                    angle,
-                    null,
-                    entity,
-                )
-            } else {
-                val itemState = TrackingItemStackRenderState()
-                McClient.self.itemModelResolver.updateForTopItem(itemState, item, ItemDisplayContext.GUI, McLevel.self, McPlayer.self, 0)
-
-                this.guiRenderState.addPicturesInPictureState(
-                    ItemWidgetItemState(
-                        x, y, x + width, y + height,
-                        this.scissorStack.peek(),
-                        Matrix3x2f(this.pose()),
-                        rotation,
-                        itemState,
-                    ),
-                )
-            }
+            this.guiRenderState.addPicturesInPictureState(
+                ItemWidgetItemState(
+                    x, y, x + width, y + height,
+                    this.scissorStack.peek(),
+                    Matrix3x2f(this.pose()),
+                    rotation,
+                    itemState,
+                ),
+            )
         }
-    }
-
-    @Suppress("SameParameterValue")
-    private fun renderEntityInInventory(
-        graphics: GuiGraphicsExtractor,
-        x0: Int,
-        y0: Int,
-        width: Int,
-        height: Int,
-        scale: Float,
-        translation: Vector3f,
-        rotation: Quaternionf,
-        overrideCameraAngle: Quaternionf?,
-        entity: LivingEntity,
-    ) {
-        val renderState = InventoryScreen.extractRenderState(entity)
-        graphics.entity(renderState, scale, translation, rotation, overrideCameraAngle, x0, y0, width, height)
     }
 }
