@@ -2,7 +2,7 @@
 
 minecraft = "26.1"
 minecraft_range = "26.1.x"
-fabric-api = "0.144.0+26.1"
+fabric-api = "0.150.0+26.1.2"
 
 resourceful-config = "4.0.0-beta.2"
 resourceful-configkt = "4.0.0-beta.1"
