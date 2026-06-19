@@ -44,7 +44,29 @@ kotlin {
     }
 }
 
+
+val gitRef = tasks.register<Exec>("gitRef") {
+    outputs.upToDateWhen { false }
+    standardOutput = ByteArrayOutputStream()
+    commandLine("git", "rev-parse", "HEAD")
+}
+
+val gitBranch = tasks.register<Exec>("getBranch") {
+    outputs.upToDateWhen { false }
+    standardOutput = ByteArrayOutputStream()
+    commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+}
+
+
+val lastVersionBump = tasks.register<Exec>("getGradlePropertiesBump") {
+    outputs.upToDateWhen { false }
+    standardOutput = ByteArrayOutputStream()
+    commandLine("git", "log", "-1", "--pretty=format:\"%H\"", "--", "gradle.properties")
+}
+
 tasks.processResources {
+    dependsOn(lastVersionBump, gitRef)
+    mustRunAfter(lastVersionBump, gitRef)
     val range = if ("minecraft.range" in versionedCatalog.versions) {
         versionedCatalog.versions["minecraft.range"].toString()
     } else {
@@ -53,17 +75,27 @@ tasks.processResources {
         ">=$start <=$end"
     }
     val replacements = mapOf(
-        "version" to version,
+        "version" to project.provider {
+            val lastCommit = gitRef.get().standardOutput.toString()
+            val lastVersionBump = lastVersionBump.get().standardOutput.toString()
+
+            if (lastVersionBump.equals(lastCommit, ignoreCase = true)) {
+                version
+            } else "$version+${lastCommit.take(8)}"
+        },
         "minecraft_range" to range,
         "fabric_lang_kotlin" to versionedCatalog.versions["fabric.language.kotlin"],
         "sbapi" to versionedCatalog.versions["skyblockapi"],
         "rconfigkt" to versionedCatalog.versions["resourceful.configkt"],
         "rconfig" to versionedCatalog.versions["resourceful.config"],
     )
-    inputs.properties(replacements)
+    outputs.upToDateWhen { false }
 
     filesMatching("fabric.mod.json") {
-        expand(replacements)
+        expand(replacements.map { it.key to when (val v = it.value) {
+            is Provider<*> -> v.get()
+            else -> v
+        } }.toMap())
     }
     with(copySpec {
         from(rootProject.file("src/lang")).include("*.json").into("assets/iconographic/lang")
@@ -142,18 +174,6 @@ loom {
     accessWidenerPath = rootProject.file("src/main/resources/iconographic.accesswidener")
 }
 
-
-val gitRef = tasks.register<Exec>("gitRef") {
-    outputs.upToDateWhen { false }
-    standardOutput = ByteArrayOutputStream()
-    commandLine("git", "rev-parse", "HEAD")
-}
-
-val gitBranch = tasks.register<Exec>("getBranch") {
-    outputs.upToDateWhen { false }
-    standardOutput = ByteArrayOutputStream()
-    commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
-}
 
 tasks.generateBuildConfig {
     dependsOn(gitRef, gitBranch)
