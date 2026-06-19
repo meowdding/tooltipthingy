@@ -163,7 +163,7 @@ tasks.build {
     doLast {
         val commitHash = ext.get("commitHash")?.let { "+$it" } ?: ""
         val sourceFile = rootProject.projectDir.resolve("versions/${project.name}/build/libs/${archiveName}-$version.jar")
-        val targetFile = rootProject.projectDir.resolve("build/libs/${archiveName}-$version$commitHash-${stonecutter.current.version}.jar")
+        val targetFile = rootProject.projectDir.resolve("build/libs/${archiveName}-$version-${stonecutter.current.version}$commitHash.jar")
         targetFile.parentFile.mkdirs()
         targetFile.writeBytes(sourceFile.readBytes())
     }
