@@ -64,6 +64,20 @@ val lastVersionBump = tasks.register<Exec>("getGradlePropertiesBump") {
     commandLine("git", "log", "-1", "--pretty=format:\"%H\"", "--", "gradle.properties")
 }
 
+val commitHash = tasks.register("commitHash") {
+    outputs.upToDateWhen { false }
+    this.mustRunAfter(lastVersionBump, gitRef)
+    this.dependsOn(lastVersionBump, gitRef)
+    doLast {
+        val lastCommit = gitRef.get().standardOutput.toString()
+        val lastVersionBump = lastVersionBump.get().standardOutput.toString()
+
+        ext.set(
+            "commitHash", if (lastVersionBump.equals(lastCommit, ignoreCase = true)) ""  else lastCommit.take(8)
+        )
+    }
+}
+
 tasks.processResources {
     dependsOn(lastVersionBump, gitRef)
     mustRunAfter(lastVersionBump, gitRef)
@@ -76,12 +90,8 @@ tasks.processResources {
     }
     val replacements = mapOf(
         "version" to project.provider {
-            val lastCommit = gitRef.get().standardOutput.toString()
-            val lastVersionBump = lastVersionBump.get().standardOutput.toString()
-
-            if (lastVersionBump.equals(lastCommit, ignoreCase = true)) {
-                version
-            } else "$version+${lastCommit.take(8)}"
+            val commitHash = ext.get("commitHash")?.let { "+$it" } ?: ""
+            "$version$commitHash"
         },
         "minecraft_range" to range,
         "fabric_lang_kotlin" to versionedCatalog.versions["fabric.language.kotlin"],
@@ -92,10 +102,12 @@ tasks.processResources {
     outputs.upToDateWhen { false }
 
     filesMatching("fabric.mod.json") {
-        expand(replacements.map { it.key to when (val v = it.value) {
-            is Provider<*> -> v.get()
-            else -> v
-        } }.toMap())
+        expand(replacements.map {
+            it.key to when (val v = it.value) {
+                is Provider<*> -> v.get()
+                else -> v
+            }
+        }.toMap())
     }
     with(copySpec {
         from(rootProject.file("src/lang")).include("*.json").into("assets/iconographic/lang")
@@ -146,9 +158,12 @@ base {
 }
 
 tasks.build {
+    this.dependsOn(commitHash)
+    this.mustRunAfter(commitHash)
     doLast {
+        val commitHash = ext.get("commitHash")?.let { "+$it" } ?: ""
         val sourceFile = rootProject.projectDir.resolve("versions/${project.name}/build/libs/${archiveName}-$version.jar")
-        val targetFile = rootProject.projectDir.resolve("build/libs/${archiveName}-$version-${stonecutter.current.version}.jar")
+        val targetFile = rootProject.projectDir.resolve("build/libs/${archiveName}-$version$commitHash-${stonecutter.current.version}.jar")
         targetFile.parentFile.mkdirs()
         targetFile.writeBytes(sourceFile.readBytes())
     }
