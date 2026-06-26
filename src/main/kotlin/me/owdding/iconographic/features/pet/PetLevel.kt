@@ -49,12 +49,14 @@ data object PetLevel : TooltipFeature() {
             PetLevelLine(
                 line.filter { it.isDigit() }.toFloat(),
             )
-        } else {
+        } else if (line.contains("/")) {
             val [first, second] = line.split("/")
             PetLevelLine(
                 first.parseFormattedFloat(),
                 second.parseFormattedFloat(),
             )
+        } else {
+            return@withComponentMerger Result.unmodified
         }
 
         skipSpace()
