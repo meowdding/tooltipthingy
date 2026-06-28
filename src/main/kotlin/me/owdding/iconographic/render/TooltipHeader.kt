@@ -61,12 +61,12 @@ data class TooltipHeader(
         }
 
         val xOffset = if (showIcon) 25 else 2
-        val yOffsetText = if (showIcon) 0 else 2
+        val yOffsetText = 2
 
         graphics.text(font, name, x + xOffset, y + yOffsetText, -1)
 
         var tags = if (showIcon) 24 else 2
-        val yOffsetTags = if (showIcon) 10 else 14
+        val yOffsetTags = 10
 
         for (tag in leftTags) {
             tag.extract(graphics, x + tags, y + yOffsetTags)
@@ -88,7 +88,11 @@ data class TooltipHeader(
         )
     }
 
-    override fun getHeight(font: Font): Int = if (showIcon) 26 else 24
+    override fun getHeight(font: Font): Int {
+        val hasTags = leftTags.isNotEmpty() || rightTags.isNotEmpty()
+        if (showIcon || hasTags) return 26
+        return font.lineHeight + 4
+    }
 
     // Taken and modified from SkyOcean
     private fun GuiGraphicsExtractor.extractItem(item: ItemStack, x: Int, y: Int) {
