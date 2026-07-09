@@ -13,7 +13,7 @@
       },
       "onlyInSkyblock": {
         "@value": "Только в Skyblock",
-        "desc": "Настроенные всплывающие подсказки будут отображаться только в Skyblock."
+        "desc": "Iconographic будет работать только в Skyblock."
       },
       "nonSkyBlockItemMode": {
         "@value": "Распространять на все предметы",
@@ -30,8 +30,8 @@
       "tags": {
         "@value": "Настройки Тегов",
         "breakingPower": {
-          "@value": "Сила добычи",
-          "desc": "Добавляет тег Силы Добычи (Breaking Power) на кирках и дрелях <dark_green>BP <bp></dark_green>."
+          "@value": "Мощность Инструмента",
+          "desc": "Добавляет тег Мощность Инструмента (Breaking Power) на кирках и дрелях <dark_green>BP <bp></dark_green>."
         },
         "category": {
           "@value": "Категория",
@@ -74,7 +74,7 @@
         },
         "drillComponents": {
           "@value": "Детали дрелей",
-          "desc": "Добавляет иконки к деталям дрелей и немного изменяет вид."
+          "desc": "Добавляет иконки деталей дрелей и немного изменяет вид."
         }
       }
     }
