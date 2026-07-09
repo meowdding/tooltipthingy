@@ -35,7 +35,7 @@
         },
         "category": {
           "@value": "Category",
-          "desc": "Adds the items category as tag."
+          "desc": "Adds the item's category as tag."
         },
         "furniture": {
           "@value": "Furniture",
@@ -43,26 +43,26 @@
         },
         "pet": {
           "@value": "Pet",
-          "desc": "Adds the pet type and skill as tags."
+          "desc": "Adds the pet's type and skill as tags."
         },
         "rarity": {
           "@value": "Rarity",
-          "desc": "Adds the items rarity as tag."
+          "desc": "Adds the item's rarity as tag."
         },
         "stars": {
           "@value": "Stars",
-          "desc": "Adds the items stars to the tags."
+          "desc": "Adds the item's stars to the tags."
         }
       },
       "misc": {
         "@value": "Misc Config",
         "petAbilities": {
           "@value": "Pet abilities",
-          "desc": "Centers pet abilities and adds separators."
+          "desc": "Centers pet's abilities and adds separators."
         },
         "petLevel": {
           "@value": "Pet levels",
-          "desc": "Changes pet levels into a rendered element."
+          "desc": "Changes pet's levels into a rendered element."
         },
         "petFavourite": {
           "@value": "Favourite Pet",
@@ -70,11 +70,11 @@
         },
         "drillFuel": {
           "@value": "Drill Fuel",
-          "desc": "Turns the drill fuel into a bar."
+          "desc": "Turns the drill's fuel into a bar."
         },
         "drillComponents": {
           "@value": "Drill Components",
-          "desc": "Adds an icon to drill components and changes the style a bit."
+          "desc": "Adds an icon to drill's components and changes the style a bit."
         }
       }
     }
