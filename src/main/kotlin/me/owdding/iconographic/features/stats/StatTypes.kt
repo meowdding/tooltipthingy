@@ -7,65 +7,79 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextBuilder.append
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
 
-
-@Suppress("unused")
 enum class StatType(
     icon: String?,
     val color: Int,
     vararg val names: String,
 ) {
     // Combat stats
-
-    HEALTH('❤', TextColor.RED),
+    HEALTH('', TextColor.RED),
     DAMAGE(null, TextColor.RED),
-    DEFENSE('❈', TextColor.GREEN),
-    STRENGTH('❁', TextColor.RED),
-    INTELLIGENCE('✎', TextColor.AQUA),
-    CRIT_DAMAGE('☠', TextColor.BLUE),
-    CRIT_CHANCE('☣', TextColor.BLUE),
-    ATTACK_SPEED('⚔', TextColor.YELLOW),
-    ABILITY_DAMAGE('๑', TextColor.RED),
-    TRUE_DEFENSE('❂', TextColor.WHITE),
-    FEROCITY('⫽', TextColor.RED),
-    HEALTH_REGEN('❣', TextColor.RED),
-    VITALITY('♨', TextColor.DARK_RED),
-    MENDING('☄', TextColor.GREEN),
-    SWING_RANGE('Ⓢ', TextColor.YELLOW),
+    DEFENSE('', TextColor.GREEN),
+    STRENGTH('', TextColor.RED),
+    INTELLIGENCE('', TextColor.AQUA),
+    CRIT_DAMAGE('', TextColor.BLUE),
+    CRIT_CHANCE('', TextColor.BLUE),
+    ATTACK_SPEED('', TextColor.YELLOW),
+    ABILITY_DAMAGE('', TextColor.RED),
+    TRUE_DEFENSE('', TextColor.WHITE),
+    FEROCITY('', TextColor.RED),
+    HEALTH_REGEN('', TextColor.RED),
+    VITALITY('', TextColor.DARK_RED),
+    MENDING('', TextColor.GREEN),
+    SWING_RANGE('', TextColor.YELLOW),
 
-    // Gathering Stats
+    // Mining Stats
+    BREAKING_POWER('', TextColor.DARK_GREEN),
+    MINING_SPEED('', TextColor.GOLD),
+    MINING_SPREAD('', TextColor.YELLOW),
+    GEMSTONE_SPREAD('', TextColor.YELLOW),
+    PRISTINE('', TextColor.DARK_PURPLE),
+    BASE_MINING_FORTUNE('', TextColor.GOLD), // helper
+    MINING_FORTUNE(BASE_MINING_FORTUNE),
+    ORE_FORTUNE(BASE_MINING_FORTUNE),
+    BLOCK_FORTUNE(BASE_MINING_FORTUNE),
+    DWARVEN_METAL_FORTUNE(BASE_MINING_FORTUNE),
+    GEMSTONE_FORTUNE(BASE_MINING_FORTUNE),
 
-    MINING_SPEED('⸕', TextColor.GOLD),
-    MINING_SPREAD('▚', TextColor.YELLOW),
-    GEMSTONE_SPREAD(MINING_SPREAD),
-    PRISTINE('✧', TextColor.DARK_PURPLE),
-    BASE_FORTUNE('☘', TextColor.GOLD), // helper
-    MINING_FORTUNE(BASE_FORTUNE),
-    ORE_FORTUNE(BASE_FORTUNE),
-    BLOCK_FORTUNE(BASE_FORTUNE),
-    DWARVEN_METAL_FORTUNE(BASE_FORTUNE),
-    GEMSTONE_FORTUNE(BASE_FORTUNE),
-    FORAGING_FORTUNE(BASE_FORTUNE),
-    FARMING_FORTUNE(BASE_FORTUNE),
-    WHEAT_FORTUNE(BASE_FORTUNE),
-    CARROT_FORTUNE(BASE_FORTUNE),
-    POTATO_FORTUNE(BASE_FORTUNE),
-    PUMPKIN_FORTUNE(BASE_FORTUNE),
-    MELON_SLICE_FORTUNE(BASE_FORTUNE),
-    MUSHROOM_FORTUNE(BASE_FORTUNE),
-    CACTUS_FORTUNE(BASE_FORTUNE),
-    SUGAR_CANE_FORTUNE(BASE_FORTUNE),
-    NETHER_WART_FORTUNE(BASE_FORTUNE),
-    COCOA_BEANS_FORTUNE(BASE_FORTUNE),
-    SUNFLOWER_FORTUNE(BASE_FORTUNE),
-    MOONFLOWER_FORTUNE(BASE_FORTUNE),
-    WILD_ROSE_FORTUNE(BASE_FORTUNE),
-    OVERBLOOM('☀', TextColor.YELLOW),
-    FIG_FORTUNE(BASE_FORTUNE),
-    MANGROVE_FORTUNE(BASE_FORTUNE),
-    HUNTER_FORTUNE('☘', TextColor.PINK),
+    // Farming Stats
+    BONUS_PEST_CHANCE('', TextColor.DARK_GREEN),
+    OVERBLOOM('', TextColor.YELLOW),
+    BASE_FARMING_FORTUNE('', TextColor.GOLD), // helper
+    FARMING_FORTUNE(BASE_FARMING_FORTUNE),
+    WHEAT_FORTUNE(BASE_FARMING_FORTUNE),
+    CARROT_FORTUNE(BASE_FARMING_FORTUNE),
+    POTATO_FORTUNE(BASE_FARMING_FORTUNE),
+    PUMPKIN_FORTUNE(BASE_FARMING_FORTUNE),
+    MELON_SLICE_FORTUNE(BASE_FARMING_FORTUNE),
+    CACTUS_FORTUNE(BASE_FARMING_FORTUNE),
+    SUGAR_CANE_FORTUNE(BASE_FARMING_FORTUNE),
+    NETHER_WART_FORTUNE(BASE_FARMING_FORTUNE),
+    COCOA_BEANS_FORTUNE(BASE_FARMING_FORTUNE),
+    MUSHROOM_FORTUNE(BASE_FARMING_FORTUNE),
+    SUNFLOWER_FORTUNE(BASE_FARMING_FORTUNE),
+    MOONFLOWER_FORTUNE(BASE_FARMING_FORTUNE),
+    WILD_ROSE_FORTUNE(BASE_FARMING_FORTUNE),
+
+    // Foraging Stats
+    SWEEP('', TextColor.DARK_GREEN),
+    BASE_FORAGING_FORTUNE('', TextColor.GOLD), // Helper
+    FORAGING_FORTUNE(BASE_FORAGING_FORTUNE),
+    FIG_FORTUNE(BASE_FORAGING_FORTUNE),
+    MANGROVE_FORTUNE(BASE_FORAGING_FORTUNE),
+
+    // Fishing Stats
+    FISHING_SPEED('', TextColor.AQUA),
+    SEA_CREATURE_CHANCE('', TextColor.DARK_AQUA),
+    DOUBLE_HOOK_CHANCE('', TextColor.BLUE),
+    TROPHY_CHANCE('', TextColor.GOLD),
+    TREASURE_CHANCE('', TextColor.GOLD),
+
+    // Hunting Stats
+    PULL('', TextColor.AQUA),
+    HUNTER_FORTUNE('', TextColor.LIGHT_PURPLE),
 
     // Wisdom Stats
-
     BASE_WISDOM('☯', TextColor.DARK_AQUA),
     COMBAT_WISDOM(BASE_WISDOM),
     MINING_WISDOM(BASE_WISDOM),
@@ -81,27 +95,17 @@ enum class StatType(
     HUNTING_WISDOM(BASE_WISDOM),
 
     // Misc Stats
-
-    SPEED('✦', TextColor.WHITE),
-    MAGIC_FIND('✯', TextColor.AQUA),
-    PET_LUCK('♣', TextColor.LIGHT_PURPLE),
-    FISHING_SPEED('☂', TextColor.AQUA),
-    SEA_CREATURE_CHANCE('α', TextColor.DARK_AQUA),
-    DOUBLE_HOOK_CHANCE('⚓', TextColor.BLUE),
-    TREASURE_CHANCE('⛃', TextColor.GOLD),
+    SPEED('', TextColor.WHITE),
+    MAGIC_FIND('', TextColor.AQUA),
+    PET_LUCK('', TextColor.LIGHT_PURPLE),
     SHOT_COOLDOWN(null, TextColor.RED),
     GEAR_SCORE(null, TextColor.PINK),
-    TROPHY_CHANCE('♔', TextColor.GOLD),
-    BONUS_PEST_CHANCE('ൠ', TextColor.DARK_GREEN),
-    HEAT_RESISTANCE('♨', TextColor.RED),
-    COLD_RESISTANCE('❄', TextColor.AQUA),
-    FEAR('☠', TextColor.DARK_PURPLE),
-
-    PULL('ᛷ', TextColor.AQUA),
-    SWEEP('∮', TextColor.DARK_GREEN),
-    RESPIRATION('⚶', TextColor.DARK_AQUA),
-    PRESSURE_RESISTANCE('❍', TextColor.BLUE),
-    SYPHON_LUCK('♣', TextColor.LIGHT_PURPLE),
+    HEAT_RESISTANCE('', TextColor.RED),
+    COLD_RESISTANCE('', TextColor.AQUA),
+    RESPIRATION('', TextColor.DARK_AQUA),
+    PRESSURE_RESISTANCE('', TextColor.BLUE),
+    FEAR('', TextColor.DARK_PURPLE),
+    TRACKING('', TextColor.LIGHT_PURPLE),
     ;
 
     constructor(stat: StatType) : this(stat.icon, stat.color)
