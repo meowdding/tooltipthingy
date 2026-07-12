@@ -10,7 +10,6 @@ hypixelapi = "1.0.1+build.1+mc1.21"
 
 gson = "2.12.1"
 guava = "33.5.0-jre"
-cats = "1.0.0-beta.1"
 
 resourceful-config-kotlin = "4.0.0-beta.1"
 
