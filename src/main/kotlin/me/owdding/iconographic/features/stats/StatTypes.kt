@@ -20,7 +20,7 @@ enum class StatType(
     INTELLIGENCE('', TextColor.AQUA),
     CRIT_DAMAGE('', TextColor.BLUE),
     CRIT_CHANCE('', TextColor.BLUE),
-    ATTACK_SPEED('', TextColor.YELLOW),
+    ATTACK_SPEED('', TextColor.YELLOW, "Bonus Attack Speed"),
     ABILITY_DAMAGE('', TextColor.RED),
     TRUE_DEFENSE('', TextColor.WHITE),
     FEROCITY('', TextColor.RED),
