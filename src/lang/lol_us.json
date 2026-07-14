@@ -1,0 +1,86 @@
+{
+  "@meowdding:metadata": {
+    "allowMultiline": true,
+    "allowReferences": true,
+    "allowTags": true,
+    "objectAsKeys": true
+  },
+  "iconographic": {
+    "config": {
+      "enabled": {
+        "@value": "Teh big button",
+        "desc": "Put naw to disabel everyfin!!!"
+      },
+      "onlyInSkyblock": {
+        "@value": "Just in SkyBlockz",
+        "desc": "Only activaet the thingies whiel in Skyblock"
+      },
+      "hideVanillaTooltipData": {
+        "@value": "Hied Vanilal Tooltip informashun",
+        "desc": "Hidez useless junk from vanila game (like enchantz) that hypixel shud hide but dont (why!!)"
+      },
+      "nonSkyBlockItemMode": {
+        "@value": "Use 4 everything?",
+        "desc": "Customiez for itemz dat dun haz SkyBlockId (like menus...)"
+      },
+      "spinny": {
+        "@value": "spinnin stuffs",
+        "desc": "Shood da top-left item do a spinny"
+      },
+      "vanillaBackground": {
+        "@value": "Vanilal bakground",
+        "desc": "Swapz custom 4 vanila tooltip back n border"
+      },
+      "tags": {
+        "@value": "Tag Opshuns",
+        "breakingPower": {
+          "@value": "Breaking powerz!!",
+          "desc": "Add a breakin powah tag <dark_green>BP <bp></dark_green>"
+        },
+        "category": {
+          "@value": "Categoreh",
+          "desc": "Add teh itemz catagory az a tag"
+        },
+        "furniture": {
+          "@value": "Furnituer",
+          "desc": "Add furnitur tag on furnitur thingz"
+        },
+        "pet": {
+          "@value": "Pet",
+          "desc": "Add da petz type an skill az tagz"
+        },
+        "rarity": {
+          "@value": "rarities... woaw",
+          "desc": "Addz teh itemz rareness az tag"
+        },
+        "stars": {
+          "@value": "Starz",
+          "desc": "Add da itemz stars az tagz"
+        }
+      },
+      "misc": {
+        "@value": "More Opsuns??",
+        "petAbilities": {
+          "@value": "Pet thingies",
+          "desc": "Centerin pet skillz n puttin separators in!!"
+        },
+        "petLevel": {
+          "@value": "Pet levelz",
+          "desc": "Turnz pet levelz in2 a renderd element"
+        },
+        "petFavourite": {
+          "@value": "Favoriet pet!!",
+          "desc": "Changez fave pet star inta a showed thingy"
+        },
+        "drillFuel": {
+          "@value": "drill fuel bar thingz idk lol",
+          "desc": "Drill fuel getz turned inta a bar"
+        },
+        "drillComponents": {
+          "@value": "Drill component stuffs",
+          "desc": "Putz an icon on drill componentz n tweaks teh look sum"
+        }
+      }
+    }
+  }
+}
