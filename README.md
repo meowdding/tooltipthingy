@@ -19,3 +19,11 @@ Tired of walls of plain text? Instead, look at beautiful icons, progress bars, p
 ## Customizing
 
 You can configure all features to how you like it using the config at `/iconographic`.
+
+
+## Mod Compatability
+
+As Minecraft's system is limited, other mods need to add their own Compatability with Iconographic 
+to have their Tooltips be rendered with Iconographic applied.
+
+Are you a mod dev trying to add compatability? Read [here](COMPATABILITY.md).
