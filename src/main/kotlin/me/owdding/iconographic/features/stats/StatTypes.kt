@@ -6,6 +6,9 @@ import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextBuilder.append
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
+import java.util.concurrent.atomic.AtomicInteger
+
+private val idCounter: AtomicInteger = AtomicInteger()
 
 enum class StatType(
     icon: String?,
@@ -115,13 +118,13 @@ enum class StatType(
         vararg names: String,
     ) : this(icon.toString(), color, names = names)
 
-    val id = 0xe800 + ordinal
+    val id = if (icon == null) 0xe800 + idCounter.getAndIncrement() else null
     val idComponent = Text.of {
-        append(id.toString(16))
+        append(id?.toString(16) ?: "null")
         font = ChatUtils.mc5
     }
     val isUnknown = icon == null
-    private val defaultIcon = Char(id)
+    private val defaultIcon = id?.let(::Char)
 
     val icon = icon ?: defaultIcon.toString()
 
