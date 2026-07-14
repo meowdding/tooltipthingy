@@ -62,7 +62,7 @@
         "@value": "More Opsuns??",
         "petAbilities": {
           "@value": "Pet thingies",
-          "desc": "Centerin pet skillz n puttin separators in!"
+          "desc": "Centerin pet skillz n puttin separators in!!"
         },
         "petLevel": {
           "@value": "Pet levelz",
@@ -73,7 +73,7 @@
           "desc": "Changez fave pet star inta a showed thingy"
         },
         "drillFuel": {
-          "@value": "drill fuel thingy idk",
+          "@value": "drill fuel bar thingz idk lol",
           "desc": "Drill fuel getz turned inta a bar"
         },
         "drillComponents": {
