@@ -14,7 +14,7 @@ enum class StatType(
 ) {
     // Combat stats
     HEALTH('', TextColor.RED),
-    DAMAGE(null, TextColor.RED),
+    DAMAGE('', TextColor.RED),
     DEFENSE('', TextColor.GREEN),
     STRENGTH('', TextColor.RED),
     INTELLIGENCE('', TextColor.AQUA),
