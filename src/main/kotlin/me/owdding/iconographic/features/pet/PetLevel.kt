@@ -17,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.util.ARGB
 import net.minecraft.world.item.ItemStack
+import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.utils.extentions.parseFormattedFloat
 import tech.thatgravyboat.skyblockapi.utils.extentions.scissor
 import tech.thatgravyboat.skyblockapi.utils.extentions.toFormattedString
@@ -35,6 +36,8 @@ data object PetLevel : TooltipFeature() {
 
     const val ARROW = "▸"
     val regex = Regex("^Progress to Level (?<level>\\d+): .*|MAX LEVEL$")
+
+    override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isPet == true
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         if (!hasNext { it.stripped.matches(regex) }) return@withComponentMerger Result.unmodified

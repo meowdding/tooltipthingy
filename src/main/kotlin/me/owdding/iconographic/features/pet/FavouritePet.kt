@@ -26,6 +26,8 @@ data object FavouritePet : TooltipFeatureWithContext<AtomicBoolean>() {
         return AtomicBoolean(false)
     }
 
+    override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isPet == true
+
     context(context: AtomicBoolean)
     override fun ItemStack.rightTags(): List<TooltipTag> {
         if (!context.get()) {
