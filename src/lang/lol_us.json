@@ -73,12 +73,16 @@
           "desc": "Centerin pet skillz n puttin separators in!!"
         },
         "petLevel": {
-          "@value": "Pet levelz",
+          "@value": "Pet levelz Bar",
           "desc": "Turnz pet levelz in2 a renderd element"
         },
         "petFavourite": {
           "@value": "Favoriet pet!!",
           "desc": "Changez fave pet star inta a showed thingy"
+        },
+        "skillLevelBar": {
+          "@value": "Skill Levelz Bar",
+          "desc": "Changez the skill levelz progrez in2 a renderd element"
         },
         "drillFuel": {
           "@value": "drill fuel bar thingz idk lol",

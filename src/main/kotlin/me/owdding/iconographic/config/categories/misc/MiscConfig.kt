@@ -14,6 +14,8 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     val petLevel by autoBoolean(true)
     val petFavourite by autoBoolean(true)
 
+    val skillLevelBar by autoBoolean(true)
+
     val drillFuel by autoBoolean(true)
     val drillComponents by autoBoolean(true)
 }

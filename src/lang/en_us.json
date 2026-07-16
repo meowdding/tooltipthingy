@@ -69,19 +69,23 @@
           "desc": "Use SkyBlock's custom colors for Tooltip Background, Tags, etc."
         },
         "petAbilities": {
-          "@value": "Pet abilities",
+          "@value": "Pet Abilities",
           "desc": "Centers pet's abilities and adds separators."
         },
         "petLevel": {
-          "@value": "Pet levels",
+          "@value": "Pet Level Bar",
           "desc": "Changes pet's levels into a rendered element."
         },
         "petFavourite": {
           "@value": "Favourite Pet",
           "desc": "Changes favourite pet star into a rendered element."
         },
+        "skillLevelBar": {
+          "@value": "Skill Level Bar",
+          "desc": "Changes the skill level progress into a rendered element."
+        },
         "drillFuel": {
-          "@value": "Drill Fuel",
+          "@value": "Drill Fuel Bar",
           "desc": "Turns the drill's fuel into a bar."
         },
         "drillComponents": {
