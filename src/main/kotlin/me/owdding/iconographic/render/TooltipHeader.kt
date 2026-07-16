@@ -61,7 +61,7 @@ data class TooltipHeader(
             graphics.extractItem(item, x + 3, y + 3)
         }
 
-        val xOffset = if (showIcon) 25 else 2
+        val xOffset = if (showIcon) 25 else 0
         val yOffsetText = 2
 
         graphics.text(font, name, x + xOffset, y + yOffsetText, -1)
@@ -82,7 +82,7 @@ data class TooltipHeader(
     }
 
     override fun getWidth(font: Font): Int {
-        val baseWidth = if (showIcon) 25 else 2
+        val baseWidth = if (showIcon) 25 else 0
         return baseWidth + max(
             tagWidthTotal - 2,
             name.width + if (icon != null) 13 else 0
