@@ -68,6 +68,10 @@
           "@value": "Ues Skyblock's Colorz",
           "desc": "Use Skyblock's own colurz fer Tooltip Backround, Tags an' stuffz"
         },
+        "itemAbility": {
+          "@value": "Alined Item Abilidy",
+          "desc": "Wight alinz the Clik actions of abilities."
+        },
         "petAbilities": {
           "@value": "Pet thingies",
           "desc": "Centerin pet skillz n puttin separators in!!"

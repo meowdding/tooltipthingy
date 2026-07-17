@@ -68,6 +68,10 @@
           "@value": "Use SkyBlock's Color",
           "desc": "Use SkyBlock's custom colors for Tooltip Background, Tags, etc."
         },
+        "itemAbility": {
+          "@value": "Aligned Item Ability",
+          "desc": "Right aligns the Click actions of abilities."
+        },
         "petAbilities": {
           "@value": "Pet Abilities",
           "desc": "Centers pet's abilities and adds separators."
