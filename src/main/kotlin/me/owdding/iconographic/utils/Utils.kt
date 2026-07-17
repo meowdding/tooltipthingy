@@ -71,7 +71,7 @@ class ComponentLineListMerger(val originalMerger: ListMerger<TooltipLine>) : Lis
 
     override fun addUntil(predicate: (Component) -> Boolean) {
         skipNonComponents()
-        while (originalMerger.index + 1 < originalMerger.original.size && !predicate(originalMerger.peek().asComponent())) {
+        while (originalMerger.canRead() && !predicate(originalMerger.peek().asComponent())) {
             copy()
             skipNonComponents()
         }
@@ -94,18 +94,18 @@ class ComponentLineListMerger(val originalMerger: ListMerger<TooltipLine>) : Lis
         return originalMerger.readSafe()?.asComponentOrNull()
     }
 
-
     fun skipUntilAfterSpace() {
         skipNonComponents()
-        while (index + 1 < original.size && peek().stripped.isNotBlank()) {
+        while (canRead() && peek().stripped.isNotBlank()) {
             read()
             skipNonComponents()
         }
-        if (index + 1 < original.size) read()
+        if (canRead()) read()
     }
+
     fun skipSpace() {
         skipNonComponents()
-        while (index + 1 < original.size && peek().stripped.isBlank()) {
+        while (canRead() && peek().stripped.isBlank()) {
             read()
             skipNonComponents()
         }
@@ -147,7 +147,7 @@ open class ListMerger<T>(open val original: List<T>, open var index: Int = 0) {
     }
 
     open fun addUntil(predicate: (T) -> Boolean) {
-        while (index + 1 < original.size && !predicate(peek())) copy()
+        while (canRead() && !predicate(peek())) copy()
     }
 
     open fun addBeforeNext(predicate: (T) -> Boolean, provider: MutableList<T>.() -> Unit) {
