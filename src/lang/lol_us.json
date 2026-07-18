@@ -76,6 +76,10 @@
           "@value": "Pet thingies",
           "desc": "Centerin pet skillz n puttin separators in!!"
         },
+        "petHeldItem": {
+          "@value": "Pet holds Item",
+          "desc": "Centerin pet holding item n puttin separators in!!"
+        },
         "petLevel": {
           "@value": "Pet levelz Bar",
           "desc": "Turnz pet levelz in2 a renderd element"

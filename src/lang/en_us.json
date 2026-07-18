@@ -76,6 +76,10 @@
           "@value": "Pet Abilities",
           "desc": "Centers pet's abilities and adds separators."
         },
+        "petHeldItem": {
+          "@value": "Pet Held Item",
+          "desc": "Centers pet's held item and adds separators."
+        },
         "petLevel": {
           "@value": "Pet Level Bar",
           "desc": "Changes pet's levels into a rendered element."
