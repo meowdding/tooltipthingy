@@ -45,6 +45,6 @@ data object PetAbilities : TooltipFeature() {
             true
         }
 
-        return colors.size == 1 && TextColor.GOLD in colors
+        return colors.size == 1 && TextColor.GOLD in colors && !this.stripped.startsWith("Held Item:")
     }
 }
