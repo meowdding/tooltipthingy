@@ -2,6 +2,7 @@ package me.owdding.iconographic.features.stats
 
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.TooltipLine
+import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
@@ -28,7 +29,7 @@ import kotlin.math.max
 
 @RegisterFeature
 data object StatLines : TooltipFeature() {
-    override val enabled: Boolean = true
+    override val enabled: Boolean = MiscConfig.alignedStats
     override val priority: Int = 25
 
     val statRegex = Regex("^(?<name>[\\w ]+): (?<value>[+-]?[\\d,.]+%?)(?<icon>[^\\d\\s]?)(?: (?<extra>.+))?$").toComponentRegex()

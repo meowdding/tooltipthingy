@@ -10,6 +10,8 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
 
     val skyBlockColor by autoBoolean(true)
 
+    val alignedStats by autoBoolean(true)
+
     val itemAbility by autoBoolean(true)
 
     val petAbilities by autoBoolean(true)
