@@ -1,5 +1,6 @@
 package me.owdding.iconographic.features.pet
 
+import me.owdding.iconographic.ComponentLike
 import me.owdding.lib.extensions.shorten
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.TooltipLine
@@ -42,47 +43,80 @@ data object PetLevel : TooltipFeature() {
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         if (!hasNext { it.stripped.matches(regex) }) return@withComponentMerger Result.unmodified
 
-        addUntil { it.stripped.matches(regex) }
-        if (!canRead()) return@withComponentMerger Result.unmodified
-        read()
+        var modified = false
+        val extractedLines = mutableListOf<PetLevelLine>()
 
-        if (!canRead()) return@withComponentMerger Result.unmodified
-        val line = read().stripped.trim()
-        val petLevelLine = if (line.startsWith(ARROW)) {
-            PetLevelLine(
-                line.filter { it.isDigit() }.toFloat(),
-            )
-        } else if (line.contains("/")) {
-            val [first, second] = line.split("/")
-            PetLevelLine(
-                first.parseFormattedFloat(),
-                second.parseFormattedFloat(),
-            )
-        } else {
-            return@withComponentMerger Result.unmodified
+        while (canRead()) {
+            if (!peek().stripped.matches(regex)) {
+                copy()
+                continue
+            }
+
+            val headerLine = read().stripped.trim()
+            val isMaxedHeader = headerLine == "MAX LEVEL"
+
+            val targetLevel = regex.find(headerLine)?.groups?.get("level")?.value?.toIntOrNull()
+
+            if (!canRead()) break
+            val line = read().stripped.trim()
+            val petLevelLine = if (line.startsWith(ARROW)) {
+                PetLevelLine(
+                    line.filter { it.isDigit() }.toFloat(),
+                    targetLevel = targetLevel
+                )
+            } else if (line.contains("/")) {
+                val parts = line.substringAfterLast(" ").split("/")
+
+                if (parts.size != 2) {
+                    originalMerger.destination.add(ComponentLike(Text.of(headerLine)))
+                    originalMerger.destination.add(ComponentLike(Text.of(line)))
+                    continue
+                }
+
+                PetLevelLine(
+                    parts[0].parseFormattedFloat(),
+                    parts[1].parseFormattedFloat(),
+                    targetLevel = targetLevel
+                )
+            } else {
+                if (isMaxedHeader) PetLevelLine(line.parseFormattedFloat(), targetLevel = targetLevel) else continue
+            }
+
+            skipSpace()
+            extractedLines.add(petLevelLine)
+            modified = true
         }
 
-        skipSpace()
+        if (extractedLines.isNotEmpty()) {
+            var insertIndex = 1
 
-        originalMerger.destination.add(1, SpacerLine(height = 3))
-        originalMerger.destination.add(1, SeparatorRenderer)
-        originalMerger.destination.add(1, petLevelLine)
-        originalMerger.destination.add(1, SeparatorRenderer)
-        originalMerger.destination.add(1, SpacerLine(height = 3))
+            originalMerger.destination.add(insertIndex++, SpacerLine(height = 3))
+            originalMerger.destination.add(insertIndex++, SeparatorRenderer)
 
-        return@withComponentMerger Result.unmodified
+            for (petLevel in extractedLines) {
+                originalMerger.destination.add(insertIndex++, petLevel)
+                originalMerger.destination.add(insertIndex++, SeparatorRenderer)
+            }
+
+            originalMerger.destination.add(insertIndex++, SpacerLine(height = 3))
+        }
+
+        return@withComponentMerger modified.asResult()
     }
 
     data class PetLevelLine(
         val isMaxed: Boolean,
         val owned: Float,
         val required: Float,
+        val targetLevel: Int? = null
     ) : ExtractableTooltipLine {
         val titleComponent = Text.of {
             this.font = ChatUtils.mc5
             this.shadowColor = null
             if (isMaxed) {
                 append("Max Level")
+            } else if (targetLevel != null) {
+                append("Level $targetLevel")
             } else {
                 append("Next Level")
             }
@@ -97,8 +131,8 @@ data object PetLevel : TooltipFeature() {
             append(required.shorten())
         }
 
-        constructor(owner: Float) : this(true, owner, 0f)
-        constructor(owner: Float, required: Float) : this(false, owner, required)
+        constructor(owner: Float, targetLevel: Int? = null) : this(true, owner, 0f, targetLevel)
+        constructor(owner: Float, required: Float, targetLevel: Int? = null) : this(false, owner, required, targetLevel)
 
         override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
 
