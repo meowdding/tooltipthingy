@@ -43,6 +43,10 @@
         "\u200c": 0,
         " ": 1
       }
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:default"
     }
   ]
 }
