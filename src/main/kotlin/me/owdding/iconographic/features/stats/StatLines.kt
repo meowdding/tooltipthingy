@@ -29,7 +29,7 @@ import kotlin.math.max
 
 @RegisterFeature
 data object StatLines : TooltipFeature() {
-    override val enabled: Boolean = MiscConfig.alignedStats
+    override val enabled: Boolean get() = MiscConfig.alignedStats
     override val priority: Int = 25
 
     val statRegex = Regex("^(?<name>[\\w ]+): (?<value>[+-]?[\\d,.]+%?)(?<icon>[^\\d\\s]?)(?: (?<extra>.+))?$").toComponentRegex()
