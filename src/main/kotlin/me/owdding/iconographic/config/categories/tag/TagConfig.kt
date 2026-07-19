@@ -13,6 +13,7 @@ object TagConfig : CategoryKt("tags"), AutoTranslated {
     val breakingPower by autoBoolean(true)
     val furniture by autoBoolean(true)
     val pet by autoBoolean(true)
+    val petCandy by autoBoolean(true)
     val shardId by autoBoolean(true)
     val stars by autoBoolean(true)
 }

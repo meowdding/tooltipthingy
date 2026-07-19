@@ -49,6 +49,10 @@
           "@value": "Pet",
           "desc": "Adds the pet's type and skill as tags."
         },
+        "petCandy": {
+          "@value": "Pet Candy",
+          "desc": "Adds the pet's candy amount if it has candy applied <dark_red>Candy: <candyAmount></dark_red>."
+        },
         "rarity": {
           "@value": "Rarity",
           "desc": "Adds the item's rarity as tag."
