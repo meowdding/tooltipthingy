@@ -95,20 +95,25 @@ class ComponentLineListMerger(val originalMerger: ListMerger<TooltipLine>) : Lis
     }
 
     fun skipUntilAfterSpace() {
-        skipNonComponents()
-        while (canRead() && peek().stripped.isNotBlank()) {
-            read()
-            skipNonComponents()
+        while (originalMerger.canRead()) {
+            val next = originalMerger.read()
+            if (next.isComponent() && next.asComponent().stripped.isBlank()) {
+                break
+            }
         }
-        if (canRead()) read()
+        skipNonComponents()
     }
 
     fun skipSpace() {
-        skipNonComponents()
-        while (canRead() && peek().stripped.isBlank()) {
-            read()
-            skipNonComponents()
+        while (originalMerger.canRead()) {
+            val next = originalMerger.peek()
+            if (next.isComponent() && next.asComponent().stripped.isBlank()) {
+                originalMerger.read()
+            } else {
+                break
+            }
         }
+        skipNonComponents()
     }
 
     fun addUntilRarityLine(rarity: SkyBlockRarity, includeRarity: Boolean = false): Boolean {
