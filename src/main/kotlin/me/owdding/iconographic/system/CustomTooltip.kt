@@ -51,7 +51,7 @@ object CustomTooltip {
                     }
                     modifiedItem = addIfNotNull(modifiedItem.modify()) ?: modifiedItem
                     nameOverride = nameOverride ?: addIfNotNull(item.nameOverride())
-                    nameReplacement = nameReplacement ?: addIfNotNull(item.nameReplacement(name))
+                    nameReplacement = addIfNotNull(item.nameReplacement(nameReplacement ?: name)) ?: nameReplacement
                     rightTags.addAll(item.rightTags().also {
                         addIfNotNull(it.takeUnless { it.isEmpty() })
                     })

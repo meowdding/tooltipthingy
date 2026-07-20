@@ -72,6 +72,10 @@
           "@value": "Use SkyBlock's Color",
           "desc": "Use SkyBlock's custom colors for Tooltip Background, Tags, etc."
         },
+        "shinyHolographic": {
+          "@value": "Holographic Shiny Name",
+          "desc": "Modifies Shiny Items name to be holographic."
+        },
         "alignedStats": {
           "@value": "Aligned Stats",
           "desc": "Aligns stats to the right and adds spacers."
