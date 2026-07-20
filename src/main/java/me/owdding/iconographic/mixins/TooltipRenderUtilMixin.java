@@ -17,7 +17,8 @@ public class TooltipRenderUtilMixin {
 
     @Inject(method = "extractTooltipBackground", at = @At("HEAD"), cancellable = true)
     private static void onRenderTooltipBackground(GuiGraphicsExtractor graphics, int x, int y, int w, int h, Identifier style, CallbackInfo ci) {
-        if (!Config.INSTANCE.getVanillaBackground() && Iconographic.currentTooltipRarityColor != null) {
+        var color = Iconographic.currentTooltipRarityColor;
+        if (!Config.INSTANCE.getVanillaBackground() && color != null) {
             ci.cancel();
 
             graphics.blitSprite(
@@ -27,7 +28,7 @@ public class TooltipRenderUtilMixin {
                     y - 6,
                     w + 12,
                     h + 12,
-                    ARGB.opaque(Iconographic.currentTooltipRarityColor)
+                    ARGB.opaque(color)
             );
         }
     }
