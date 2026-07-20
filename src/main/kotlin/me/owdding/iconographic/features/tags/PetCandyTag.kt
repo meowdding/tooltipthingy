@@ -14,7 +14,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 
 @RegisterFeature
 data object PetCandyTag : TooltipFeatureWithContext<MutableList<TooltipTag>>() {
-    override val enabled: Boolean get() = TagConfig.petCandy == true
+    override val enabled: Boolean get() = TagConfig.petCandy
     override fun createContext(): MutableList<TooltipTag> = mutableListOf()
     override val priority: Int = 1
 
