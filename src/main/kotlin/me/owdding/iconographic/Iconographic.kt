@@ -13,25 +13,37 @@ import me.owdding.iconographic.render.TooltipHeader
 import me.owdding.iconographic.system.CustomTooltip
 import me.owdding.iconographic.system.IconographicTooltipComponent
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
+import me.owdding.iconographic.utils.chat.sendWithPrefix
 import me.owdding.iconographic.utils.debug.DebugBuilder
 import me.owdding.iconographic.utils.debug.RegisterIconCommandEvent
 import me.owdding.iconographic.utils.debug.RegisterTttDebugEvent
 import me.owdding.ktmodules.AutoCollect
 import me.owdding.ktmodules.Module
 import me.owdding.lib.utils.MeowddingLogger
+import me.owdding.lib.utils.MeowddingUpdateChecker
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
+import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.SkyBlockAPI
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.helpers.McClient
 import tech.thatgravyboat.skyblockapi.platform.Identifiers
+import tech.thatgravyboat.skyblockapi.utils.text.Text
+import tech.thatgravyboat.skyblockapi.utils.text.Text.send
+import tech.thatgravyboat.skyblockapi.utils.text.TextColor
+import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.hover
+import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.url
 import kotlin.math.max
 
 @Module
 object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.autoResolve() {
+    val SELF = FabricLoader.getInstance().getModContainer("iconographic").get()
+    val MOD_ID: String = SELF.metadata.id
+
     @Volatile
     @JvmField
     var extractingItemTooltip: ItemStack? = null
@@ -58,6 +70,26 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
             RegisterIconCommandEvent(dispatcher, context).apply {
                 post(SkyBlockAPI.eventBus)
                 RegisterTttDebugEvent(this).post(SkyBlockAPI.eventBus)
+            }
+        }
+
+        MeowddingUpdateChecker("jrPpQCNN", SELF) { link, current, new ->
+            fun MutableComponent.withLink() = this.apply {
+                this.url = link
+                this.hover = Text.of(link).withColor(TextColor.GRAY)
+            }
+
+            McClient.runNextTick {
+                Text.of().send()
+                Text.join(
+                    "New version found! (",
+                    Text.of(current).withColor(TextColor.RED),
+                    Text.of(" -> ").withColor(TextColor.GRAY),
+                    Text.of(new).withColor(TextColor.GREEN),
+                    ")",
+                ).withLink().sendWithPrefix()
+                Text.of("Click to download.").withLink().sendWithPrefix()
+                Text.of().send()
             }
         }
     }

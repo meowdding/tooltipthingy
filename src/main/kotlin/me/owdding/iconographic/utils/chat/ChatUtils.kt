@@ -9,6 +9,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.Text.send
 import tech.thatgravyboat.skyblockapi.utils.text.TextBuilder.append
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
+import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.hover
 
 object ChatUtils {
     val mc5 = id("mc5")
@@ -18,6 +19,7 @@ object ChatUtils {
     val prefix = Text.of {
         append("«")
         append(Text.of {
+            hover = Text.of("Iconographic", CatppuccinColors.Mocha.yellow)
             append("T", CatppuccinColors.Mocha.flamingo)
             append("T", CatppuccinColors.Mocha.pink)
             append("T", CatppuccinColors.Mocha.mauve)
