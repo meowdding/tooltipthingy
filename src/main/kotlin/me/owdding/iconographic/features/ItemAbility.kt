@@ -24,19 +24,21 @@ data object ItemAbility : TooltipFeature() {
 
     override fun ItemStack.applies() = DataTypes.SKYBLOCK_ID() != null
 
+    private fun Component.isItemAbility() = abilityRegex.matches(this)
+
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         var modified = false
 
-        while (canRead()) {
-            val line = read()
-
-            val matched = abilityRegex.match(line, "name", "key") { [name, key] ->
-                originalMerger.add(AbilityHeaderLine(name, key))
-                modified = true
+        while (hasNext { it.isItemAbility() }) {
+            addUntil {
+                it.isItemAbility()
             }
 
-            if (!matched) {
-                add(line)
+            if (canRead()) {
+                abilityRegex.match(read(), "name", "key") { [name, key] ->
+                    originalMerger.add(AbilityHeaderLine(name, key))
+                    modified = true
+                }
             }
         }
 
