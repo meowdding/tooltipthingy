@@ -1,6 +1,7 @@
 package me.owdding.iconographic.mixins;
 
 import me.owdding.iconographic.Iconographic;
+import me.owdding.iconographic.Keybinds;
 import me.owdding.iconographic.config.Config;
 import me.owdding.iconographic.config.NonSkyBlockItemMode;
 import net.minecraft.client.gui.Font;
@@ -31,9 +32,16 @@ public class GuiGraphicsMixin {
         try {
             var item = Iconographic.extractingItemTooltip;
 
+            final boolean isEnabled;
+            if (Keybinds.isTogglePressed) {
+                isEnabled = !Config.isEnabled();
+            } else {
+                isEnabled = Config.isEnabled();
+            }
+
             Iconographic.currentTooltipRarityColor = null;
 
-            if (Config.isEnabled() && item != null && (!Config.skyblockOnly() || LocationAPI.INSTANCE.isOnSkyBlock())) {
+            if (isEnabled && item != null && (!Config.skyblockOnly() || LocationAPI.INSTANCE.isOnSkyBlock())) {
                 if (lines.isEmpty()) {
                     return lines;
                 }

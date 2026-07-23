@@ -46,6 +46,17 @@ data object CategoryTags : TooltipFeature() {
     }
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
+        val category = DataTypes.CATEGORY() ?: return@withComponentMerger Result.unmodified
+
+        if (canRead()) {
+            val topText = peek().stripped.trim()
+
+            if (topText.isNotEmpty() && (topText.equals(category.name, ignoreCase = true) || topText.equals("Lava Rod", ignoreCase = true))) {
+                read()
+                skipSpace()
+            }
+        }
+
         if (!addUntilRarityLine(DataTypes.RARITY() ?: return@withComponentMerger Result.unmodified)) {
             return@withComponentMerger Result.unmodified
         }

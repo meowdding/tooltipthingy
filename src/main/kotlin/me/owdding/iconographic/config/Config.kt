@@ -29,7 +29,7 @@ object Config : ConfigKt("iconographic/config"), AutoTranslated {
     override val links: Array<ResourcefulConfigLink> = emptyArray()
 
     @JvmStatic @get:JvmName("isEnabled")
-    val enabled by autoBoolean(true)
+    var enabled by autoBoolean(true)
 
     @JvmStatic @get:JvmName("skyblockOnly")
     val onlyInSkyblock by autoBoolean(true)

@@ -119,8 +119,11 @@ class ComponentLineListMerger(val originalMerger: ListMerger<TooltipLine>) : Lis
     fun addUntilRarityLine(rarity: SkyBlockRarity, includeRarity: Boolean = false): Boolean {
         val name = rarity.displayName.uppercase()
         val index = original.indexOfLast { it.stripped.contains(name) }
-        if (index == -1) return false
-        repeat(index + if (includeRarity) 1 else 0) { originalMerger.copy() }
+        if (index == -1 || index < originalMerger.index) return false
+        val limit = index + if (includeRarity) 1 else 0
+        while (originalMerger.index < limit && originalMerger.canRead()) {
+            originalMerger.copy()
+        }
         return true
     }
 
