@@ -113,6 +113,8 @@
           "desc": "Adds an icon to drill's components and changes the style a bit."
         }
       }
-    }
-  }
+    },
+    "keybind.toggle": "Toggle"
+  },
+  "key.category.iconographic.iconographic.keybind.category": "Iconographic"
 }
