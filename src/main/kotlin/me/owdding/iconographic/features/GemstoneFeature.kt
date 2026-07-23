@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.api.datatype.defaults.GemstoneQuality
+import tech.thatgravyboat.skyblockapi.api.datatype.defaults.GemstoneSlot
 import tech.thatgravyboat.skyblockapi.api.datatype.defaults.GemstoneSlotData
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
@@ -35,6 +36,27 @@ import kotlin.math.max
 data object GemstoneFeature : TooltipFeature() {
     override val enabled: Boolean get() = true // TODO OPTION
     override val priority: Int get() = 15
+
+    private val symbolToSlot = mapOf(
+        "\uE053" to GemstoneSlot.JADE,
+        "\uE015" to GemstoneSlot.AMBER,
+        "\uE01C" to GemstoneSlot.TOPAZ,
+        "\uE003" to GemstoneSlot.SAPPHIRE,
+        "\uE008" to GemstoneSlot.AMETHYST,
+        "\uE00D" to GemstoneSlot.JASPER,
+        "\uE010" to GemstoneSlot.RUBY,
+        "\uE027" to GemstoneSlot.ONYX,
+        "\uE007" to GemstoneSlot.ONYX,
+        "\uE051" to GemstoneSlot.PERIDOT,
+        "\uE054" to GemstoneSlot.CITRINE,
+        "\uE00C" to GemstoneSlot.AQUAMARINE,
+        "❥" to GemstoneSlot.CHISEL,
+        "⚔" to GemstoneSlot.COMBAT,
+        "☤" to GemstoneSlot.DEFENSIVE,
+        "✦" to GemstoneSlot.MINING,
+        "❂" to GemstoneSlot.UNIVERSAL,
+        //"" to GemstoneSlot.OFFENSIVE, apparently removed
+    )
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         val gemstones = DataTypes.GEMSTONES()?.toMutableList() ?: mutableListOf()
@@ -60,7 +82,9 @@ data object GemstoneFeature : TooltipFeature() {
                     isEmpty = color == null || color == TextColor.GRAY || color == TextColor.DARK_GRAY
                 } else if (char == "]") {
                     if (inBracket) {
-                        parsedSlots.add(ParsedSlot(currentSymbol, isEmpty))
+                        val symbol = currentSymbol.stripped.filter { !it.isWhitespace() }
+                        val slotType = symbolToSlot[symbol] ?: GemstoneSlot.UNKNOWN
+                        parsedSlots.add(ParsedSlot(currentSymbol, slotType, isEmpty))
                     }
                     inBracket = false
                 } else if (inBracket) {
@@ -86,7 +110,7 @@ data object GemstoneFeature : TooltipFeature() {
             if (!slot.isEmpty && gemstones.isNotEmpty()) {
                 itemSlots.add(VisualGemstoneSlot.Filled(gemstones.removeAt(0)))
             } else {
-                itemSlots.add(VisualGemstoneSlot.Empty(slot.symbol))
+                itemSlots.add(VisualGemstoneSlot.Empty(slot.symbol, slot.slotType))
             }
         }
 
@@ -113,11 +137,11 @@ data object GemstoneFeature : TooltipFeature() {
         Result.modified
     }
 
-    data class ParsedSlot(val symbol: Component, val isEmpty: Boolean)
+    data class ParsedSlot(val symbol: Component, val slotType: GemstoneSlot, val isEmpty: Boolean)
 
     sealed interface VisualGemstoneSlot {
         data class Filled(val data: GemstoneSlotData) : VisualGemstoneSlot
-        data class Empty(val symbol: Component) : VisualGemstoneSlot
+        data class Empty(val symbol: Component, val slotType: GemstoneSlot) : VisualGemstoneSlot
     }
 
     data class GemstoneSlotsLine(val visualSlots: List<VisualGemstoneSlot>) : ExtractableTooltipLine {
@@ -142,16 +166,37 @@ data object GemstoneFeature : TooltipFeature() {
                             graphics.item(slot.data.skyblockId.toItem(), renderX + (slotSize - 16) / 2, currentY + (slotSize - 16) / 2)
                         }
 
-                        is VisualGemstoneSlot.Empty -> DisplayColor.DARK_GRAY to {
-                            val charX = renderX + slotSize / 2
-                            val charY = currentY + (slotSize - font.lineHeight) / 2 + 1
-                            graphics.centeredText(font, slot.symbol, charX, charY, -1)
+                        is VisualGemstoneSlot.Empty -> {
+                            val slotType = slot.slotType
+                            if (slotType != GemstoneSlot.UNKNOWN && slotType.gemstones.isNotEmpty()) {
+                                DisplayColor.DARK_GRAY to {
+                                    val gems = slotType.gemstones
+                                    val cycleIndex = ((System.currentTimeMillis() / 1500) % gems.size).toInt()
+                                    val currentGem = gems[cycleIndex]
+
+                                    graphics.blitSprite(
+                                        RenderPipelines.GUI_TEXTURED,
+                                        Iconographic.id("gemstone/gray_${currentGem.name.lowercase()}_gem"),
+                                        renderX + (slotSize - 16) / 2,
+                                        currentY + (slotSize - 16) / 2,
+                                        16,
+                                        16,
+                                        -1
+                                    )
+                                }
+                            } else {
+                                DisplayColor.DARK_GRAY to {
+                                    val charX = renderX + slotSize / 2
+                                    val charY = currentY + (slotSize - font.lineHeight) / 2 + 1
+                                    graphics.centeredText(font, slot.symbol, charX, charY, -1)
+                                }
+                            }
                         }
                     }
 
                     graphics.blitSprite(
                         RenderPipelines.GUI_TEXTURED,
-                        Iconographic.id("gemstone_slot"),
+                        Iconographic.id("gemstone/gemstone_slot"),
                         renderX,
                         currentY,
                         slotSize,
