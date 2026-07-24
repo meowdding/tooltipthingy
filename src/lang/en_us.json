@@ -84,6 +84,10 @@
           "@value": "Aligned Item Ability",
           "desc": "Right aligns the Click actions of abilities."
         },
+        "enchantedBookNames": {
+          "@value": "Enchanted Books Names",
+          "desc": "Moves the Enchanted Books' titles to the item's name."
+        },
         "petAbilities": {
           "@value": "Pet Abilities",
           "desc": "Centers pet's abilities and adds separators."

@@ -16,6 +16,8 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
 
     val itemAbility by autoBoolean(true)
 
+    val enchantedBookNames by autoBoolean(true)
+
     val petAbilities by autoBoolean(true)
     val petHeldItem by autoBoolean(true)
     val petLevel by autoBoolean(true)
