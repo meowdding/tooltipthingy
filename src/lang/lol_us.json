@@ -72,6 +72,10 @@
           "@value": "Alined Item Abilidy",
           "desc": "Wight alinz the Clik actions of abilities."
         },
+        "enchantedBookNames": {
+          "@value": "Enchanted Bookz Namez",
+          "desc": "Enchanted book titlez goez ta da item name insted"
+        },
         "petAbilities": {
           "@value": "Pet thingies",
           "desc": "Centerin pet skillz n puttin separators in!!"

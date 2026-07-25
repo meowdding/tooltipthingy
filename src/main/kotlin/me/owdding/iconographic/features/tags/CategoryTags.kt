@@ -20,6 +20,10 @@ data object CategoryTags : TooltipFeature() {
     private val idRegex = Regex("(?i)^(?<name>.+?)\\s*\\(\\s*ID\\s+(?<id>[A-Z0-9]+)\\s*\\)$")
 
     override fun ItemStack.leftTags(): List<TooltipTag> {
+        if (DataTypes.SKYBLOCK_ID()?.isEnchantment == true) {
+            return listOf(TooltipTag.literal("ENCHANTED BOOK", 0xFF66FF))
+        }
+
         val category = DataTypes.CATEGORY() ?: return emptyList()
 
         if (!category.isDungeon && category.name.isEmpty()) return emptyList()
