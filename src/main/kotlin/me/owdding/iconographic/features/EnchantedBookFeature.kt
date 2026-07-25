@@ -6,7 +6,6 @@ import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
-import me.owdding.lib.utils.SkyblockPackInfo
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
