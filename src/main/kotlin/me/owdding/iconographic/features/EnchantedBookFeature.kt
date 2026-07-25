@@ -6,6 +6,7 @@ import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
+import me.owdding.lib.utils.SkyblockPackInfo
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
@@ -23,11 +24,12 @@ data object EnchantedBookFeature : TooltipFeature() {
 
     private fun ItemStack.enchantTitle(): Component? {
         val entry = DataTypes.ENCHANTMENTS()?.entries?.firstOrNull() ?: return null
+        val enchant = SkyBlockEnchantmentsRepo.get(entry.key) ?: return null
         val query = SkyBlockEnchantmentsRepo.Query(id = entry.key, level = entry.value)
         val displayName = SkyBlockEnchantmentsRepo.getLazyItemStack(query)?.getDisplayName() ?: return null
 
         // sorry im hardcoding this im skill issued 🥺
-        return if (entry.key.startsWith("ultimate_")) {
+        return if (enchant.isUltimate) {
             displayName.copy().withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
         } else {
             displayName.copy().withStyle(ChatFormatting.BLUE)
