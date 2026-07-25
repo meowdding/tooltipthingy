@@ -19,7 +19,7 @@ data object EnchantedBookFeature : TooltipFeature() {
     override val enabled: Boolean = MiscConfig.enchantedBookNames
     override val priority: Int = 0
 
-    override fun ItemStack.applies(): Boolean = DataTypes.ID() == "ENCHANTED_BOOK"
+    override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isEnchantment == true
 
     private fun ItemStack.enchantTitle(): Component? {
         val entry = DataTypes.ENCHANTMENTS()?.entries?.firstOrNull() ?: return null
