@@ -2,6 +2,7 @@ package me.owdding.iconographic.mixins;
 
 import me.owdding.iconographic.Iconographic;
 import me.owdding.iconographic.config.Config;
+import me.owdding.iconographic.config.categories.visuals.VisualsConfig;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -18,7 +19,7 @@ public class TooltipRenderUtilMixin {
     @Inject(method = "extractTooltipBackground", at = @At("HEAD"), cancellable = true)
     private static void onRenderTooltipBackground(GuiGraphicsExtractor graphics, int x, int y, int w, int h, Identifier style, CallbackInfo ci) {
         var color = Iconographic.currentTooltipRarityColor;
-        if (!Config.INSTANCE.getVanillaBackground() && color != null) {
+        if (!VisualsConfig.INSTANCE.getVanillaBackground() && color != null) {
             ci.cancel();
 
             graphics.blitSprite(

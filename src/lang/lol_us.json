@@ -23,58 +23,89 @@
         "@value": "Use 4 everything?",
         "desc": "Customiez for itemz dat dun haz SkyBlockId (like menus...)"
       },
-      "spinny": {
-        "@value": "spinnin stuffs",
-        "desc": "Shood da top-left item do a spinny"
-      },
-      "vanillaBackground": {
-        "@value": "Vanilal bakground",
-        "desc": "Swapz custom 4 vanila tooltip back n border"
+      "visuals": {
+        "@value": "Visyals",
+        "general": {
+          "@value": "Genral Visyals",
+          "desc": "Basic see-stuff."
+        },
+        "spinny": {
+          "@value": "spinnin stuffs",
+          "desc": "Shood da top-left item do a spinny"
+        },
+        "vanillaBackground": {
+          "@value": "Vanilal bakground",
+          "desc": "Swapz custom 4 vanila tooltip back n border"
+        },
+        "skyBlockColor": {
+          "@value": "Ues Skyblock's Colorz",
+          "desc": "Use Skyblock's own colurz fer Tooltip Backround, Tags an' stuffz"
+        },
+        "text_formatting": {
+          "@value": "Text Formattingz",
+          "desc": "Make text purdy."
+        },
+        "shinyHolographic": {
+          "@value": "Holografik Shiny Name",
+          "desc": "Makez shiny namez holografik."
+        },
+        "alignedStats": {
+          "@value": "Alined Statz",
+          "desc": "Putz statz on da right n add spacez"
+        }
       },
       "tags": {
         "@value": "Tag Opshuns",
-        "breakingPower": {
-          "@value": "Breaking powerz!!",
-          "desc": "Add a breakin powah tag <dark_green>BP <bp></dark_green>"
-        },
-        "category": {
-          "@value": "Categoreh",
-          "desc": "Add teh itemz catagory az a tag"
-        },
-        "furniture": {
-          "@value": "Furnituer",
-          "desc": "Add furnitur tag on furnitur thingz"
-        },
-        "pet": {
-          "@value": "Pet",
-          "desc": "Add da petz type an skill az tagz"
+        "general": {
+          "@value": "Genral Tagz",
+          "desc": "Tagz dat r evrywhere."
         },
         "rarity": {
           "@value": "rarities... woaw",
           "desc": "Addz teh itemz rareness az tag"
         },
-        "shardId": {
-          "@value": "Schard ID",
-          "desc": "Addz teh schardz ID az tag"
+        "category": {
+          "@value": "Categoreh",
+          "desc": "Add teh itemz catagory az a tag"
         },
         "stars": {
           "@value": "Starz",
           "desc": "Add da itemz stars az tagz"
+        },
+        "items": {
+          "@value": "Item Specifik Tagz",
+          "desc": "Tagz for specifik itemz."
+        },
+        "breakingPower": {
+          "@value": "Breaking powerz!!",
+          "desc": "Add a breakin powah tag <dark_green>BP <bp></dark_green>"
+        },
+        "furniture": {
+          "@value": "Furnituer",
+          "desc": "Add furnitur tag on furnitur thingz"
+        },
+        "shardId": {
+          "@value": "Schard ID",
+          "desc": "Addz teh schardz ID az tag"
+        },
+        "pets": {
+          "@value": "Pet Specifik Tagz",
+          "desc": "Tagz for da pets."
+        },
+        "pet": {
+          "@value": "Pet",
+          "desc": "Add da petz type an skill az tagz"
+        },
+        "petCandy": {
+          "@value": "Pet Candiez",
+          "desc": "Addz da petz candy amount if it haz candy applied <dark_red>Candy: <candyAmount></dark_red>."
         }
       },
-      "misc": {
-        "@value": "More Opsuns??",
-        "skyBlockColor": {
-          "@value": "Ues Skyblock's Colorz",
-          "desc": "Use Skyblock's own colurz fer Tooltip Backround, Tags an' stuffz"
-        },
-        "itemAbility": {
-          "@value": "Alined Item Abilidy",
-          "desc": "Wight alinz the Clik actions of abilities."
-        },
-        "enchantedBookNames": {
-          "@value": "Enchanted Bookz Namez",
-          "desc": "Enchanted book titlez goez ta da item name insted"
+      "pets": {
+        "@value": "Petz Opshuns",
+        "main": {
+          "@value": "Pet Elementz",
+          "desc": "Pet thingies on da tooltip."
         },
         "petAbilities": {
           "@value": "Pet thingies",
@@ -91,10 +122,13 @@
         "petFavourite": {
           "@value": "Favoriet pet!!",
           "desc": "Changez fave pet star inta a showed thingy"
-        },
-        "skillLevelBar": {
-          "@value": "Skill Levelz Bar",
-          "desc": "Changez the skill levelz progrez in2 a renderd element"
+        }
+      },
+      "mining": {
+        "@value": "Minin Opshuns",
+        "drills": {
+          "@value": "Drill Tooltipz",
+          "desc": "Settingz for da drillz."
         },
         "drillFuel": {
           "@value": "drill fuel bar thingz idk lol",
@@ -103,6 +137,33 @@
         "drillComponents": {
           "@value": "Drill component stuffs",
           "desc": "Putz an icon on drill componentz n tweaks teh look sum"
+        },
+        "gemstones": {
+          "@value": "Gemstonz",
+          "desc": "Settingz for gemston slotz."
+        },
+        "gemstoneSlots": {
+          "@value": "Gemston Slotz",
+          "desc": "Makez dem gemstonz look guud"
+        }
+      },
+      "misc": {
+        "@value": "More Opsuns??",
+        "misc": {
+          "@value": "Miscellaneouz Tooltipz",
+          "desc": "Othir tooltip elementz."
+        },
+        "itemAbility": {
+          "@value": "Alined Item Abilidy",
+          "desc": "Wight alinz the Clik actions of abilities."
+        },
+        "enchantedBookNames": {
+          "@value": "Enchanted Bookz Namez",
+          "desc": "Enchanted book titlez goez ta da item name insted"
+        },
+        "skillLevelBar": {
+          "@value": "Skill Levelz Bar",
+          "desc": "Changez the skill levelz progrez in2 a renderd element"
         }
       }
     }

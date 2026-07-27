@@ -8,12 +8,18 @@ object TagConfig : CategoryKt("tags"), AutoTranslated {
     override val translationBase: String = "iconographic.config.tags"
     override val name: TranslatableValue = Translated(translationBase)
 
+    init { autoSeparator("general") }
     val rarity by autoBoolean(true)
     val category by autoBoolean(true)
+    val stars by autoBoolean(true)
+
+    init { autoSeparator("items") }
     val breakingPower by autoBoolean(true)
     val furniture by autoBoolean(true)
+    val shardId by autoBoolean(true)
+
+    init { autoSeparator("pets") }
     val pet by autoBoolean(true)
     val petCandy by autoBoolean(true)
-    val shardId by autoBoolean(true)
-    val stars by autoBoolean(true)
+
 }

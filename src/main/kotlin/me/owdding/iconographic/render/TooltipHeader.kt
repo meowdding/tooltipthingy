@@ -5,6 +5,7 @@ import me.owdding.iconographic.Iconographic.id
 import me.owdding.iconographic.Tooltip
 import me.owdding.iconographic.config.Config
 import me.owdding.iconographic.config.NonSkyBlockItemMode
+import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.system.TooltipTag
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
@@ -97,7 +98,7 @@ data class TooltipHeader(
 
     // Taken and modified from SkyOcean
     private fun GuiGraphicsExtractor.extractItem(item: ItemStack, x: Int, y: Int) {
-        if (!Config.spinny) {
+        if (!VisualsConfig.spinny) {
             this.item(item, x, y)
             return
         }

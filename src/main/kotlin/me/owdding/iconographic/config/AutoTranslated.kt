@@ -8,6 +8,7 @@ import com.teamresourceful.resourcefulconfigkt.api.builders.NumberBuilder
 import com.teamresourceful.resourcefulconfigkt.api.builders.SelectBuilder
 import com.teamresourceful.resourcefulconfigkt.api.builders.StringBuilder
 import com.teamresourceful.resourcefulconfigkt.api.builders.TypeBuilder
+import com.teamresourceful.resourcefulconfigkt.api.builders.SeparatorBuilder
 
 @Suppress("unused")
 interface AutoTranslated {
@@ -137,5 +138,11 @@ interface AutoTranslated {
     context(entryBuilder: EntriesBuilder)
     fun <T : Enum<T>> autoDraggable(id: String, vararg value: T, builder: DraggableBuilder<T>.() -> Unit = {}) = entryBuilder.draggable(id, value = value, wrap(builder))
 
-
+    context(entryBuilder: EntriesBuilder)
+    fun autoSeparator(id: String, builder: SeparatorBuilder.() -> Unit = {}) {
+        entryBuilder.separator {
+            this.translation = listOf(translationBase, id).filter { it.isNotEmpty() }.joinToString(".")
+            builder()
+        }
+    }
 }

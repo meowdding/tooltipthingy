@@ -1,6 +1,7 @@
 package me.owdding.iconographic.features.pet
 
 import me.owdding.iconographic.config.categories.misc.MiscConfig
+import me.owdding.iconographic.config.categories.pets.PetsConfig
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.TooltipFeatureWithContext
 import me.owdding.iconographic.system.TooltipTag
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 @RegisterFeature
 data object FavouritePet : TooltipFeatureWithContext<AtomicBoolean>() {
-    override val enabled: Boolean get() = MiscConfig.petFavourite
+    override val enabled: Boolean get() = PetsConfig.petFavourite
 
     override val priority: Int = 2
 

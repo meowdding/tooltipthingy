@@ -4,6 +4,7 @@ import me.owdding.iconographic.ComponentLike
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.Iconographic.id
 import me.owdding.iconographic.TooltipLine
+import me.owdding.iconographic.config.categories.mining.MiningConfig
 import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.lines.SpacerLine
@@ -23,7 +24,7 @@ import kotlin.math.max
 
 @RegisterFeature
 data object DrillComponents : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.drillComponents
+    override val enabled: Boolean get() = MiningConfig.drillComponents
     override val priority: Int = 10
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result {

@@ -1,6 +1,7 @@
 package me.owdding.iconographic.features
 
 import me.owdding.iconographic.config.categories.misc.MiscConfig
+import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.TooltipFeature
 import me.owdding.lib.rendering.text.builtin.GradientTextShader
@@ -14,7 +15,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 
 @RegisterFeature
 data object ShinyHolographicFeature : TooltipFeature() {
-    override val enabled: Boolean = MiscConfig.shinyHolographic
+    override val enabled: Boolean = VisualsConfig.shinyHolographic
     override val priority: Int = -1000 // Run at the Very Last
 
     override fun ItemStack.applies(): Boolean = DataTypes.SHINY() == true

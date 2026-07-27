@@ -6,6 +6,7 @@ import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.Iconographic.id
 import me.owdding.iconographic.config.categories.misc.MiscConfig
+import me.owdding.iconographic.config.categories.pets.PetsConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.lines.SpacerLine
 import me.owdding.iconographic.render.SeparatorRenderer
@@ -32,7 +33,7 @@ import kotlin.math.roundToInt
 
 @RegisterFeature
 data object PetLevel : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.petLevel
+    override val enabled: Boolean get() = PetsConfig.petLevel
     override val priority: Int = 10
 
     const val ARROW = "▸"

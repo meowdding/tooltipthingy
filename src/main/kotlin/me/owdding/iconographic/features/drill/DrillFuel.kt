@@ -4,6 +4,7 @@ import me.owdding.lib.extensions.shorten
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.Iconographic.id
+import me.owdding.iconographic.config.categories.mining.MiningConfig
 import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.lines.SpacerLine
@@ -33,7 +34,7 @@ import kotlin.math.roundToInt
 
 @RegisterFeature
 data object DrillFuel : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.drillFuel
+    override val enabled: Boolean get() = MiningConfig.drillFuel
     override val priority: Int = 10
 
     val DARK_GREEN get() = ARGB.opaque(DisplayColor.DARK_GREEN)

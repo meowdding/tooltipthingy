@@ -5,6 +5,7 @@ import me.owdding.iconographic.ComponentLike
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.Iconographic
 import me.owdding.iconographic.TooltipLine
+import me.owdding.iconographic.config.categories.mining.MiningConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.lines.SpacerLine
 import me.owdding.iconographic.render.SeparatorRenderer
@@ -34,7 +35,7 @@ import kotlin.math.max
 
 @RegisterFeature
 data object GemstoneFeature : TooltipFeature() {
-    override val enabled: Boolean get() = true // TODO OPTION
+    override val enabled: Boolean get() = MiningConfig.gemstoneSlots
     override val priority: Int get() = 15
 
     private val symbolToSlot = mapOf(

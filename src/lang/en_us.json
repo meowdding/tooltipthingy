@@ -23,54 +23,27 @@
         "@value": "Non SkyBlock Item Mode",
         "desc": "Customize the appearance of items that don't have a SkyBlockId (like Gui Items)."
       },
-      "spinny": {
-        "@value": "Spinning Item",
-        "desc": "Whether the item in the top left corner should spin."
-      },
-      "vanillaBackground": {
-        "@value": "Vanilla Background",
-        "desc": "Use the vanilla tooltip background and frame instead of the custom one."
-      },
-      "tags": {
-        "@value": "Tag Config",
-        "breakingPower": {
-          "@value": "Breaking power",
-          "desc": "Adds a breaking power tag <dark_green>BP <bp></dark_green>."
+      "visuals": {
+        "@value": "Visuals Config",
+        "general": {
+          "@value": "General Visuals",
+          "desc": "General visual settings."
         },
-        "category": {
-          "@value": "Category",
-          "desc": "Adds the item's category as tag."
+        "spinny": {
+          "@value": "Spinning Item",
+          "desc": "Whether the item in the top left corner should spin."
         },
-        "furniture": {
-          "@value": "Furniture",
-          "desc": "Adds a furniture tag on furniture items."
+        "vanillaBackground": {
+          "@value": "Vanilla Background",
+          "desc": "Use the vanilla tooltip background and frame instead of the custom one."
         },
-        "pet": {
-          "@value": "Pet",
-          "desc": "Adds the pet's type and skill as tags."
-        },
-        "petCandy": {
-          "@value": "Pet Candy",
-          "desc": "Adds the pet's candy amount if it has candy applied <dark_red>Candy: <candyAmount></dark_red>."
-        },
-        "rarity": {
-          "@value": "Rarity",
-          "desc": "Adds the item's rarity as tag."
-        },
-        "shardId": {
-          "@value": "Shard ID",
-          "desc": "Adds a separate tag for a Shard's ID."
-        },
-        "stars": {
-          "@value": "Stars",
-          "desc": "Adds the item's stars to the tags."
-        }
-      },
-      "misc": {
-        "@value": "Misc Config",
         "skyBlockColor": {
           "@value": "Use SkyBlock's Color",
           "desc": "Use SkyBlock's custom colors for Tooltip Background, Tags, etc."
+        },
+        "text_formatting": {
+          "@value": "Text Formatting",
+          "desc": "Settings for formatting text and stats."
         },
         "shinyHolographic": {
           "@value": "Holographic Shiny Name",
@@ -79,14 +52,60 @@
         "alignedStats": {
           "@value": "Aligned Stats",
           "desc": "Aligns stats to the right and adds spacers."
+        }
+      },
+      "tags": {
+        "@value": "Tag Config",
+        "general": {
+          "@value": "General Tags",
+          "desc": "Tags that apply to many items."
         },
-        "itemAbility": {
-          "@value": "Aligned Item Ability",
-          "desc": "Right aligns the Click actions of abilities."
+        "rarity": {
+          "@value": "Rarity",
+          "desc": "Adds the item's rarity as tag."
         },
-        "enchantedBookNames": {
-          "@value": "Enchanted Books Names",
-          "desc": "Moves the Enchanted Books' titles to the item's name."
+        "category": {
+          "@value": "Category",
+          "desc": "Adds the item's category as tag."
+        },
+        "stars": {
+          "@value": "Stars",
+          "desc": "Adds the item's stars to the tags."
+        },
+        "items": {
+          "@value": "Item Specific Tags",
+          "desc": "Tags for specific item types."
+        },
+        "breakingPower": {
+          "@value": "Breaking power",
+          "desc": "Adds a breaking power tag <dark_green>BP <bp></dark_green>."
+        },
+        "furniture": {
+          "@value": "Furniture",
+          "desc": "Adds a furniture tag on furniture items."
+        },
+        "shardId": {
+          "@value": "Shard ID",
+          "desc": "Adds a separate tag for a Shard's ID."
+        },
+        "pets": {
+          "@value": "Pet Specific Tags",
+          "desc": "Tags for pets."
+        },
+        "pet": {
+          "@value": "Pet",
+          "desc": "Adds the pet's type and skill as tags."
+        },
+        "petCandy": {
+          "@value": "Pet Candy",
+          "desc": "Adds the pet's candy amount if it has candy applied <dark_red>Candy: <candyAmount></dark_red>."
+        }
+      },
+      "pets": {
+        "@value": "Pet Config",
+        "main": {
+          "@value": "Pet Elements",
+          "desc": "Pet tooltip elements."
         },
         "petAbilities": {
           "@value": "Pet Abilities",
@@ -103,10 +122,13 @@
         "petFavourite": {
           "@value": "Favourite Pet",
           "desc": "Changes favourite pet star into a rendered element."
-        },
-        "skillLevelBar": {
-          "@value": "Skill Level Bar",
-          "desc": "Changes the skill level progress into a rendered element."
+        }
+      },
+      "mining": {
+        "@value": "Mining Config",
+        "drills": {
+          "@value": "Drill Tooltips",
+          "desc": "Settings for drill tooltips."
         },
         "drillFuel": {
           "@value": "Drill Fuel Bar",
@@ -115,6 +137,33 @@
         "drillComponents": {
           "@value": "Drill Components",
           "desc": "Adds an icon to drill's components and changes the style a bit."
+        },
+        "gemstones": {
+          "@value": "Gemstones",
+          "desc": "Settings for gemstone slots."
+        },
+        "gemstoneSlots": {
+          "@value": "Gemstone Slots",
+          "desc": "Modifies the appearance of gemstone slots."
+        }
+      },
+      "misc": {
+        "@value": "Misc Config",
+        "misc": {
+          "@value": "Miscellaneous Tooltips",
+          "desc": "Other tooltip elements."
+        },
+        "itemAbility": {
+          "@value": "Aligned Item Ability",
+          "desc": "Right aligns the Click actions of abilities."
+        },
+        "enchantedBookNames": {
+          "@value": "Enchanted Books Names",
+          "desc": "Moves the Enchanted Books' titles to the item's name."
+        },
+        "skillLevelBar": {
+          "@value": "Skill Level Bar",
+          "desc": "Changes the skill level progress into a rendered element."
         }
       }
     },

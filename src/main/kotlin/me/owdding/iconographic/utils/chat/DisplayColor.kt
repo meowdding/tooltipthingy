@@ -1,12 +1,13 @@
 package me.owdding.iconographic.utils.chat
 
 import me.owdding.iconographic.config.categories.misc.MiscConfig
+import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.utils.text.SkyBlockColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 
 object DisplayColor {
-    private val config get() = MiscConfig.skyBlockColor
+    private val config get() = VisualsConfig.skyBlockColor
 
     val BLACK: Int get() = if (config) SkyBlockColor.BLACK else TextColor.BLACK
     val DARK_BLUE: Int get() = if (config) SkyBlockColor.DARK_BLUE else TextColor.DARK_BLUE

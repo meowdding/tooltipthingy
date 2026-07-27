@@ -4,6 +4,7 @@ import me.owdding.iconographic.ComponentAlignment
 import me.owdding.iconographic.ComponentLike
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.config.categories.misc.MiscConfig
+import me.owdding.iconographic.config.categories.pets.PetsConfig
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
@@ -15,7 +16,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 
 @RegisterFeature
 data object PetAbilities : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.petAbilities
+    override val enabled: Boolean get() = PetsConfig.petAbilities
     override val priority: Int = 20
 
     override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isPet == true
