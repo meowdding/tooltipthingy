@@ -1,0 +1,14 @@
+name: Feature Request
+description: Create a Feature Request
+type: Feature
+body:
+    -   type: textarea
+        id: what-feature
+        attributes:
+            label: What Feature do you want to see added to Iconographic
+            description: |
+                Please describe the feature idea you have. 
+                Preferable attach a concept art from an existing Server/Mod or a mockup created in Paint/Aseprite/Photoshop/...
+            placeholder: Describe your idea here
+        validations:
+            required: true

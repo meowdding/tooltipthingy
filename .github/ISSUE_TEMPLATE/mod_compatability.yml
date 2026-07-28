@@ -1,0 +1,24 @@
+name: Mod Compatability Request
+description: Compatability Request with other (SkyBlock) Mods
+type: Feature
+labels: [ compatability ]
+body:
+    -   type: textarea
+        id: what-mod
+        attributes:
+            label: What Mod should Iconograpic be compatible with.
+            description: |
+                Enter the Mod here. 
+                If it's a SkyBlock Mod, it should instead get requested to the mod themselves.
+                Share this [Documentation](https://github.com/meowdding/tooltipthingy/blob/master/COMPATABILITY.md) to them.
+        validations:
+            required: true
+    -   type: textarea
+        id: what-feature
+        attributes:
+            label: What Feature of said Mod should Iconographic be compatible with.
+            description: |
+                Name the Feature by its config name here and describe where the fancy-fied Tooltip is missing.
+                If its a one feature Mod (e.g. SkyBlock Item List) only describe where the Tooltip is missing.
+        validations:
+            required: true

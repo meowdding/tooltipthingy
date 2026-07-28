@@ -1,0 +1,31 @@
+name: Bug Report
+description: Create a Bug Report
+type: Bug
+body:
+    -   type: textarea
+        id: what-issue
+        attributes:
+            label: What's your Issue?
+            description: Please describe the issue you are having.
+            placeholder: Describe the issue here
+        validations:
+            required: true
+    -   type: textarea
+        id: logs
+        attributes:
+            label: Crash Log
+            description: |
+                If you **didn't crash**, leave this blank.
+                Please provide your latest.log from .minecraft/logs/ if this issue happened in your current session. 
+                If you have rebooted by now, send the log with the fitting timestamp.
+            placeholder: Paste your logs here
+        validations:
+            required: false
+    -   type: input
+        id: mod-version
+        attributes:
+            label: Iconographic Version
+            description: The version of Iconographic you are using.
+            placeholder: e.g., "1.0.0-beta.2"
+        validations:
+            required: true
