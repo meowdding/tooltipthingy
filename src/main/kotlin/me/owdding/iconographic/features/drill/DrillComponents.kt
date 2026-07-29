@@ -25,7 +25,7 @@ import kotlin.math.max
 @RegisterFeature
 data object DrillComponents : TooltipFeature() {
     override val enabled: Boolean get() = MiningConfig.drillComponents
-    override val priority: Int = 10
+    override val priority: Int = 11
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result {
         if (getData(DataTypes.CATEGORY) != SkyBlockCategory.DRILL) return Result.unmodified
