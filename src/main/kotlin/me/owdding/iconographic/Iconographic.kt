@@ -105,6 +105,11 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
     val configurator = Configurator("iconographic")
     val config = Config.register(configurator)
 
+    data class TooltipWidthLine(val mainWidth: Int, val sideWidth: Int) : ClientTooltipComponent {
+        override fun getHeight(font: Font): Int = 0
+        override fun getWidth(font: Font): Int = mainWidth + if (sideWidth > 0) 22 + sideWidth else 0
+    }
+
     @JvmStatic
     fun processTooltipComponents(
         item: ItemStack,
@@ -123,9 +128,10 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
         var maxSideWidth = 0
 
         for (line in entries) {
-            totalWidth = max(line.getWidth(font), totalWidth)
             if (line is SideTooltipLine) {
                 maxSideWidth = max(line.getSideWidth(font), maxSideWidth)
+            } else {
+                totalWidth = max(line.getWidth(font), totalWidth)
             }
         }
 
@@ -133,6 +139,8 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
 
         var currentSideStart: IconographicTooltipComponent? = null
         var currentSideHeight = 0
+
+        lines.add(TooltipWidthLine(totalWidth, maxSideWidth))
 
         for (line in entries) {
             when (line) {

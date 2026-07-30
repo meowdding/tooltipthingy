@@ -32,7 +32,7 @@ class IconographicTooltipComponent(val line: ExtractableTooltipLine) : ClientToo
             graphics.blitSprite(
                 RenderPipelines.GUI_TEXTURED,
                 Iconographic.id("background"),
-                x + totalWidth + 16 - 6,
+                x + totalWidth + 10,
                 y - 6,
                 sideWidth + 12,
                 sideBlockHeight + 12,
