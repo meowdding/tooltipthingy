@@ -52,6 +52,14 @@
         "alignedStats": {
           "@value": "Aligned Stats",
           "desc": "Aligns stats to the right and adds spacers."
+        },
+        "extraStatsDisplay": {
+          "@value": "Extra Stats Display",
+          "desc": "Customize how the additional stats (like applied Gemstones, inside Dungeons, etc.)",
+          "normal": "Normal",
+          "hide": "Hide Extra Stats",
+          "side": "Side Gui",
+          "side_shift": "Side Gui when holding Shift"
         }
       },
       "tags": {

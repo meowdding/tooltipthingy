@@ -1,6 +1,8 @@
 package me.owdding.iconographic.features.stats
 
+import com.teamresourceful.resourcefulconfig.api.types.info.Translatable
 import me.owdding.iconographic.ExtractableTooltipLine
+import me.owdding.iconographic.SideTooltipLine
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.config.categories.visuals.VisualsConfig
@@ -16,6 +18,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
+import tech.thatgravyboat.skyblockapi.helpers.McScreen
 import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
@@ -69,10 +72,10 @@ data object StatLines : TooltipFeature() {
                     Text.of {
                         append(value)
                         result["icon"]?.let { append(it) }
-                        append(" ")
-                        append(extra ?: return@of)
-                    }
-                ))
+                    },
+                    extra,
+                ),
+            )
 
             modified = true
         }
@@ -95,16 +98,28 @@ data class StatLine(
     val statIcon: MutableComponent,
     val statName: Component,
     val statValue: Component,
-) : ExtractableTooltipLine {
+    val extraValue: Component? = null,
+) : ExtractableTooltipLine, SideTooltipLine {
     fun Int.nextHighest(multiple: Int) = (ceil(this / multiple.toFloat()).toInt() * multiple)
     fun Int.nextLower(multiple: Int) = (floor(this / multiple.toFloat()).toInt() * multiple)
+
+    private val isSide: Boolean get() = ExtraStatDisplay.SIDE.isSelected() || (ExtraStatDisplay.SIDE_SHIFT.isSelected() && McScreen.isShiftDown)
+
+    private val completeStatValue: Component
+        get() = if (extraValue != null && ExtraStatDisplay.NORMAL.isSelected()) {
+            Text.of {
+                append(statValue)
+                append(" ")
+                append(extraValue)
+            }
+        } else statValue
 
     override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
         graphics.centeredText(font, statIcon, x + maxIconWidth.get() / 2, y, -1)
         graphics.text(font, statName, maxIconWidth.get() + x + 3, y, -1)
         val dotWidth = font.width(dot)
         val leftWidth = maxIconWidth.get() + font.width(statName) + 3
-        val rightWidth = font.width(statValue)
+        val rightWidth = font.width(completeStatValue)
         val fillerStart = leftWidth.nextHighest(dotWidth)
         val totalWidth = if (showStatIds) {
             if (stat.isUnknown) graphics.text(font, stat.idComponent, x + totalWidth - 45, y, -1)
@@ -114,13 +129,31 @@ data class StatLine(
         val fillerEnd = rightStart.nextLower(dotWidth)
         val fillerWidth = fillerEnd - fillerStart
         graphics.text(font, Text.join(List((fillerWidth / dotWidth).coerceAtLeast(0)) { dot }), x + fillerStart, y, -1)
-        graphics.text(font, statValue, x + rightStart, y, -1)
+        graphics.text(font, completeStatValue, x + rightStart, y, -1)
     }
 
     override fun getWidth(font: Font): Int {
-        return font.width(statIcon) + 3 + font.width(statName) + 10 + font.width(statValue) + if (showStatIds) 50 else 0
+        return font.width(statIcon) + 3 + font.width(statName) + 10 + font.width(completeStatValue) + if (showStatIds) 50 else 0
     }
 
     override fun getHeight(font: Font): Int = font.lineHeight
 
+    override fun getSideWidth(font: Font): Int {
+        if (!isSide) return 0
+        return extraValue?.let { font.width(it) } ?: 0
+    }
+
+    override fun extractSide(graphics: GuiGraphicsExtractor, mainTotalWidth: Int, sideTotalWidth: Int, x: Int, y: Int) {
+        if (isSide && extraValue != null) {
+            graphics.text(font, extraValue, x + mainTotalWidth + 16, y, -1)
+        }
+    }
+}
+
+enum class ExtraStatDisplay : Translatable {
+    NORMAL, HIDE, SIDE, SIDE_SHIFT,
+    ;
+
+    fun isSelected() = VisualsConfig.extraStatsDisplay == this
+    override fun getTranslationKey(): String = "iconographic.config.visuals.extraStatsDisplay.${name.lowercase()}"
 }

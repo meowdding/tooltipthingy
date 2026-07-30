@@ -73,6 +73,11 @@ interface TooltipLine {
     }
 }
 
+interface SideTooltipLine {
+    fun getSideWidth(font: Font): Int
+    fun extractSide(graphics: GuiGraphicsExtractor, mainTotalWidth: Int, sideTotalWidth: Int, x: Int, y: Int)
+}
+
 inline val font get() = McFont.self
 
 interface ComponentAlignment {
