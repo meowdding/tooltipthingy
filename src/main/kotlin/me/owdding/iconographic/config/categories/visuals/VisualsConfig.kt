@@ -3,6 +3,7 @@ package me.owdding.iconographic.config.categories.visuals
 import com.teamresourceful.resourcefulconfig.api.types.options.TranslatableValue
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import me.owdding.iconographic.config.AutoTranslated
+import me.owdding.iconographic.features.stats.ExtraStatDisplay
 
 object VisualsConfig : CategoryKt("visuals"), AutoTranslated {
     override val translationBase: String = "iconographic.config.visuals"
@@ -13,7 +14,8 @@ object VisualsConfig : CategoryKt("visuals"), AutoTranslated {
     val vanillaBackground by autoBoolean(false)
     val skyBlockColor by autoBoolean(true)
 
-    init { autoSeparator("specific") }
+    init { autoSeparator("text_formatting") }
     val shinyHolographic by autoBoolean(true)
     val alignedStats by autoBoolean(true)
+    val extraStatsDisplay by autoEnum(ExtraStatDisplay.NORMAL)
 }

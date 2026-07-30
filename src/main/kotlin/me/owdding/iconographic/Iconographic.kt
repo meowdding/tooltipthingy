@@ -105,11 +105,16 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
     val configurator = Configurator("iconographic")
     val config = Config.register(configurator)
 
+    data class TooltipWidthLine(val mainWidth: Int, val sideWidth: Int) : ClientTooltipComponent {
+        override fun getHeight(font: Font): Int = 0
+        override fun getWidth(font: Font): Int = mainWidth + if (sideWidth > 0) 22 + sideWidth else 0
+    }
+
     @JvmStatic
     fun processTooltipComponents(
         item: ItemStack,
         font: Font,
-        lines: MutableList<ClientTooltipComponent>
+        lines: MutableList<ClientTooltipComponent>,
     ) {
         val tooltipInfo = lines.toInformation()
         val tooltip = CustomTooltip.update(item, tooltipInfo)
@@ -120,25 +125,59 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
         entries.addFirst(TooltipHeader(tooltip))
 
         var totalWidth = 0
+        var maxSideWidth = 0
 
         for (line in entries) {
-            totalWidth = max(line.getWidth(font), totalWidth)
+            if (line is SideTooltipLine) {
+                maxSideWidth = max(line.getSideWidth(font), maxSideWidth)
+            } else {
+                totalWidth = max(line.getWidth(font), totalWidth)
+            }
         }
 
         lines.clear()
+
+        var currentSideStart: IconographicTooltipComponent? = null
+        var currentSideHeight = 0
+
+        lines.add(TooltipWidthLine(totalWidth, maxSideWidth))
+
         for (line in entries) {
             when (line) {
                 is ExtractableTooltipLine -> {
                     val component = IconographicTooltipComponent(line)
                     component.totalWidth = totalWidth
+
+                    if (line is SideTooltipLine && line.getSideWidth(font) > 0) {
+                        component.sideWidth = maxSideWidth
+                        if (currentSideStart == null) {
+                            currentSideStart = component
+                            component.isSideBlockStart = true
+                        }
+                        currentSideHeight += line.getHeight(font)
+                    } else {
+                        if (currentSideStart != null) {
+                            currentSideStart.sideBlockHeight = currentSideHeight
+                            currentSideStart = null
+                            currentSideHeight = 0
+                        }
+                    }
+
                     lines.add(component)
                 }
 
                 is ClientTooltipComponent -> {
+                    if (currentSideStart != null) {
+                        currentSideStart.sideBlockHeight = currentSideHeight
+                        currentSideStart = null
+                        currentSideHeight = 0
+                    }
                     lines.add(line)
                 }
             }
         }
+
+        currentSideStart?.sideBlockHeight = currentSideHeight
     }
 
     fun id(path: String) = Identifiers.of("iconographic", path)
