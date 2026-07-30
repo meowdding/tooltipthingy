@@ -14,7 +14,7 @@ object VisualsConfig : CategoryKt("visuals"), AutoTranslated {
     val vanillaBackground by autoBoolean(false)
     val skyBlockColor by autoBoolean(true)
 
-    init { autoSeparator("specific") }
+    init { autoSeparator("text_formatting") }
     val shinyHolographic by autoBoolean(true)
     val alignedStats by autoBoolean(true)
     val extraStatsDisplay by autoEnum(ExtraStatDisplay.NORMAL)
