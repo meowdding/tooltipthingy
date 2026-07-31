@@ -130,9 +130,8 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
         for (line in entries) {
             if (line is SideTooltipLine) {
                 maxSideWidth = max(line.getSideWidth(font), maxSideWidth)
-            } else {
-                totalWidth = max(line.getWidth(font), totalWidth)
             }
+            totalWidth = max(line.getWidth(font), totalWidth)
         }
 
         lines.clear()
