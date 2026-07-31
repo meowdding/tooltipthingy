@@ -15,10 +15,12 @@ Tired of walls of plain text? Instead, look at beautiful icons, progress bars, p
 - Clean Tags: Converts standard text into clean tags for an item's Category, Rarity, Dungeon Stars, and more!
 - Pet Enhancements: Centers pet abilities, adds separators, and renders your favourite pet star.
 - Spinny Items: Enable an optional 3D spinning item render in the top left corner of the tooltip.
+- Fancy Gemstones: Gemstones now get displayed with their texture to be easily identifiable.
+- ...and more, checkout the config ingame.
 
 ## Customizing
 
-You can configure all features to how you like it using the config at `/iconographic`.
+You can configure all features to how you like it using the config at `/iconographic` or `/ttt` for short.
 
 
 ## Mod Compatability
