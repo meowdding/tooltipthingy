@@ -65,7 +65,13 @@ data object CategoryTags : TooltipFeature() {
             return@withComponentMerger Result.unmodified
         }
 
-        while (originalMerger.destination.lastOrNull()?.asComponentOrNull()?.stripped?.isBlank() == true) originalMerger.destination.removeLastOrNull()
+        // Only remove the spacer infront off the line if other mods add their own lines at the bottom
+        if (originalMerger.index + 1 >= originalMerger.original.size) {
+            while (originalMerger.destination.lastOrNull()?.asComponentOrNull()?.stripped?.isBlank() == true) {
+                originalMerger.destination.removeLastOrNull()
+            }
+        }
+
         if (!canRead()) return@withComponentMerger Result.unmodified
         read()
         Result.modified
