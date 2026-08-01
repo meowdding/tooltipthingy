@@ -43,7 +43,7 @@ data object CategoryTags : TooltipFeature() {
             if (shardId != null) {
                 add(TooltipTag.literal(shardId, 0xAAAAAA))
             }
-            if (category.isDungeon) {
+            if (category.isDungeon && TagConfig.dungeonized) {
                 add(TooltipTag.literal("Dungeonized", 0xAAAAAA))
             }
         }

@@ -96,6 +96,10 @@
           "@value": "Shard ID",
           "desc": "Adds a separate tag for a Shard's ID."
         },
+        "dungeonized": {
+          "@value": "Dungeonized Tag",
+          "desc": "Adds a separate tag if an Item is dungeonized."
+        },
         "pets": {
           "@value": "Pet Specific Tags",
           "desc": "Tags for pets."
