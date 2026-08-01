@@ -17,7 +17,7 @@ object TagConfig : CategoryKt("tags"), AutoTranslated {
     val breakingPower by autoBoolean(true)
     val furniture by autoBoolean(true)
     val shardId by autoBoolean(true)
-    val dungeonized by autoBoolean(true)
+    val dungeonized by autoBoolean(false)
 
     init { autoSeparator("pets") }
     val pet by autoBoolean(true)
