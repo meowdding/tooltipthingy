@@ -74,7 +74,7 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
         }
 
         skinRegex.match(line, "skinName") { [skinName] ->
-            originalMerger.add(skinLine(skinName))
+            originalMerger.destination.add(1,skinLine(skinName))
         }
 
         context.addAll(category.tags)
