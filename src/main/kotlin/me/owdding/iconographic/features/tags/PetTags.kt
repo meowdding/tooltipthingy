@@ -8,10 +8,8 @@ import me.owdding.iconographic.system.TooltipFeatureWithContext
 import me.owdding.iconographic.system.TooltipTag
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
-import tech.thatgravyboat.skyblockapi.utils.text.Text.prefix
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 import tech.thatgravyboat.skyblockapi.utils.text.TextUtils.substring
-import kotlin.collections.MutableList
 
 @RegisterFeature
 data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
@@ -21,25 +19,43 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
 
     val petCategories = buildMap {
         fun pet(skill: String) {
-            put("$skill Pet", PetCategory(skill, "Pet"))
+            put(
+                "$skill Pet",
+                PetCategory(skill, "Pet") {
+                    it.substring("$skill Pet, ".length)
+                },
+            )
         }
+
         fun mount(skill: String) {
-            put("$skill Mount", PetCategory(skill, "Mount"))
+            put(
+                "$skill Mount",
+                PetCategory(skill, "Mount") {
+                    it.substring("$skill Mount, ".length)
+                },
+            )
         }
         put("All Skills", PetCategory("Pet"))
         pet("Mining")
         mount("Mining")
         pet("Combat")
         mount("Combat")
-        put("Combat Morph", PetCategory("Combat", "Morph"))
+        put(
+            "Combat Morph",
+            PetCategory("Combat", "Morph") {
+                it.substring("Combat Morph, ".length)
+            },
+        )
         pet("Foraging")
         pet("Enchanting")
         pet("Taming")
         pet("Farming")
-        put("Gabagool Pet, feed to gain XP", PetCategory("Gabagool", "Pet") {
-            val line = it.substring("Gabagool Pet, ".length + 1)
-            line.prefix("F").withStyle(line.style)
-        })
+        put(
+            "Gabagool Pet, feed to gain XP",
+            PetCategory("Gabagool", "Pet") {
+                it.substring("Gabagool Pet, ".length)
+            },
+        )
         pet("Alchemy")
         pet("Fishing")
         pet("Fractured Soul")
@@ -59,9 +75,11 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
         if (!canRead()) return@withComponentMerger Result.unmodified
         val line = read()
         val category = petCategories[line.stripped.removeSkin().trim().lowercase()] ?: return@withComponentMerger Result.unmodified
-
-        if (category.lineModifier != null) {
-            add(category.lineModifier(line))
+        if ((category.lineModifier != null)) {
+            val modifiedLine = category.lineModifier(line)
+            if (modifiedLine != Component.empty()) {
+                add(modifiedLine)
+            }
         } else {
             skipSpace()
         }
@@ -72,7 +90,7 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
 
     data class PetCategory(
         val tags: List<String>,
-        val lineModifier: ((Component) -> Component)? = null
+        val lineModifier: ((Component) -> Component)? = null,
     ) {
         constructor(vararg tags: String, lineModifier: ((Component) -> Component)? = null) : this(tags.asList(), lineModifier)
     }
