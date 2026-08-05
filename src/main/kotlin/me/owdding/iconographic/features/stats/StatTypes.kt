@@ -80,7 +80,7 @@ enum class StatType(
 
     // Hunting Stats
     PULL('', DisplayColor.AQUA),
-    HUNTER_FORTUNE('', DisplayColor.LIGHT_PURPLE),
+    HUNTING_FORTUNE('', DisplayColor.LIGHT_PURPLE),
 
     // Wisdom Stats
     BASE_WISDOM('☯', DisplayColor.DARK_AQUA),
