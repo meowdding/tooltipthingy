@@ -26,6 +26,8 @@ data object RarityTag : TooltipFeature() {
     override val enabled: Boolean get() = TagConfig.rarity
     override val priority: Int = 10
 
+    override fun ItemStack.applies(): Boolean = (DataTypes.SKYBLOCK_ID() != null)
+
     override fun ItemStack.leftTags(): List<TooltipTag> {
         val rarity = DataTypes.RARITY() ?: return emptyList()
 
