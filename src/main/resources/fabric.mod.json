@@ -25,5 +25,8 @@
     "fabric-language-kotlin": ">=${fabric_lang_kotlin}",
     "skyblock-api": ">=${sbapi}"
   },
+  "breaks": {
+    "iceberg": "*"
+  },
   "accessWidener": "iconographic.accesswidener"
 }
