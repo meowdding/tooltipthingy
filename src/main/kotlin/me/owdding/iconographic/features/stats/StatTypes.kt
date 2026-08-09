@@ -82,7 +82,7 @@ enum class StatType(
     // Hunting Stats
     PULL('', DisplayColor.AQUA),
     HUNTING_FORTUNE('', DisplayColor.LIGHT_PURPLE),
-    CHARM_CHANCE('❣', TextColor.AQUA),
+    CHARM_CHANCE('❣', DisplayColor.AQUA),
 
     // Wisdom Stats
     BASE_WISDOM('☯', DisplayColor.DARK_AQUA),
