@@ -59,9 +59,11 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
 
     fun pushPop(item: ItemStack, runnable: () -> Unit) {
         val current = this.extractingItemTooltip
+        val currentStyle = this.currentTooltipStyle
         this.extractingItemTooltip = item
         runnable()
         this.extractingItemTooltip = current
+        this.currentTooltipStyle = currentStyle
     }
 
     override fun onInitializeClient() {
