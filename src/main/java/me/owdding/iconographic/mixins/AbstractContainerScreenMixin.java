@@ -38,6 +38,7 @@ public class AbstractContainerScreenMixin {
         Iconographic.currentTooltipStyle = style;
         original.call(instance, font, texts, optionalImage, xo, yo, style);
         Iconographic.extractingItemTooltip = null;
+        Iconographic.currentTooltipStyle = null;
     }
 
 }
