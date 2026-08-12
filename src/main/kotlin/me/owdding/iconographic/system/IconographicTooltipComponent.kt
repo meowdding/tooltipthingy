@@ -3,13 +3,10 @@ package me.owdding.iconographic.system
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.Iconographic
 import me.owdding.iconographic.SideTooltipLine
-import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil
-import net.minecraft.client.renderer.RenderPipelines
-import net.minecraft.util.ARGB
 
 class IconographicTooltipComponent(val line: ExtractableTooltipLine) : ClientTooltipComponent {
 
