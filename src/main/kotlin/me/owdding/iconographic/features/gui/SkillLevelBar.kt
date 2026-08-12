@@ -42,8 +42,8 @@ data object SkillLevelBar : TooltipFeature() {
         } else if (xpLine.contains("/")) {
             val parts = xpLine.split("/")
             PetLevel.PetLevelLine(
-                parts[0].parseFormattedFloat(),
-                parts[1].parseFormattedFloat()
+                parts[0].trim().parseFormattedFloat(),
+                parts[1].trim().parseFormattedFloat()
             )
         } else {
             return@withComponentMerger Result.Companion.unmodified
