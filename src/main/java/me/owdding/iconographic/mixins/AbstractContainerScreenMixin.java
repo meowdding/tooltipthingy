@@ -35,8 +35,10 @@ public class AbstractContainerScreenMixin {
             @Local(name = "item") ItemStack item
     ) {
         Iconographic.extractingItemTooltip = item;
+        Iconographic.currentTooltipStyle = style;
         original.call(instance, font, texts, optionalImage, xo, yo, style);
         Iconographic.extractingItemTooltip = null;
+        Iconographic.currentTooltipStyle = null;
     }
 
 }

@@ -86,8 +86,10 @@ public class GuiGraphicsMixin {
     @WrapMethod(method = "setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V")
     public void setTooltip(Font font, ItemStack itemStack, int xo, int yo, Operation<Void> original) {
         var item = Iconographic.extractingItemTooltip;
+        var style = Iconographic.currentTooltipStyle;
         Iconographic.extractingItemTooltip = itemStack;
         original.call(font, itemStack, xo, yo);
         Iconographic.extractingItemTooltip = item;
+        Iconographic.currentTooltipStyle = style;
     }
 }

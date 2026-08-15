@@ -27,6 +27,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.network.chat.MutableComponent
+import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.SkyBlockAPI
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
@@ -52,11 +53,17 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
     @JvmField
     var currentTooltipRarityColor: Int? = null
 
+    @Volatile
+    @JvmField
+    var currentTooltipStyle: Identifier? = null
+
     fun pushPop(item: ItemStack, runnable: () -> Unit) {
         val current = this.extractingItemTooltip
+        val currentStyle = this.currentTooltipStyle
         this.extractingItemTooltip = item
         runnable()
         this.extractingItemTooltip = current
+        this.currentTooltipStyle = currentStyle
     }
 
     override fun onInitializeClient() {
