@@ -70,6 +70,7 @@ enum class StatType(
     FORAGING_FORTUNE(BASE_FORAGING_FORTUNE),
     FIG_FORTUNE(BASE_FORAGING_FORTUNE),
     MANGROVE_FORTUNE(BASE_FORAGING_FORTUNE),
+    HELIX_FORTUNE(BASE_FORAGING_FORTUNE),
 
     // Fishing Stats
     FISHING_SPEED('', DisplayColor.AQUA),
@@ -80,7 +81,8 @@ enum class StatType(
 
     // Hunting Stats
     PULL('', DisplayColor.AQUA),
-    HUNTER_FORTUNE('', DisplayColor.LIGHT_PURPLE),
+    HUNTING_FORTUNE('', DisplayColor.LIGHT_PURPLE),
+    CHARM_CHANCE('❣', DisplayColor.AQUA),
 
     // Wisdom Stats
     BASE_WISDOM('☯', DisplayColor.DARK_AQUA),

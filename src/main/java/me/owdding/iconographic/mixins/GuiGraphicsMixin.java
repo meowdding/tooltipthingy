@@ -1,5 +1,6 @@
 package me.owdding.iconographic.mixins;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Vector2ic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -79,5 +81,13 @@ public class GuiGraphicsMixin {
     @WrapOperation(method = "tooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipPositioner;positionTooltip(IIIIII)Lorg/joml/Vector2ic;"))
     private Vector2ic position(ClientTooltipPositioner instance, int screenWidth, int screenHeight, int x, int y, int tooltipWidth, int tooltipHeight, Operation<Vector2ic> original, @Share("with_extra_width") LocalIntRef ref) {
         return original.call(instance, screenWidth, screenHeight, x, y, Math.max(tooltipWidth, ref.get()), tooltipHeight);
+    }
+
+    @WrapMethod(method = "setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V")
+    public void setTooltip(Font font, ItemStack itemStack, int xo, int yo, Operation<Void> original) {
+        var item = Iconographic.extractingItemTooltip;
+        Iconographic.extractingItemTooltip = itemStack;
+        original.call(font, itemStack, xo, yo);
+        Iconographic.extractingItemTooltip = item;
     }
 }

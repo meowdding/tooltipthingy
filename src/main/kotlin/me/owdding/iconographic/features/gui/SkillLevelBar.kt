@@ -18,7 +18,7 @@ data object SkillLevelBar : TooltipFeature() {
     override val enabled: Boolean get() = MiscConfig.skillLevelBar
     override val priority: Int = 10
 
-    private val progressRegex = Regex("^(?:Progress(?: to (?:Level|Mastery) \\d+)?: .*|Max Skill level reached!)$")
+    private val progressRegex = Regex("^(?:Progress(?: to (?:Level|Mastery) \\S+)?: .*|Max Skill level reached!)$")
     private val titleRegex = Regex("Your Skills|Dungeoneering|.+ Skill|.+ Class Perks")
 
     // TODO: abstract petlevelline away as im reusing it (for drill fuel too)
