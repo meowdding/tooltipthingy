@@ -111,6 +111,10 @@ enum class StatType(
     PRESSURE_RESISTANCE('', DisplayColor.BLUE),
     FEAR('', DisplayColor.DARK_PURPLE),
     TRACKING('', DisplayColor.LIGHT_PURPLE),
+
+    // Silly Stats
+    TETANUS_CHANCE(null, DisplayColor.RED),
+    DETERMINATION(null, DisplayColor.GREEN),
     ;
 
     constructor(stat: StatType) : this(stat.icon, stat.color)
