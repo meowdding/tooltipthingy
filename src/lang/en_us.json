@@ -37,6 +37,10 @@
           "@value": "Vanilla Background",
           "desc": "Use the vanilla tooltip background and frame instead of the custom one."
         },
+        "forceDefaultVanillaBackground": {
+          "@value": "Force Default Vanilla Background",
+          "desc": "Overrides any custom tooltips and renders the base tooltip instead"
+        },
         "skyBlockColor": {
           "@value": "Use SkyBlock's Color",
           "desc": "Use SkyBlock's custom colors for Tooltip Background, Tags, etc."
