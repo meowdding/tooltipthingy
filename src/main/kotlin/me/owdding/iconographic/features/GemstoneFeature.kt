@@ -68,10 +68,13 @@ data object GemstoneFeature : TooltipFeature() {
 
         val parsedSlots = mutableListOf<ParsedSlot>()
 
-        fun parseComponentForSlots(component: Component) {
+        fun parseComponentForSlots(component: Component): Boolean {
             var inBracket = false
             var currentSymbol: MutableComponent = Text.of("")
             var isEmpty = true
+
+            var afterColon = false
+            var cancelGemstoneFeature = false
 
             component.visualOrderText.accept { _, style, codepoint ->
                 val char = String(Character.toChars(codepoint))
@@ -92,17 +95,31 @@ data object GemstoneFeature : TooltipFeature() {
                     if (char.isNotBlank()) {
                         currentSymbol.append(Text.of(char).withStyle(style))
                     }
+                } else if (char == ":") {
+                    afterColon = true
+                } else if (afterColon) {
+                    if (char != " ") cancelGemstoneFeature = true
                 }
                 true
             }
+
+            if (!cancelGemstoneFeature) {
+                read()
+            }
+
+            return cancelGemstoneFeature
         }
 
         if (canRead()) {
-            parseComponentForSlots(read())
+            if (parseComponentForSlots(peek())) {
+                return@withComponentMerger Result.unmodified
+            }
         }
 
         while (canRead() && peek().stripped.trim().startsWith("[")) {
-            parseComponentForSlots(read())
+            if (parseComponentForSlots(peek())) {
+                return@withComponentMerger Result.unmodified
+            }
         }
 
         val itemSlots = mutableListOf<VisualGemstoneSlot>()
