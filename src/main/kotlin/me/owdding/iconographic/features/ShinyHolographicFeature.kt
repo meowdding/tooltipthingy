@@ -15,7 +15,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 
 @RegisterFeature
 data object ShinyHolographicFeature : TooltipFeature() {
-    override val enabled: Boolean = VisualsConfig.shinyHolographic
+    override val enabled: Boolean get() = VisualsConfig.shinyHolographic
     override val priority: Int = -1000 // Run at the Very Last
 
     override fun ItemStack.applies(): Boolean = DataTypes.SHINY() == true
