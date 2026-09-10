@@ -64,6 +64,14 @@
           "hide": "Hide Extra Stats",
           "side": "Side Gui",
           "side_shift": "Side Gui when holding Shift"
+        },
+        "replaceNoRarityColor": {
+          "@value": "Replace No Rarity Tooltip Color",
+          "desc": "Enables the replacing of the default color used on tooltips for items without a Skyblock rarity."
+        },
+        "customNoRarityColor": {
+          "@value": "No Rarity Tooltip Color",
+          "desc": "The color to use for replacing if Replace No Rarity Tooltip Color is enabled."
         }
       },
       "tags": {
