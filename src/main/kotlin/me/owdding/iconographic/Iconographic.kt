@@ -5,6 +5,7 @@ import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import me.owdding.iconographic.TooltipInformation.Companion.toInformation
 import me.owdding.iconographic.api.ImcHandler
 import me.owdding.iconographic.config.Config
+import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.generated.BuildInfo
 import me.owdding.iconographic.generated.IconographicApiDebug
 import me.owdding.iconographic.generated.IconographicModules
@@ -30,6 +31,7 @@ import net.minecraft.network.chat.MutableComponent
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.SkyBlockAPI
+import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.helpers.McClient
 import tech.thatgravyboat.skyblockapi.platform.Identifiers
@@ -126,7 +128,9 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
         val tooltipInfo = lines.toInformation()
         val tooltip = CustomTooltip.update(item, tooltipInfo)
 
-        currentTooltipRarityColor = tooltip.rarity.displayColor
+        currentTooltipRarityColor = tooltip.rarity?.displayColor
+            ?: if (VisualsConfig.replaceNoRarityColor) VisualsConfig.customNoRarityColor
+            else SkyBlockRarity.COMMON.displayColor
 
         val entries = tooltip.entries.toMutableList()
         entries.addFirst(TooltipHeader(tooltip))

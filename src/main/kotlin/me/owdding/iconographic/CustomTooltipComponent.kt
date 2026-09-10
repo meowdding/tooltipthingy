@@ -52,7 +52,7 @@ data class Tooltip(
     val leftTags: List<TooltipTag>,
     val rightTags: List<TooltipTag>,
     val topRightIcon: Identifier?,
-    val rarity: SkyBlockRarity,
+    val rarity: SkyBlockRarity?,
     val isRarityUpgraded: Boolean,
     val entries: List<TooltipLine>,
 )

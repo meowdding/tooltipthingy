@@ -34,7 +34,7 @@ data class TooltipHeader(
     val leftTags: List<TooltipTag>,
     val rightTags: List<TooltipTag>,
     val icon: Identifier?,
-    val rarity: SkyBlockRarity
+    val rarity: SkyBlockRarity?
 ) : ExtractableTooltipLine {
 
     constructor(tooltip: Tooltip) : this(tooltip.item, tooltip.name, tooltip.leftTags, tooltip.rightTags, tooltip.topRightIcon, tooltip.rarity)
@@ -59,7 +59,11 @@ data class TooltipHeader(
                 y - 1,
                 24,
                 24,
-                ARGB.opaque(rarity.displayColor)
+                ARGB.opaque(
+                    rarity?.displayColor
+                        ?: if (VisualsConfig.replaceNoRarityColor) VisualsConfig.customNoRarityColor
+                        else SkyBlockRarity.COMMON.displayColor
+                )
             )
             graphics.extractItem(item, x + 3, y + 3)
         }
