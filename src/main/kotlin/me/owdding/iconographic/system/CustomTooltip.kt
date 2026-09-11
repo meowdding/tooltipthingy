@@ -70,7 +70,7 @@ object CustomTooltip {
                 update()
             }
         }
-        val rarity = modifiedItem[DataTypes.RARITY] ?: SkyBlockRarity.COMMON
+        val rarity = modifiedItem[DataTypes.RARITY]
 
         return Tooltip(
             item = modifiedItem,

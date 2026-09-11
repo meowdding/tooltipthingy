@@ -8,6 +8,7 @@ import me.owdding.iconographic.config.NonSkyBlockItemMode
 import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.system.TooltipTag
+import me.owdding.iconographic.utils.ColorUtils
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -34,7 +35,7 @@ data class TooltipHeader(
     val leftTags: List<TooltipTag>,
     val rightTags: List<TooltipTag>,
     val icon: Identifier?,
-    val rarity: SkyBlockRarity
+    val rarity: SkyBlockRarity?
 ) : ExtractableTooltipLine {
 
     constructor(tooltip: Tooltip) : this(tooltip.item, tooltip.name, tooltip.leftTags, tooltip.rightTags, tooltip.topRightIcon, tooltip.rarity)
@@ -59,7 +60,7 @@ data class TooltipHeader(
                 y - 1,
                 24,
                 24,
-                ARGB.opaque(rarity.displayColor)
+                ARGB.opaque(ColorUtils.getColorFromRarity(rarity))
             )
             graphics.extractItem(item, x + 3, y + 3)
         }

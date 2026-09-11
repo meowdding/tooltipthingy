@@ -14,6 +14,8 @@ object VisualsConfig : CategoryKt("visuals"), AutoTranslated {
     val vanillaBackground by autoBoolean(true)
     val forceDefaultVanillaBackground by autoBoolean(false)
     val skyBlockColor by autoBoolean(true)
+    val replaceNoRarityColor by autoBoolean(false)
+    val customNoRarityColor by autoColor(0xFFFFFF)
 
     init { autoSeparator("text_formatting") }
     val shinyHolographic by autoBoolean(true)

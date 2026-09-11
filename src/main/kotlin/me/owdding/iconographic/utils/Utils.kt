@@ -3,6 +3,8 @@ package me.owdding.iconographic.utils
 import me.owdding.iconographic.ComponentLike
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.TooltipLine.Companion.asComponentOrNull
+import me.owdding.iconographic.config.categories.visuals.VisualsConfig
+import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
@@ -184,3 +186,10 @@ open class ListMerger<T>(open val original: List<T>, open var index: Int = 0) {
     }
 }
 
+object ColorUtils {
+    fun getColorFromRarity(rarity: SkyBlockRarity?): Int {
+        return rarity?.displayColor
+            ?: if (VisualsConfig.replaceNoRarityColor) VisualsConfig.customNoRarityColor
+            else SkyBlockRarity.COMMON.displayColor
+    }
+}
