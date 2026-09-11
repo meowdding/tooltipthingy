@@ -13,6 +13,7 @@ import me.owdding.iconographic.generated.IconographicTooltipFeatures
 import me.owdding.iconographic.render.TooltipHeader
 import me.owdding.iconographic.system.CustomTooltip
 import me.owdding.iconographic.system.IconographicTooltipComponent
+import me.owdding.iconographic.utils.ColorUtils
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import me.owdding.iconographic.utils.chat.sendWithPrefix
 import me.owdding.iconographic.utils.debug.DebugBuilder
@@ -128,9 +129,7 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
         val tooltipInfo = lines.toInformation()
         val tooltip = CustomTooltip.update(item, tooltipInfo)
 
-        currentTooltipRarityColor = tooltip.rarity?.displayColor
-            ?: if (VisualsConfig.replaceNoRarityColor) VisualsConfig.customNoRarityColor
-            else SkyBlockRarity.COMMON.displayColor
+        currentTooltipRarityColor = ColorUtils.getColorFromRarity(tooltip.rarity)
 
         val entries = tooltip.entries.toMutableList()
         entries.addFirst(TooltipHeader(tooltip))
