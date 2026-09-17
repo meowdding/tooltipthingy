@@ -60,7 +60,7 @@ data object GemstoneFeature : TooltipFeature() {
     )
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
-        val gemstones = DataTypes.GEMSTONES()?.toMutableList() ?: mutableListOf()
+        val unlockedGemstones = DataTypes.GEMSTONES()?.toMutableList() ?: mutableListOf()
 
         if (!hasNext { it.stripped.trim().startsWith("Gemstones:") }) return@withComponentMerger Result.unmodified
 
@@ -122,18 +122,17 @@ data object GemstoneFeature : TooltipFeature() {
             }
         }
 
-        val itemSlots = mutableListOf<VisualGemstoneSlot>()
+        val itemSlots = parsedSlots.map { slot ->
+            if (!slot.isEmpty && unlockedGemstones.isNotEmpty()) {
+                val matchingGem = unlockedGemstones.firstOrNull { unlockedGem ->
+                    slot.slotType.gemstones.any { gem -> unlockedGem.skyblockId.skyblockId.contains(gem.name, ignoreCase = true) }
+                } ?: unlockedGemstones.first()
 
-        for (slot in parsedSlots) {
-            if (!slot.isEmpty && gemstones.isNotEmpty()) {
-                itemSlots.add(VisualGemstoneSlot.Filled(gemstones.removeAt(0)))
+                unlockedGemstones.remove(matchingGem)
+                VisualGemstoneSlot.Filled(matchingGem)
             } else {
-                itemSlots.add(VisualGemstoneSlot.Empty(slot.symbol, slot.slotType))
+                VisualGemstoneSlot.Empty(slot.symbol, slot.slotType)
             }
-        }
-
-        for (gem in gemstones) {
-            itemSlots.add(VisualGemstoneSlot.Filled(gem))
         }
 
         val headerComponent = Text.of {
