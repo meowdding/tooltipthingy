@@ -17,6 +17,7 @@ import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.api.events.misc.RegisterCommandsEvent.Companion.argument
+import tech.thatgravyboat.skyblockapi.api.remote.api.SkyBlockId
 import tech.thatgravyboat.skyblockapi.utils.command.EnumArgument
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
@@ -26,7 +27,12 @@ data object RarityTag : TooltipFeature() {
     override val enabled: Boolean get() = TagConfig.rarity
     override val priority: Int = 10
 
-    override fun ItemStack.applies(): Boolean = (DataTypes.SKYBLOCK_ID() != null)
+    // TODO: probably repofy this?
+    private val disallowedIds = listOf(
+        SkyBlockId.item("skyblock_menu")
+    )
+
+    override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID() != null && DataTypes.SKYBLOCK_ID() !in disallowedIds
 
     override fun ItemStack.leftTags(): List<TooltipTag> {
         val rarity = DataTypes.RARITY() ?: return emptyList()
