@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.api.repo.apis.SkyBlockEnchantmentsRepo
 import tech.thatgravyboat.skyblockapi.utils.extentions.getLore
-import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.SkyBlockColor
 import tech.thatgravyboat.skyblockapi.utils.text.Text.asComponent
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
@@ -26,31 +25,34 @@ data object EnchantedBookFeature : TooltipFeature() {
 
     const val ANVIL_LINE: String = "Combinable in Anvil"
 
-    val rngMeterCustomName = Regex("Enchanted Book \\(.*\\)").toComponentRegex()
+    val rngMeterCustomName = Regex("Enchanted Book \\((?<bookName>.*)\\)")
 
     override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isEnchantment == true
 
     private fun ItemStack.enchantTitle(): Component? {
-        val name = customName ?: return null
-        if (name.stripped == "Enchanted Book") {
+        val name = customName?.stripped ?: return null
+
+        // Covers finding the name for normal books in inventory
+        if (name == "Enchanted Book") {
             return getLore().firstOrNull {
-                it.stripped.isNotBlank() && it.stripped.trim() != ANVIL_LINE
+                val stripped = it.stripped
+                stripped.isNotBlank() && stripped.trim() != ANVIL_LINE
             }
         }
 
-        if (rngMeterCustomName.matches(customName)) {
-            val entry = DataTypes.ENCHANTMENTS()?.entries?.firstOrNull() ?: return null
-            val name = name.stripped.substringAfterLast("(").substringBeforeLast(")")
-            val ultimate = SkyBlockEnchantmentsRepo.get(entry.key)?.isUltimate
-            val title = name.asComponent {
-                if (ultimate == true) {
-                    color = SkyBlockColor.LIGHT_PURPLE; bold = true
-                } else color = SkyBlockColor.BLUE
-            }
-            return title
-        }
+        // Covers finding the name for books in rng meter menu e.g: Enchanted Book (Wisdom I)
+        val matchedName = rngMeterCustomName.find(name)?.groups?.get(1)?.value ?: return null
+        val entry = DataTypes.ENCHANTMENTS()?.entries?.firstOrNull() ?: return null
+        val ultimate = SkyBlockEnchantmentsRepo.get(entry.key)?.isUltimate ?: return null
 
-        return null
+        return matchedName.asComponent {
+            if (ultimate) {
+                color = SkyBlockColor.LIGHT_PURPLE
+                bold = true
+            } else {
+                color = SkyBlockColor.BLUE
+            }
+        }
     }
 
     // Replaces "Enchanted Book" item name with the enchant's title
