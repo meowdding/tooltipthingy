@@ -9,8 +9,14 @@ import me.owdding.iconographic.system.TooltipFeature
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
+import tech.thatgravyboat.skyblockapi.api.repo.apis.SkyBlockEnchantmentsRepo
 import tech.thatgravyboat.skyblockapi.utils.extentions.getLore
+import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
+import tech.thatgravyboat.skyblockapi.utils.text.SkyBlockColor
+import tech.thatgravyboat.skyblockapi.utils.text.Text.asComponent
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
+import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.bold
+import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 
 
 @RegisterFeature
@@ -20,10 +26,31 @@ data object EnchantedBookFeature : TooltipFeature() {
 
     const val ANVIL_LINE: String = "Combinable in Anvil"
 
+    val rngMeterCustomName = Regex("Enchanted Book \\(.*\\)").toComponentRegex()
+
     override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isEnchantment == true
 
     private fun ItemStack.enchantTitle(): Component? {
-        return getLore().firstOrNull { it.stripped.isNotBlank() && it.stripped.trim() != ANVIL_LINE }
+        val name = customName ?: return null
+        if (name.stripped == "Enchanted Book") {
+            return getLore().firstOrNull {
+                it.stripped.isNotBlank() && it.stripped.trim() != ANVIL_LINE
+            }
+        }
+
+        if (rngMeterCustomName.matches(customName)) {
+            val entry = DataTypes.ENCHANTMENTS()?.entries?.firstOrNull() ?: return null
+            val name = name.stripped.substringAfterLast("(").substringBeforeLast(")")
+            val ultimate = SkyBlockEnchantmentsRepo.get(entry.key)?.isUltimate
+            val title = name.asComponent {
+                if (ultimate == true) {
+                    color = SkyBlockColor.LIGHT_PURPLE; bold = true
+                } else color = SkyBlockColor.BLUE
+            }
+            return title
+        }
+
+        return null
     }
 
     // Replaces "Enchanted Book" item name with the enchant's title
