@@ -21,7 +21,11 @@ import java.util.Optional;
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
 
-    @WrapOperation(method = "extractTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;IILnet/minecraft/resources/Identifier;)V"))
+    //?if >= 26.3 {
+    @WrapOperation(method = "extractTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;IILnet/minecraft/resources/Identifier;Z)V"))
+    //?} else {
+    /*@WrapOperation(method = "extractTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;IILnet/minecraft/resources/Identifier;)V"))
+    *///?}
     public void extractTooltip(
             GuiGraphicsExtractor instance,
             Font font,
@@ -31,12 +35,18 @@ public class AbstractContainerScreenMixin {
             int xo,
             int yo,
             @Nullable Identifier style,
+            //? if >= 26.3
+            boolean replaceExisting,
             Operation<Void> original,
             @Local(name = "item") ItemStack item
     ) {
         Iconographic.extractingItemTooltip = item;
         Iconographic.currentTooltipStyle = style;
-        original.call(instance, font, texts, optionalImage, xo, yo, style);
+        //?if >= 26.3 {
+        original.call(instance, font, texts, optionalImage, xo, yo, style, replaceExisting);
+        //?} else {
+        /*original.call(instance, font, texts, optionalImage, xo, yo, style);
+        *///?}
         Iconographic.extractingItemTooltip = null;
         Iconographic.currentTooltipStyle = null;
     }

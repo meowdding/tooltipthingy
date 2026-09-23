@@ -8,16 +8,12 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.navigation.ScreenRectangle
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer
 import net.minecraft.client.renderer.SubmitNodeCollector
-//? 26.1
-//import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.item.TrackingItemStackRenderState
 import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.util.LightCoordsUtil
 import net.minecraft.util.Mth
 import org.joml.Matrix3x2f
-import tech.thatgravyboat.skyblockapi.helpers.McClient
-import java.util.function.Function
 import java.util.function.Supplier
 
 // Taken from SkyOcean
@@ -46,10 +42,7 @@ data class ItemWidgetItemState(
         }
     }
 
-    //? if >= 26.2 {
     override fun getFactory(): Supplier<PictureInPictureRenderer<ItemWidgetItemState>> = Supplier { ItemWidgetRenderer() }
-    //?} else
-    //override fun getFactory(): Function<MultiBufferSource.BufferSource, PictureInPictureRenderer<ItemWidgetItemState>> = Function { buffer -> ItemWidgetRenderer(buffer) }
 
     override fun x0() = x0
     override fun y0() = y0
@@ -61,38 +54,25 @@ data class ItemWidgetItemState(
     override fun bounds(): ScreenRectangle? = PictureInPictureRenderState.getBounds(x0, y0, x1, y1, scissorArea)
 }
 
-//? if >= 26.2 {
 class ItemWidgetRenderer() : PictureInPictureRenderer<ItemWidgetItemState>() {
-//?} else
-//class ItemWidgetRenderer(source: MultiBufferSource.BufferSource) : PictureInPictureRenderer<ItemWidgetItemState>(source) {
 
     override fun getRenderStateClass(): Class<ItemWidgetItemState> = ItemWidgetItemState::class.java
     override fun getTextureLabel(): String = "tooltip_thingy_item_rotate"
     override fun getTranslateY(height: Int, guiScale: Int): Float = height / 2f
 
-    //? if >= 26.2 {
     override fun renderToTexture(state: ItemWidgetItemState, stack: PoseStack, submitNodeCollector: SubmitNodeCollector) {
-        //?} else
-        //override fun renderToTexture(state: ItemWidgetItemState, stack: PoseStack) {
         val renderer = Minecraft.getInstance().gameRenderer
 
         stack.scale(1.0f, -1.0f, -1.0f)
-        stack.mulPose(Axis.YP.rotationDegrees(state.rotation))
+        //~ if >= 26.3 '.mulPose' -> '.rotate'
+        stack.rotate(Axis.YP.rotationDegrees(state.rotation))
         stack.translate(
             ((state.x0 + 8) - (state.itemBounds.left() + state.itemBounds.right()) / 2f) / 16.0f,
             ((state.itemBounds.top() + state.itemBounds.bottom()) / 2f - (state.y0 + 8)) / 16.0F,
             0.0F
         )
-
-        //~ if >= 26.2 '.lighting' -> '.lighting()'
         renderer.lighting().setupFor(if (state.item.usesBlockLight()) Lighting.Entry.ITEMS_3D else Lighting.Entry.ITEMS_FLAT)
 
-        //? 26.1 {
-        /*val dispatcher = McClient.self.gameRenderer.featureRenderDispatcher
-        val submitNodeCollector = dispatcher.submitNodeStorage
-        *///? }
         state.item.submit(stack, submitNodeCollector, LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0)
-        //? 26.1
-        //dispatcher.renderAllFeatures()
     }
 }

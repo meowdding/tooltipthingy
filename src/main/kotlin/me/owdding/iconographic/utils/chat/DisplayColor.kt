@@ -1,6 +1,5 @@
 package me.owdding.iconographic.utils.chat
 
-import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.utils.text.SkyBlockColor
