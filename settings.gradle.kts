@@ -13,7 +13,7 @@ plugins {
 }
 rootProject.name = "tooltip-thingy"
 
-val versions = listOf("26.3", "26.2")
+val versions = listOf("26.3", "26.2", "26.1")
 
 stonecutter {
     create(rootProject) {
