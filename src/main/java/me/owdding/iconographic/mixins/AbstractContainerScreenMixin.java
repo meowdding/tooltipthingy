@@ -21,11 +21,8 @@ import java.util.Optional;
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
 
-    //?if >= 26.3 {
+    //~ if >= 26.3 ';)V"' -> ';Z)V"'
     @WrapOperation(method = "extractTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;IILnet/minecraft/resources/Identifier;Z)V"))
-    //?} else {
-    /*@WrapOperation(method = "extractTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;IILnet/minecraft/resources/Identifier;)V"))
-    *///?}
     public void extractTooltip(
             GuiGraphicsExtractor instance,
             Font font,
@@ -42,11 +39,7 @@ public class AbstractContainerScreenMixin {
     ) {
         Iconographic.extractingItemTooltip = item;
         Iconographic.currentTooltipStyle = style;
-        //?if >= 26.3 {
-        original.call(instance, font, texts, optionalImage, xo, yo, style, replaceExisting);
-        //?} else {
-        /*original.call(instance, font, texts, optionalImage, xo, yo, style);
-        *///?}
+        original.call(instance, font, texts, optionalImage, xo, yo, style/*? >= 26.3 >> ')' */, replaceExisting);
         Iconographic.extractingItemTooltip = null;
         Iconographic.currentTooltipStyle = null;
     }
