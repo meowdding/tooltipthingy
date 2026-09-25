@@ -29,9 +29,9 @@ import static tech.thatgravyboat.skyblockapi.utils.extentions.ItemStackExtension
 public class GuiGraphicsMixin {
 
     @ModifyVariable(
-            method = "setTooltipForNextFrameInternal",
-            at = @At("HEAD"),
-            argsOnly = true
+        method = "setTooltipForNextFrameInternal*",
+        at = @At("HEAD"),
+        argsOnly = true
     )
     public List<ClientTooltipComponent> modifyTooltipLines(
             List<ClientTooltipComponent> lines,

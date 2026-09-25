@@ -17,8 +17,8 @@ import net.minecraft.util.LightCoordsUtil
 import net.minecraft.util.Mth
 import org.joml.Matrix3x2f
 import tech.thatgravyboat.skyblockapi.helpers.McClient
-import java.util.function.Function
 import java.util.function.Supplier
+import java.util.function.Function
 
 // Taken from SkyOcean
 data class ItemWidgetItemState(
@@ -77,7 +77,8 @@ class ItemWidgetRenderer() : PictureInPictureRenderer<ItemWidgetItemState>() {
         val renderer = Minecraft.getInstance().gameRenderer
 
         stack.scale(1.0f, -1.0f, -1.0f)
-        stack.mulPose(Axis.YP.rotationDegrees(state.rotation))
+        //~ if >= 26.3 '.mulPose' -> '.rotate'
+        stack.rotate(Axis.YP.rotationDegrees(state.rotation))
         stack.translate(
             ((state.x0 + 8) - (state.itemBounds.left() + state.itemBounds.right()) / 2f) / 16.0f,
             ((state.itemBounds.top() + state.itemBounds.bottom()) / 2f - (state.y0 + 8)) / 16.0F,
