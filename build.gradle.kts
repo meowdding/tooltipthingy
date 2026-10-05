@@ -182,7 +182,7 @@ loom {
     runConfigs["client"].apply {
         ideConfigGenerated(true)
         runDir = "../../run"
-        vmArg("-Dfabric.modsFolder=${rootProject.projectDir.resolve("run/${stonecutter.current.version}Mods").absolutePath}")
+        vmArgs("-Dfabric.modsFolder=${rootProject.projectDir.resolve("run/${stonecutter.current.version}Mods").absolutePath}", "-XX:StackShadowPages=32")
     }
 
     accessWidenerPath = rootProject.file("src/main/resources/iconographic.accesswidener")
