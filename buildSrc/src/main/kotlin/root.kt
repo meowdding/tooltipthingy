@@ -31,6 +31,7 @@ data class ForwardingVersionCatalog(
 
     operator fun get(name: String): Provider<MinimalExternalModuleDependency> = library(name)
     operator fun contains(name: String): Boolean = runCatching { get(name) }.map { true }.getOrDefault(false)
+    fun getOrNull(name: String) = runCatching { this[name] }.getOrNull()
 
     data class ForwardingProperty<T>(
         val parent: ForwardingVersionCatalog,
@@ -38,10 +39,8 @@ data class ForwardingVersionCatalog(
     ) {
         operator fun get(name: String): T = parent.first(name, lookup)
         operator fun contains(name: String): Boolean = runCatching { get(name) }.map { true }.getOrDefault(false)
-        fun getOrFallback(
-            name: String,
-            fallbackName: String
-        ) = runCatching { this[name] }.getOrElse { this[fallbackName] }
+        fun getOrNull(name: String) = runCatching { this[name] }.getOrNull()
+        fun getOrFallback(name: String, fallbackName: String) = getOrNull(name) ?: this[fallbackName]
     }
 }
 

@@ -20,5 +20,6 @@ object VisualsConfig : CategoryKt("visuals"), AutoTranslated {
     init { autoSeparator("text_formatting") }
     val shinyHolographic by autoBoolean(true)
     val alignedStats by autoBoolean(true)
+    val colorStatName by autoBoolean(false)
     val extraStatsDisplay by autoEnum(ExtraStatDisplay.NORMAL)
 }

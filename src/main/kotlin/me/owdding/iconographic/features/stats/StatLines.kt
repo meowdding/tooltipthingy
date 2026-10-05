@@ -68,7 +68,7 @@ data object StatLines : TooltipFeature() {
                     maxIconWidth,
                     stat,
                     stat.displayIcon,
-                    name,
+                    name.copy().withColor(stat.color).takeIf { VisualsConfig.colorStatName } ?: name,
                     Text.of {
                         append(value)
                         result["icon"]?.let { append(it) }

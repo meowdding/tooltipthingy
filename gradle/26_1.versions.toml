@@ -10,6 +10,8 @@ resourceful-config = "4.0.1"
 olympus = "1.8.0"
 placeholders = "3.0.0-beta.2+26.1"
 
+tooltip-scroll = "1.5.1+26.1.1"
+
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 
@@ -19,3 +21,5 @@ resourceful-lib = { module = "com.teamresourceful.resourcefullib:resourcefullib-
 resourceful-config = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-26.1", version.ref = "resourceful-config" }
 olympus = { module = "earth.terrarium.olympus:olympus-fabric-26.1", version.ref = "olympus" }
 placeholders = { module = "eu.pb4:placeholder-api", version.ref = "placeholders" }
+
+tooltip-scroll = { module = "maven.modrinth:tooltip-scroll", version.ref = "tooltip-scroll" }

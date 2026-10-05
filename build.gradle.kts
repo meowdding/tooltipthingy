@@ -1,3 +1,6 @@
+import jdk.jfr.internal.JVM.exclude
+import jdk.jfr.internal.JVM.include
+import org.gradle.declarative.dsl.schema.FqName.Empty.packageName
 import java.io.ByteArrayOutputStream
 
 plugins {
@@ -150,6 +153,8 @@ dependencies {
     include(versionedCatalog["olympus"])
     implementation(versionedCatalog["resourceful.lib"])
     include(versionedCatalog["resourceful.lib"])
+
+    versionedCatalog.getOrNull("tooltip.scroll")?.let { runtimeOnly(it) }
 }
 
 base {
