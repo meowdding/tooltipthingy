@@ -7,6 +7,7 @@ import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
+import net.minecraft.util.ARGB
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 import kotlin.math.floor
@@ -191,5 +192,19 @@ object ColorUtils {
         return rarity?.displayColor
             ?: if (VisualsConfig.replaceNoRarityColor) VisualsConfig.customNoRarityColor
             else SkyBlockRarity.COMMON.displayColor
+    }
+
+    fun boostSaturation(color: Int, multiplier: Float): Int {
+        val r = ARGB.red(color)
+        val g = ARGB.green(color)
+        val b = ARGB.blue(color)
+
+        val lum = r * 0.3f + g * 0.59f + b * 0.11f
+
+        val newR = (lum + (r - lum) * multiplier).toInt().coerceIn(0, 255)
+        val newG = (lum + (g - lum) * multiplier).toInt().coerceIn(0, 255)
+        val newB = (lum + (b - lum) * multiplier).toInt().coerceIn(0, 255)
+
+        return ARGB.color(ARGB.alpha(color), newR, newG, newB)
     }
 }

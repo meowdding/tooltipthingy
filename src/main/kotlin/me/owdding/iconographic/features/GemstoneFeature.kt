@@ -12,6 +12,7 @@ import me.owdding.iconographic.render.SeparatorRenderer
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
+import me.owdding.iconographic.utils.ColorUtils
 import me.owdding.iconographic.utils.chat.DisplayColor
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import net.minecraft.client.gui.Font
@@ -218,7 +219,7 @@ data object GemstoneFeature : TooltipFeature() {
                         currentY,
                         slotSize,
                         slotSize,
-                        ARGB.opaque(boostSaturation(color, 2.5f)) // idk if the boost saturation does anything here
+                        ARGB.opaque(ColorUtils.boostSaturation(color, 2.5f)) // idk if the boost saturation does anything here
                     )
                     extraRenderer()
                 }
@@ -242,19 +243,5 @@ data object GemstoneFeature : TooltipFeature() {
             GemstoneQuality.FLAWLESS -> SkyBlockRarity.EPIC.displayColor
             GemstoneQuality.PERFECT -> SkyBlockRarity.LEGENDARY.displayColor
         }
-    }
-
-    private fun boostSaturation(color: Int, multiplier: Float): Int {
-        val r = ARGB.red(color)
-        val g = ARGB.green(color)
-        val b = ARGB.blue(color)
-
-        val lum = r * 0.3f + g * 0.59f + b * 0.11f
-
-        val newR = (lum + (r - lum) * multiplier).toInt().coerceIn(0, 255)
-        val newG = (lum + (g - lum) * multiplier).toInt().coerceIn(0, 255)
-        val newB = (lum + (b - lum) * multiplier).toInt().coerceIn(0, 255)
-
-        return ARGB.color(ARGB.alpha(color), newR, newG, newB)
     }
 }
