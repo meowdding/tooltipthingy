@@ -1,0 +1,46 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "chars": [
+        "s"
+      ],
+      "file": "iconographic:font/buttons/shift.png",
+      "height": 10,
+      "ascent": 10
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "<"
+      ],
+      "file": "iconographic:font/buttons/mouse_left.png",
+      "height":10,
+      "ascent": 10
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        ">"
+      ],
+      "file": "iconographic:font/buttons/mouse_right.png",
+      "height":10,
+      "ascent": 10
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "|"
+      ],
+      "file": "iconographic:font/buttons/mouse_middle.png",
+      "height":10,
+      "ascent": 10
+    },
+    {
+      "type": "space",
+      "advances": {
+        " ": 1
+      }
+    }
+  ]
+}

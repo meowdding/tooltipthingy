@@ -10,6 +10,7 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
 
     init { autoSeparator("misc") }
     val itemAbility by autoBoolean(false)
+    val itemAbilityIcons by autoBoolean(true)
     val enchantedBookNames by autoBoolean(true)
     val skillLevelBar by autoBoolean(true)
 }

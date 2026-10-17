@@ -14,6 +14,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.hover
 object ChatUtils {
     val mc5 = id("mc5")
     val stats = id("stats")
+    val clicks = id("clicks")
     val sparkles = id("sparkles")
 
     val prefix = Text.of {
