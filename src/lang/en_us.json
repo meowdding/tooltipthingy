@@ -199,6 +199,26 @@
         "skillLevelBar": {
           "@value": "Skill Level Bar",
           "desc": "Changes the skill level progress into a rendered element."
+        },
+        "enchantments": {
+          "@value": "meow",
+          "desc": "meow!"
+        },
+        "itemEnchants": {
+          "@value": "Item Enchants",
+          "desc": "enchants in da tooltip"
+        },
+        "smallEnchantText": {
+          "@value": "smol text!!",
+          "desc": "mc5 text :3"
+        },
+        "noEnchantNameBackground": {
+          "@value": "enchant name background off",
+          "desc": "no backgound on enchant names"
+        },
+        "centerEnchantments": {
+          "@value": "Center Enchantments",
+          "desc": "centered in teh tooltip"
         }
       }
     },
