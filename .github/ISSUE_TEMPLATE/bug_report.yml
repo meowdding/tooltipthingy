@@ -1,31 +1,69 @@
 name: Bug Report
-description: Create a Bug Report
+description: Create a report to help us improve
 type: Bug
 body:
-    -   type: textarea
-        id: what-issue
-        attributes:
-            label: What's your Issue?
-            description: Please describe the issue you are having.
-            placeholder: Describe the issue here
-        validations:
-            required: true
-    -   type: textarea
-        id: logs
-        attributes:
-            label: Crash Log
-            description: |
-                If you **didn't crash**, leave this blank.
-                Please provide your latest.log from .minecraft/logs/ if this issue happened in your current session. 
-                If you have rebooted by now, send the log with the fitting timestamp.
-            placeholder: Paste your logs here
-        validations:
-            required: false
-    -   type: input
-        id: mod-version
-        attributes:
-            label: Iconographic Version
-            description: The version of Iconographic you are using.
-            placeholder: e.g., "1.0.0-beta.2"
-        validations:
-            required: true
+    - type: markdown
+      attributes:
+          value: |
+              > [!WARNING]
+              > Issues suspected of being created, documented, or aided with
+              > AI/LLM usage will be closed without further discussion.
+              > *We are perfectly capable of understanding logs ourselves,*
+              > *and don't tolerate usage of generative models.*
+              
+              Thanks for taking the time to fill out this bug report!
+              
+              Before continuing to make the issue, please make sure there are no similar issues on [the issue tracker](../issues).
+              If there are, consider contributing your information in there instead!
+              > [!TIP]
+              > You can also join the [Discord](https://meowdd.ing/discord) for more help.
+
+    - type: textarea
+      id: bug-description
+      attributes:
+          label: Bug Description
+          description: 'A clear explanation of what the issue is, with steps to reproduce if applicable.'
+          placeholder: Leave a comment
+      validations:
+          required: true
+
+    - type: input
+      id: minecraft-version
+      attributes:
+          label: Minecraft Version
+          description: What version of Minecraft are you using?
+          placeholder: ex. Minecraft 26.3
+      validations:
+          required: true
+
+    - type: input
+      id: mod-version
+      attributes:
+          label: Iconographic Version
+          description: |
+            What version of Iconographic are you running? Run "/iconographic version" ingame to see this.
+            If the command doesn't work, simply get it from the mods list.
+          placeholder: ex. 1.0.0-beta.2
+      validations:
+          required: true
+
+    - type: textarea
+      id: logs
+      attributes:
+          label: Log output
+          description: |
+              Please provide log files of the game session in which the issue happened.
+              
+              **Do not upload the whole log file**. Instead upload it to [mclo.gs](https://mclo.gs/) or similar. (Launchers like Prism already have an option to upload the log there.)
+          placeholder: ex. https://mclo.gs/WnMMikq
+      validations:
+          required: false
+
+
+    - type: textarea
+      id: additional-context
+      attributes:
+          label: Additional context
+          description: 'Add any other context about the problem here, such as images or other information'
+      validations:
+          required: false
