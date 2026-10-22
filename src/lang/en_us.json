@@ -201,24 +201,24 @@
           "desc": "Changes the skill level progress into a rendered element."
         },
         "enchantments": {
-          "@value": "meow",
-          "desc": "meow!"
+          "@value": "Item Enchants",
+          "desc": "Fancy Item Enchants."
         },
         "itemEnchants": {
-          "@value": "Item Enchants",
-          "desc": "enchants in da tooltip"
+          "@value": "Item Enchants Toggle",
+          "desc": "Disables fancy enchants"
         },
         "smallEnchantText": {
-          "@value": "smol text!!",
-          "desc": "mc5 text :3"
+          "@value": "Small Font",
+          "desc": "Uses a smaller font for enchantments."
         },
         "noEnchantNameBackground": {
-          "@value": "enchant name background off",
-          "desc": "no backgound on enchant names"
+          "@value": "Remove Enchantment Name Background",
+          "desc": "Removes the background on enchantment names."
         },
         "centerEnchantments": {
           "@value": "Center Enchantments",
-          "desc": "centered in teh tooltip"
+          "desc": "Aligns the enchant text to the center of the tooltip."
         }
       }
     },

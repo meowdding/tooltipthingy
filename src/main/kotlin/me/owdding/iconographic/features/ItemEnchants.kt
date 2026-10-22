@@ -45,34 +45,33 @@ data object ItemEnchants : TooltipFeature() {
                 it.isEnchantmentLine()
             }
 
-            val enchants = mutableListOf<Component>()
-
+            val enchants = mutableListOf<EnchantLine>()
             while (canRead() && !peek().isEmpty()) {
                 val line = read()
-                if (line.isEnchantmentLine()) singleEnchantMatcher.replace(line) { enchantMatch ->
-                    val name = enchantMatch["name"]!!
-                    val lvl = enchantMatch["lvl"]!!
-                    val enchantName = name.string.trim()
-                    val enchantLevel = lvl.string.parseRomanOrArabic()
-                    val data = RepoAPI.enchantments().enchantments().toList().find { it.second.name == enchantName }?.second
-                    val unlocked = name.color != TextColor.GRAY
-                    val ultimate = data?.isUltimate ?: false
-                    val isNotMaxed = data?.levels()?.any { enchantLevel < it.key } ?: true
+                if (line.isEnchantmentLine()) {
+                    singleEnchantMatcher.replace(line) { enchantMatch ->
+                        val name = enchantMatch["name"]!!
+                        val lvl = enchantMatch["lvl"]!!
+                        val enchantName = name.string.trim()
+                        val enchantLevel = lvl.string.parseRomanOrArabic()
+                        val data = RepoAPI.enchantments().enchantments().toList().find { it.second.name == enchantName }?.second
+                        val unlocked = name.color != TextColor.GRAY
+                        val ultimate = data?.isUltimate ?: false
+                        val isNotMaxed = data?.levels()?.any { enchantLevel < it.key } ?: true
 
-                    enchants += fromLevelAndName(
-                        enchantName,
-                        if (ultimate) DisplayColor.LIGHT_PURPLE else DisplayColor.BLUE,
-                        enchantLevel,
-                        if (!unlocked)
-                            DisplayColor.GRAY
-                        else if (isNotMaxed) {
-                            DisplayColor.BLUE
-                        } else {
-                            DisplayColor.GOLD
-                        }
-                    )
-                    modified = true
-                    Component.empty()
+                        enchants += EnchantLine(
+                            enchantName,
+                            enchantLevel,
+                            unlocked,
+                            ultimate,
+                            !isNotMaxed
+                        )
+
+                        modified = true
+                        Component.empty()
+                    }
+                } else {
+                    enchants.lastOrNull()?.description?.add(line)
                 }
             }
             readSafe()
@@ -83,8 +82,45 @@ data object ItemEnchants : TooltipFeature() {
         return@withComponentMerger modified.asResult()
     }
 
-    data class EnchantLines(val enchants: List<Component>) : ExtractableTooltipLine {
-        val lines = enchants.chunked(3)
+    class EnchantLine(
+        val enchantment: String,
+        val level: Int,
+        val unlocked: Boolean,
+        val ultimate: Boolean,
+        val isMaxed: Boolean,
+        var description: MutableList<Component> = mutableListOf()
+    ) {
+        fun toComponent() = fromLevelAndName(
+            enchantment,
+            if (ultimate) DisplayColor.LIGHT_PURPLE else DisplayColor.BLUE,
+            level,
+            if (!unlocked)
+                DisplayColor.GRAY
+            else if (isMaxed) {
+                DisplayColor.GOLD
+            } else {
+                DisplayColor.BLUE
+            }
+        )
+    }
+
+    fun List<EnchantLine>.compose(): List<List<Component>> {
+        if (this.any { it.description.isNotEmpty() }) {
+            val result = mutableListOf<List<Component>>()
+            for (enchant in this) {
+                result += listOf(enchant.toComponent())
+                if (enchant.description.isNotEmpty()) {
+                    result.addAll(enchant.description.chunked(1))
+                }
+            }
+            return result
+        } else {
+            return this.map { it.toComponent() }.chunked(3)
+        }
+    }
+
+    data class EnchantLines(val enchants: List<EnchantLine>) : ExtractableTooltipLine {
+        val lines = enchants.compose()
         override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
             var currentY = y + border - 4
             lines.forEach { line ->
