@@ -144,8 +144,7 @@ data object BoostersFeature : TooltipFeature() {
         }
 
         override fun getWidth(font: Font): Int {
-            val maxSlots = if (slots.size >= columns) columns else slots.size
-            return maxSlots * (slotSize + xSpacing) - xSpacing
+            return min(slots.size, columns) * (slotSize + xSpacing) - xSpacing
         }
 
         override fun getHeight(font: Font): Int {
