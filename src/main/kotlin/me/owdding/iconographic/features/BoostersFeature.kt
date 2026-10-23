@@ -148,7 +148,7 @@ data object BoostersFeature : TooltipFeature() {
         }
 
         override fun getHeight(font: Font): Int {
-            return chunks.size * slotSize + max(0, chunks.size - 1) * ySpacing
+            return chunks.size * slotSize + (chunks.size - 1).coerceAtLeast(0) * ySpacing
         }
 
         private fun getRarityColor(id: SkyBlockId): Int = id.toItem()[DataTypes.RARITY]?.displayColor ?: DisplayColor.DARK_PURPLE
