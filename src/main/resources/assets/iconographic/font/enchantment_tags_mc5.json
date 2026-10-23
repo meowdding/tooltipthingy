@@ -1,0 +1,64 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "chars": [
+        "\uE900\uE901\uE902\uE903\uE904\uE905\uE906"
+      ],
+      "file": "iconographic:font/enchantment_tags_mc5.png",
+      "height": 9,
+      "ascent": 8
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "\uE907"
+      ],
+      "file": "iconographic:font/enchantment_tags_wide_mc5.png",
+      "height": 9,
+      "ascent": 8
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      ],
+      "file": "iconographic:font/enchantment_mc5.png",
+      "height": 6,
+      "ascent": 6
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "abcdefghijklmnopqrstuvwxyz"
+      ],
+      "file": "iconographic:font/enchantment_mc5.png",
+      "height": 6,
+      "ascent": 6
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "1234567890./,:-"
+      ],
+      "file": "iconographic:font/enchantment_mc5_nums.png",
+      "height": 6,
+      "ascent": 6
+    },
+    {
+      "type": "space",
+      "advances": {
+        " ": 2,
+        "\uE910": -1,
+        "\uE911": -2,
+        "\uE912": -3,
+        "\uE913": -6,
+        "\uE914": -12,
+        "\uE915": -24,
+        "\uE916": 1,
+        "\uE917": 2,
+        "_": 2
+      }
+    }
+  ]
+}
