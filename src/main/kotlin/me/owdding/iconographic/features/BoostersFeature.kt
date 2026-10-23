@@ -154,10 +154,11 @@ data object BoostersFeature : TooltipFeature() {
         private fun getRarityColor(id: SkyBlockId): Int = id.toItem()[DataTypes.RARITY]?.displayColor ?: DisplayColor.DARK_PURPLE
     }
 
-    private fun getBoosterId(baseId: String, level: Int): SkyBlockId? = if (level == 1 && baseId != "hunting_wisdom") {
-        SkyBlockId.item("${baseId}_booster")
-    } else {
+    private fun getBoosterId(baseId: String, level: Int): SkyBlockId? = when {
+      level == 1 && baseId != "hunting_wisdom" -> SkyBlockId.item("${baseId}_booster")
+      else -> {
         val rarity = SkyBlockRarity.entries.getOrNull(level - 1) ?: return null
         SkyBlockId.item("${baseId}_booster_${rarity.name}")
+      }
     }
 }
