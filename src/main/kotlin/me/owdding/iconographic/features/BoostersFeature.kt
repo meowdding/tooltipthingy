@@ -29,7 +29,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.shadowColor
-import kotlin.math.max
+import kotlin.math.min
 
 @RegisterFeature
 data object BoostersFeature : TooltipFeature() {
