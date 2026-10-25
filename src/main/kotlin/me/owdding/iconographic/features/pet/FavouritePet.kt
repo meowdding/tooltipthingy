@@ -23,10 +23,11 @@ data object FavouritePet : TooltipFeatureWithContext<AtomicBoolean>() {
 
     val starIconRegex = Regex("⭐ (?<name>.+?)")
 
-    override fun createContext(): AtomicBoolean {
+    override fun ItemStack.createContext(): AtomicBoolean {
         return AtomicBoolean(false)
     }
 
+    context(context: AtomicBoolean)
     override fun ItemStack.applies(): Boolean = DataTypes.SKYBLOCK_ID()?.isPet == true
 
     context(context: AtomicBoolean)

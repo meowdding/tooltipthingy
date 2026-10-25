@@ -43,8 +43,9 @@ object CustomTooltip {
             }
 
             fun <ContextType> TooltipFeatureWithContext<ContextType>.update() {
-                val context = createContext()
+                val context = item.createContext()
                 context(context) {
+                    if (!item.applies()) return
                     result = item.modifyEntries(if (result?.propagateFurther == false) lines.toMutableList() else lines, result)
                     if (result.modified) {
                         usedFeatures.add(feature)
@@ -66,9 +67,7 @@ object CustomTooltip {
                 }
             }
 
-            if (item.applies()) {
-                update()
-            }
+            update()
         }
         val rarity = modifiedItem[DataTypes.RARITY]
 

@@ -3,12 +3,14 @@ package me.owdding.iconographic.features.tags
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.TooltipLine.Companion.asComponentOrNull
 import me.owdding.iconographic.config.categories.tag.TagConfig
+import me.owdding.iconographic.features.EnrichedTalismanFeature
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
 import me.owdding.iconographic.system.TooltipTag
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
+import tech.thatgravyboat.skyblockapi.utils.extentions.get
 import tech.thatgravyboat.skyblockapi.utils.regex.RegexUtils.match
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 
@@ -41,7 +43,9 @@ data object CategoryTags : TooltipFeature() {
                 }
             }
 
-            add(TooltipTag.literal(name, 0xAAAAAA))
+            if (!name.equals("Accessory", true) || !EnrichedTalismanFeature.enabled || EnrichedTalismanFeature.appliesTo()) {
+                add(TooltipTag.literal(name, 0xAAAAAA))
+            }
             if (shardId != null) {
                 add(TooltipTag.literal(shardId, 0xAAAAAA))
             }

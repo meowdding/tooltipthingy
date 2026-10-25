@@ -18,7 +18,6 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.bold
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 
-
 @RegisterFeature
 data object EnchantedBookFeature : TooltipFeature() {
     override val enabled: Boolean get() = MiscConfig.enchantedBookNames

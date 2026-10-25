@@ -18,6 +18,7 @@ interface TooltipTag {
 
     companion object {
         fun literal(component: Component, color: Int = -1) = TextTag.create(component, color)
+        fun icon(component: Component, color: Int = -1) = IconTag.create(component, color)
         fun literal(text: String, color: Int = -1, init: MutableComponent.() -> Unit = {}) = TextTag.create(Text.of(text, init), color)
         fun identifier(id: Identifier, width: Int, height: Int = 13, color: Int = -1, background: Boolean = false) = IdentifierTag.create(id, width, height, color, background)
     }
@@ -39,6 +40,22 @@ data class TextTag private constructor(val text: Component, val color: Int) : To
     override fun extract(graphics: GuiGraphicsExtractor, x: Int, y: Int) {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, id("tag"), x, y, width - 1, height, color)
         graphics.text(font, text, x + 5, y + 2, color)
+    }
+}
+
+@ConsistentCopyVisibility
+data class IconTag private constructor(val text: Component, val color: Int) : TooltipTag {
+    companion object {
+        fun create(component: Component, color: Int): TooltipTag = IconTag(component.copy(), ARGB.opaque(color))
+    }
+
+    inline val textWidth get() = font.width(text)
+    override val width get() = textWidth + 4
+
+    val height get() = 13
+
+    override fun extract(graphics: GuiGraphicsExtractor, x: Int, y: Int) {
+        graphics.text(font, text, x + 2, y + 2, color)
     }
 }
 

@@ -15,7 +15,7 @@ import kotlin.collections.MutableList
 @RegisterFeature
 data object BreakingPowerTag : TooltipFeatureWithContext<AtomicInteger>() {
     override val enabled: Boolean get() = TagConfig.breakingPower
-    override fun createContext(): AtomicInteger = AtomicInteger(-1)
+    override fun ItemStack.createContext(): AtomicInteger = AtomicInteger(-1)
     override val priority: Int = 2
 
     val breakingPower = Regex("(?i)Breaking Power (\\d+)")

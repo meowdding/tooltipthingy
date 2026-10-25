@@ -23,10 +23,16 @@ internal annotation class RegisterFeature
 abstract class TooltipFeatureWithContext<ContextType> {
 
     abstract val enabled: Boolean
-    abstract fun createContext() : ContextType
+    abstract fun ItemStack.createContext() : ContextType
     abstract val priority: Int
     abstract override fun toString(): String
 
+    context(itemStack: ItemStack)
+    fun appliesTo(): Boolean = with(itemStack.createContext()) {
+        return@with itemStack.applies()
+    }
+
+    context(context: ContextType)
     open fun ItemStack.applies(): Boolean = true
 
     context(context: ContextType)
@@ -101,8 +107,10 @@ abstract class TooltipFeatureWithContext<ContextType> {
 @Suppress("FunctionName", "PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 abstract class TooltipFeature : TooltipFeatureWithContext<Unit>() {
 
-    final override fun createContext() = Unit
+    final override fun ItemStack.createContext() = Unit
 
+    context(_: Unit)
+    override fun ItemStack.applies(): Boolean = _applies()
     context(_: Unit)
     final override fun ItemStack.nameOverride(): Component? = _nameOverride()
     context(_: Unit)
@@ -129,6 +137,8 @@ abstract class TooltipFeature : TooltipFeatureWithContext<Unit>() {
     context(_: Unit)
     final override fun ItemStack.modify(): ItemStack? = this._modify()
 
+    private fun ItemStack._applies(): Boolean = applies()
+    open fun ItemStack.applies(): Boolean = true
     private fun ItemStack._nameOverride(): Component? = nameOverride()
     open fun ItemStack.nameOverride(): Component? = null
     private fun ItemStack._nameReplacement(original: Component): Component? = nameReplacement(original)

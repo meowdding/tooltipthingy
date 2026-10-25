@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 @RegisterFeature
 data object FurnitureTag : TooltipFeatureWithContext<AtomicBoolean>() {
     override val enabled: Boolean get() = TagConfig.furniture
-    override fun createContext(): AtomicBoolean = AtomicBoolean(false)
+    override fun ItemStack.createContext(): AtomicBoolean = AtomicBoolean(false)
     override val priority: Int = 2
 
     val furnitureRegex = Regex("(?i)Furniture")

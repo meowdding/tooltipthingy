@@ -15,9 +15,10 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 @RegisterFeature
 data object PetCandyTag : TooltipFeatureWithContext<MutableList<TooltipTag>>() {
     override val enabled: Boolean get() = TagConfig.petCandy
-    override fun createContext(): MutableList<TooltipTag> = mutableListOf()
+    override fun ItemStack.createContext(): MutableList<TooltipTag> = mutableListOf()
     override val priority: Int = 1
 
+    context(context: MutableList<TooltipTag>)
     override fun ItemStack.applies(): Boolean = (DataTypes.PET_DATA()?.candyUsed ?: 0) > 0
 
     val petCandy = Regex("(?i)\\((\\d+)/10\\) Pet Candy Used")

@@ -14,7 +14,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextUtils.substring
 @RegisterFeature
 data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
     override val enabled: Boolean get() = TagConfig.pet
-    override fun createContext(): MutableList<String> = mutableListOf()
+    override fun ItemStack.createContext(): MutableList<String> = mutableListOf()
     override val priority: Int = 2
 
     val petCategories = buildMap {
