@@ -21,7 +21,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
 
 @RegisterFeature
 data object ItemAbility : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.alignedItemAbility
+    override val enabled: Boolean get() = MiscConfig.alignedItemAbility || MiscConfig.itemAbilityIcons
     override val priority: Int = 20
 
     private val sneak = Text.of("s") { this.font = ChatUtils.clicks }
@@ -44,25 +44,24 @@ data object ItemAbility : TooltipFeature() {
 
             if (canRead()) {
                 abilityRegex.match(read(), "name", "key") { [name, key] ->
-                    var key = key
+                    var finalKey = key
+
                     if (MiscConfig.itemAbilityIcons) {
                         val strippedKey = key.stripped
-                        val newKeys = Text.of()
-                        if (strippedKey.contains("SNEAK")) {
-                            newKeys.append(sneak)
-                            key = newKeys
-                        }
-                        if (strippedKey.contains("LEFT CLICK")) {
-                            newKeys.append(left)
-                            key = newKeys
-                        }
-                        if (strippedKey.contains("RIGHT CLICK")) {
-                            newKeys.append(right)
-                            key = newKeys
-                        }
+                        val hasSneak = "SNEAK" in strippedKey
+                        val hasLeft = "LEFT CLICK" in strippedKey
+                        val hasRight = "RIGHT CLICK" in strippedKey
 
+                        if (hasSneak || hasLeft || hasRight) {
+                            finalKey = Text.of().apply {
+                                if (hasSneak) append(sneak)
+                                if (hasLeft) append(left)
+                                if (hasRight) append(right)
+                            }
+                        }
                     }
-                    originalMerger.add(AbilityHeaderLine(name, key))
+
+                    originalMerger.add(AbilityHeaderLine(name, finalKey))
                     modified = true
                 }
             }
@@ -78,11 +77,19 @@ data object ItemAbility : TooltipFeature() {
 
         override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
             graphics.text(font, nameComponent, x, y, -1)
-            graphics.text(font, keyComponent, x + totalWidth - font.width(keyComponent), y, -1)
+
+            val keyX = if (MiscConfig.alignedItemAbility) {
+                x + totalWidth - font.width(keyComponent)
+            } else {
+                x + font.width(nameComponent) + font.width("  ")
+            }
+
+            graphics.text(font, keyComponent, keyX, y, -1)
         }
 
         override fun getWidth(font: Font): Int {
-            return font.width(nameComponent) + font.width(keyComponent) + 15
+            val baseWidth = font.width(nameComponent) + font.width(keyComponent)
+            return baseWidth + if (MiscConfig.alignedItemAbility) 15 else font.width("  ")
         }
 
         override fun getHeight(font: Font): Int = font.lineHeight
