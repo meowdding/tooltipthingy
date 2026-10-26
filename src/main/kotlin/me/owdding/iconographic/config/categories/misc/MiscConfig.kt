@@ -15,6 +15,7 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
 
     init { autoSeparator("enchantments") }
     val itemEnchants by autoBoolean(true)
+    val romanEnchant by autoBoolean(true)
     val smallEnchantText by autoBoolean(true)
     val noEnchantNameBackground by autoBoolean(true)
     val centerEnchantments by autoBoolean(true)

@@ -206,7 +206,7 @@
         },
         "itemEnchants": {
           "@value": "Item Enchants Toggle",
-          "desc": "Disables fancy enchants"
+          "desc": "Enables fancy enchants"
         },
         "smallEnchantText": {
           "@value": "Small Font",

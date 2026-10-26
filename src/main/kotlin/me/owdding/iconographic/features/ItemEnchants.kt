@@ -9,6 +9,7 @@ import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
 import me.owdding.iconographic.utils.chat.DisplayColor
+import me.owdding.ktmodules.Module
 import me.owdding.lib.rendering.text.TextShader
 import me.owdding.lib.rendering.text.withTextShader
 import net.minecraft.client.gui.Font
@@ -18,7 +19,10 @@ import net.minecraft.network.chat.FontDescription
 import net.minecraft.network.chat.Style
 import net.minecraft.util.ARGB
 import net.minecraft.world.item.ItemStack
+import tech.thatgravyboat.repolib.api.EnchantsAPI
 import tech.thatgravyboat.repolib.api.RepoAPI
+import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
+import tech.thatgravyboat.skyblockapi.api.events.repo.RepoEvent
 import tech.thatgravyboat.skyblockapi.helpers.McFont
 import tech.thatgravyboat.skyblockapi.utils.extentions.parseRomanOrArabic
 import tech.thatgravyboat.skyblockapi.utils.extentions.toRomanNumeral
@@ -28,6 +32,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 import tech.thatgravyboat.skyblockapi.utils.text.TextUtils.isEmpty
 import java.util.*
 
+@Module
 @RegisterFeature
 data object ItemEnchants : TooltipFeature() {
     override val enabled: Boolean get() = MiscConfig.itemEnchants
@@ -37,6 +42,16 @@ data object ItemEnchants : TooltipFeature() {
     private val enchantLineRegex = Regex("(?:[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*[MDCLXVI]+(?:, )?)+").toComponentRegex()
 
     private fun Component.isEnchantmentLine() = enchantLineRegex.matches(this)
+
+    val enchantNameMap = mutableMapOf<String, EnchantsAPI.Enchant>()
+
+    @Subscription
+    private fun RepoEvent.Reload.onRepoReload() {
+        enchantNameMap.clear()
+        for ((key, value) in RepoAPI.enchantments().enchantments()) {
+            enchantNameMap[value.name] = value
+        }
+    }
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         var modified = false
@@ -54,17 +69,17 @@ data object ItemEnchants : TooltipFeature() {
                         val lvl = enchantMatch["lvl"]!!
                         val enchantName = name.string.trim()
                         val enchantLevel = lvl.string.parseRomanOrArabic()
-                        val data = RepoAPI.enchantments().enchantments().toList().find { it.second.name == enchantName }?.second
+                        val data = enchantNameMap[enchantName]
                         val unlocked = name.color != TextColor.GRAY
                         val ultimate = data?.isUltimate ?: false
-                        val isNotMaxed = data?.levels()?.any { enchantLevel < it.key } ?: true
+                        val isMaxed = data?.levels()?.all { enchantLevel >= it.key } ?: true
 
                         enchants += EnchantLine(
                             enchantName,
                             enchantLevel,
                             unlocked,
                             ultimate,
-                            !isNotMaxed
+                            isMaxed
                         )
 
                         modified = true
@@ -94,13 +109,12 @@ data object ItemEnchants : TooltipFeature() {
             enchantment,
             if (ultimate) DisplayColor.LIGHT_PURPLE else DisplayColor.BLUE,
             level,
-            if (!unlocked)
-                DisplayColor.GRAY
-            else if (isMaxed) {
-                DisplayColor.GOLD
-            } else {
-                DisplayColor.BLUE
-            }
+            when {
+                !unlocked -> DisplayColor.GRAY
+                isMaxed -> DisplayColor.GOLD
+                else -> DisplayColor.BLUE
+            },
+            MiscConfig.romanEnchant
         )
     }
 
@@ -122,28 +136,28 @@ data object ItemEnchants : TooltipFeature() {
     data class EnchantLines(val enchants: List<EnchantLine>) : ExtractableTooltipLine {
         val lines = enchants.compose()
         override fun extract(graphics: GuiGraphicsExtractor, totalWidth: Int, x: Int, y: Int) {
-            var currentY = y + border - 4
+            var currentY = y + BORDER - 4
             lines.forEach { line ->
-                val lineWidth = line.sumOf { font.width(it) } + (line.size - 1) * horizontalPadding + 2 * border
-                var currentX = if (MiscConfig.centerEnchantments) x + (totalWidth / 2) - (lineWidth / 2) else x + border
+                val lineWidth = line.sumOf { font.width(it) } + (line.size - 1) * HORIZONTAL_PADDING + 2 * BORDER
+                var currentX = if (MiscConfig.centerEnchantments) x + (totalWidth / 2) - (lineWidth / 2) else x + BORDER
                 for (enchant in line) {
                     graphics.text(font, enchant, currentX, currentY, -1)
-                    currentX += font.width(enchant) + horizontalPadding
+                    currentX += font.width(enchant) + HORIZONTAL_PADDING
                 }
-                currentY += height + verticalPadding
+                currentY += height + VERTICAL_PADDING
             }
         }
 
         override fun getWidth(font: Font): Int = lines.maxOf { line ->
-            line.sumOf { font.width(it) } + (line.size - 1) * horizontalPadding + 2 * border
+            line.sumOf { font.width(it) } + (line.size - 1) * HORIZONTAL_PADDING + 2 * BORDER
         }
-        override fun getHeight(font: Font): Int = lines.size * (height + verticalPadding) - verticalPadding + 2 * border
+        override fun getHeight(font: Font): Int = lines.size * (height + VERTICAL_PADDING) - VERTICAL_PADDING + 2 * BORDER
     }
 
 
-    val horizontalPadding get() = 3
-    val verticalPadding get() = 2
-    val border get() = 2
+    const val HORIZONTAL_PADDING = 3
+    const val VERTICAL_PADDING = 2
+    const val BORDER = 2
     val height get() = if (MiscConfig.smallEnchantText) 9 else 11
 
     const val OPEN_TAG = "\uE900\uE910"
@@ -206,7 +220,9 @@ data object ItemEnchants : TooltipFeature() {
         }
     }
 
-    fun font() = FontDescription.Resource(id(if (MiscConfig.smallEnchantText) "enchantment_tags_mc5" else "enchantment_tags"))
+    val smallFont = FontDescription.Resource(id("enchantment_tags_mc5"))
+    val normalFont = FontDescription.Resource(id("enchantment_tags"))
+    fun font() = if (MiscConfig.smallEnchantText) smallFont else normalFont
 
     fun fromLevelAndName(
         enchantmentName: String,
