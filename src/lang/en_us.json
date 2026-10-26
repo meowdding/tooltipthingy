@@ -201,7 +201,7 @@
           "@value": "Miscellaneous Tooltips",
           "desc": "Other tooltip elements."
         },
-        "itemAbility": {
+        "alignedItemAbility": {
           "@value": "Aligned Item Ability",
           "desc": "Right aligns the Click actions of abilities."
         },
