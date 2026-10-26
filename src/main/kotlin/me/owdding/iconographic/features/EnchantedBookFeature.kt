@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.api.repo.apis.SkyBlockEnchantmentsRepo
 import tech.thatgravyboat.skyblockapi.utils.extentions.getLore
+import tech.thatgravyboat.skyblockapi.utils.extentions.parseRomanNumeral
 import tech.thatgravyboat.skyblockapi.utils.text.SkyBlockColor
 import tech.thatgravyboat.skyblockapi.utils.text.Text.asComponent
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
@@ -60,6 +61,9 @@ data object EnchantedBookFeature : TooltipFeature() {
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result {
         val titleText = enchantTitle()?.stripped ?: return Result.unmodified
+
+        // This is here for mods that change the numbers from enchants from Roman to Arabic.
+        val titleLevel = titleText.substringAfterLast(' ').parseRomanNumeral()
         val strippedLines = list.mapNotNull { it.asComponentOrNull()?.stripped?.trim() }
 
         // Finds the index for the first empty line
@@ -70,8 +74,8 @@ data object EnchantedBookFeature : TooltipFeature() {
         val combinableInAnvilIndex = strippedLines.indexOfFirst { it == ANVIL_LINE }
         if (combinableInAnvilIndex == -1) return Result.unmodified
 
-        // Finds the index for the enchant name + level line (e.g. [Dedication IV], [First Impression I])
-        val titleIndex = strippedLines.indexOfFirst { it == titleText }
+        // Finds the index for the enchant name + level line (e.g. [Dedication IV], [First Impression I] or [Dedication 4], [First Impression 1])
+        val titleIndex = strippedLines.indexOfFirst { it == titleText || it == "${titleText.substringBeforeLast(' ')} $titleLevel" }
         if (titleIndex == -1) return Result.unmodified
 
         // performs the removal process

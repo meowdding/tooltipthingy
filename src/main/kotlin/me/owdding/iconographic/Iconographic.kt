@@ -47,6 +47,7 @@ import kotlin.math.max
 object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.autoResolve() {
     val SELF = FabricLoader.getInstance().getModContainer("iconographic").get()
     val MOD_ID: String = SELF.metadata.id
+    val VERSION: String = SELF.metadata.version.friendlyString
 
     @Volatile
     @JvmField
@@ -106,9 +107,12 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
 
     @Subscription
     context(event: RegisterIconCommandEvent)
-    fun onCommands() {
+    private fun onCommands() {
         event.registerBaseCallback {
             McClient.setScreenAsync { ResourcefulConfigScreen.getFactory("iconographic").apply(null) }
+        }
+        event.registerWithCallback("version") {
+            Text.of("Version: $VERSION").withColor(TextColor.GRAY).sendWithPrefix()
         }
     }
 

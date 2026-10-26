@@ -1,58 +1,41 @@
 package me.owdding.iconographic.utils.debug
 
-import me.owdding.ktmodules.Module
 import me.owdding.iconographic.Iconographic.id
 import me.owdding.iconographic.utils.chat.sendWithPrefix
+import me.owdding.ktmodules.Module
 import net.minecraft.network.chat.MutableComponent
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.api.events.misc.RegisterCommandsEvent
 import tech.thatgravyboat.skyblockapi.helpers.McClient
-import tech.thatgravyboat.skyblockapi.platform.Identifiers
 import tech.thatgravyboat.skyblockapi.utils.DebugToggle
 import tech.thatgravyboat.skyblockapi.utils.DevUtils
 import tech.thatgravyboat.skyblockapi.utils.extentions.parseFormattedInt
-import java.util.*
+import java.nio.file.Path
 import kotlin.io.path.Path
-import kotlin.io.path.notExists
-import kotlin.io.path.reader
 
 internal fun debugToggle(path: String, description: String = path): DebugToggle {
     return DebugToggle(id(path), description, TttDevUtils)
 }
 
 @Module
-object TttDevUtils : DevUtils() {
+internal object TttDevUtils : DevUtils() {
     override val commandName: String = "iconographic dev toggle"
     override fun send(component: MutableComponent) = component.sendWithPrefix()
-    val properties: Map<String, String> = loadFromProperties()
+    override val path: Path = System.getProperty("iconographic.property_path")?.let { Path(it) } ?: McClient.config.resolve("iconographic.properties")
 
-    fun getInt(key: String, default: Int = 0): Int {
-        return properties[key].parseFormattedInt(default)
+    init {
+        loadFromProperties(path)
     }
 
-    fun getBoolean(key: String): Boolean {
-        return properties[key] == "true"
-    }
+    override val supportsChangingDefault: Boolean = true
+    override val namespace: String = "iconographic"
 
-    private fun loadFromProperties(): Map<String, String> {
-        val properties = Properties()
-        val path = System.getProperty("iconographic.property_path")?.let { Path(it) } ?: McClient.config.resolve("iconographic.properties")
-        if (path.notExists()) return emptyMap()
-        path.reader(Charsets.UTF_8).use {
-            properties.load(it)
-        }
-        val map = mutableMapOf<String, String>()
-        properties.forEach { (key, value) ->
-            Identifiers.parseWithSeparator(key.toString(), '@')?.let {
-                if (value.toString() == "true") {
-                    states[it] = true
-                }
-            }
-            map[key.toString()] = value.toString()
-        }
-        return map
-    }
+    fun getString(key: String): String? = this.propertiesInstance.getProperty(key)
+
+    fun getInt(key: String, default: Int = 0): Int = getString(key).parseFormattedInt(default)
+
+    fun getBoolean(key: String): Boolean = getString(key) == "true"
 
     @Subscription
-    fun commandRegister(event: RegisterCommandsEvent) = super.onCommandRegister(event)
+    private fun commandRegister(event: RegisterCommandsEvent) = super.onCommandRegister(event)
 }
