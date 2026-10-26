@@ -21,7 +21,7 @@ import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.font
 
 @RegisterFeature
 data object ItemAbility : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.itemAbility
+    override val enabled: Boolean get() = MiscConfig.alignedItemAbility
     override val priority: Int = 20
 
     private val sneak = Text.of("s") { this.font = ChatUtils.clicks }

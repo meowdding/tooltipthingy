@@ -9,7 +9,7 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     override val name: TranslatableValue = Translated(translationBase)
 
     init { autoSeparator("misc") }
-    val itemAbility by autoBoolean(false)
+    val alignedItemAbility by autoBoolean(false)
     val itemAbilityIcons by autoBoolean(true)
     val enchantedBookNames by autoBoolean(true)
     val skillLevelBar by autoBoolean(true)
