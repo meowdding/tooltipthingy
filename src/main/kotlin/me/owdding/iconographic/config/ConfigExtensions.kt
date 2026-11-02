@@ -21,7 +21,6 @@ import kotlin.time.toTimeUnit
 fun <T> CategoryBuilder.observable(entry: ConfigDelegateProvider<RConfigKtEntry<T>>, onChange: () -> Unit) = this.observable(entry) { _, _ -> onChange() }
 
 fun CategoryBuilder.requiresChunkRebuild(entry: ConfigDelegateProvider<RConfigKtEntry<Boolean>>) = observable(entry) {
-    //~ if >= 26.2 'levelRenderer' -> 'levelExtractor'
     runCatching { McClient.self.levelExtractor.allChanged() }
 }
 
@@ -57,43 +56,6 @@ fun <T, R> ConfigDelegateProvider<RConfigKtEntry<T>>.cachedTransform(from: (R) -
 fun <T, R> ConfigDelegateProvider<RConfigKtEntry<T>>.transform(from: (R) -> T, to: (T) -> R) = TransformedEntry(this, from, to)
 
 fun <T> ConfigDelegateProvider<RConfigKtEntry<T>>.observable(onChange: (T, T) -> Unit) = ObservableEntry(this, onChange)
-
-/*
-@Suppress("UnusedReceiverParameter")
-fun <T> CategoryBuilder.defaultEnabledMessage(
-    entry: ConfigDelegateProvider<RConfigKtEntry<T>>,
-    messageProvider: () -> Component,
-    id: String,
-    predicate: () -> Boolean = { true },
-) = DefaultEnabledMessageEntry(entry, messageProvider, id, predicate)
-
-
-class DefaultEnabledMessageEntry<T>(
-    private val entry: ConfigDelegateProvider<RConfigKtEntry<T>>,
-    private val messageProvider: () -> Component,
-    private val id: String,
-    private val predicate: () -> Boolean,
-) : ConfigDelegateProvider<RConfigKtEntry<T>> {
-    override operator fun provideDelegate(entries: EntriesBuilder, prop: KProperty<*>): RConfigKtEntry<T> {
-        val property = entry.provideDelegate(entries, prop)
-        return DefaultEnabledMessageEntryDelegate(property.parent, messageProvider, id, predicate)
-    }
-}
-
-class DefaultEnabledMessageEntryDelegate<T> internal constructor(
-    override val parent: RConfigKtEntry<T>,
-    val messageProvider: () -> Component,
-    val id: String,
-    val predicate: () -> Boolean,
-) : RConfigKtEntry<T> by parent {
-    override fun getValue(thisRef: Any?, property: Any?): T {
-        if (DefaultEnabledMessageHelper.needsSend(id) && predicate.invoke()) {
-            messageProvider().sendWithPrefix()
-            DefaultEnabledMessageHelper.markSend(id)
-        }
-        return parent.getValue(thisRef, property)
-    }
-}*/
 
 @Suppress("ClassName")
 private object UNINITIALIZED_VALUE

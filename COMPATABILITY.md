@@ -1,7 +1,8 @@
 # Mod Compatability
 
-To have your custom rendered Items/Tooltips also affected by Iconographic, 
-you need to add IMC as provided below to your mod.
+To have your custom rendered Items/Tooltips also affected by Iconographic, you either need to:
+- Use the setTooltipForNextFrame that provides an ItemStack.
+- Add IMC as provided below to your mod.
 
 <details>
 <summary>Kotlin Code</summary>
