@@ -10,8 +10,12 @@ import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
 import me.owdding.iconographic.utils.chat.DisplayColor
 import me.owdding.ktmodules.Module
+import me.owdding.lib.dev.EnchantmentGuideParser
+import me.owdding.lib.events.FinishRepoLoadingEvent
+import me.owdding.lib.events.StartRepoLoadingEvent
 import me.owdding.lib.rendering.text.TextShader
 import me.owdding.lib.rendering.text.withTextShader
+import me.owdding.lib.repo.EnchantmentRepoData
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
@@ -23,9 +27,11 @@ import tech.thatgravyboat.repolib.api.EnchantsAPI
 import tech.thatgravyboat.repolib.api.RepoAPI
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.api.events.repo.RepoEvent
+import tech.thatgravyboat.skyblockapi.api.remote.api.SkyBlockId.Companion.getSkyBlockId
 import tech.thatgravyboat.skyblockapi.helpers.McFont
 import tech.thatgravyboat.skyblockapi.utils.extentions.parseRomanOrArabic
 import tech.thatgravyboat.skyblockapi.utils.extentions.toRomanNumeral
+import tech.thatgravyboat.skyblockapi.utils.regex.component.ComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
@@ -38,20 +44,10 @@ data object ItemEnchants : TooltipFeature() {
     override val enabled: Boolean get() = MiscConfig.itemEnchants
     override val priority: Int = 15
 
-    private val singleEnchantMatcher = Regex("(?<=^|, )(?<name>[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*)(?<lvl>[MDCLXVI]+),?\\b").toComponentRegex()
-    private val enchantLineRegex = Regex("(?:[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*[MDCLXVI]+(?:, )?)+").toComponentRegex()
+    private val singleEnchantMatcher = ComponentRegex("(?<=^|, )(?<name>[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*)(?<lvl>[MDCLXVI]+),?\\b")
+    private val enchantLineRegex = ComponentRegex("(?:[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*[MDCLXVI]+(?:, )?)+")
 
     private fun Component.isEnchantmentLine() = enchantLineRegex.matches(this)
-
-    val enchantNameMap = mutableMapOf<String, EnchantsAPI.Enchant>()
-
-    @Subscription
-    private fun RepoEvent.Reload.onRepoReload() {
-        enchantNameMap.clear()
-        for ((key, value) in RepoAPI.enchantments().enchantments()) {
-            enchantNameMap[value.name] = value
-        }
-    }
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         var modified = false
@@ -69,10 +65,11 @@ data object ItemEnchants : TooltipFeature() {
                         val lvl = enchantMatch["lvl"]!!
                         val enchantName = name.string.trim()
                         val enchantLevel = lvl.string.parseRomanOrArabic()
-                        val data = enchantNameMap[enchantName]
+                        val data = EnchantmentRepoData.data.find { it.name == enchantName }
                         val unlocked = name.color != TextColor.GRAY
                         val ultimate = data?.isUltimate ?: false
-                        val isMaxed = data?.levels()?.all { enchantLevel >= it.key } ?: true
+                        val maxLevel = data?.perItemOverrides[getSkyBlockId()] ?: data?.maxLevel
+                        val isMaxed = maxLevel == enchantLevel
 
                         enchants += EnchantLine(
                             enchantName,
