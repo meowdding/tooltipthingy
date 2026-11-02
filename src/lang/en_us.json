@@ -212,6 +212,26 @@
         "skillLevelBar": {
           "@value": "Skill Level Bar",
           "desc": "Changes the skill level progress into a rendered element."
+        },
+        "enchantments": {
+          "@value": "Item Enchants",
+          "desc": "Fancy Item Enchants."
+        },
+        "itemEnchants": {
+          "@value": "Item Enchants Toggle",
+          "desc": "Enables fancy enchants"
+        },
+        "smallEnchantText": {
+          "@value": "Small Font",
+          "desc": "Uses a smaller font for enchantments."
+        },
+        "noEnchantNameBackground": {
+          "@value": "Remove Enchantment Name Background",
+          "desc": "Removes the background on enchantment names."
+        },
+        "centerEnchantments": {
+          "@value": "Center Enchantments",
+          "desc": "Aligns the enchant text to the center of the tooltip."
         }
       }
     },
