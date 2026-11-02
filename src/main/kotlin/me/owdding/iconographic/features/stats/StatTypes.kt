@@ -15,6 +15,7 @@ enum class StatType(
     icon: String?,
     val color: Int,
     vararg val names: String,
+    val requiresSbId: Boolean = false
 ) {
     // Combat stats
     HEALTH('', DisplayColor.RED),
@@ -108,6 +109,7 @@ enum class StatType(
     RIFT_DAMAGE('', DisplayColor.DARK_PURPLE),
 
     // Misc Stats
+    ACCESSORY_POWER(null, DisplayColor.GOLD, requiresSbId = true),
     SPEED('', DisplayColor.WHITE),
     MAGIC_FIND('', DisplayColor.AQUA),
     PET_LUCK('', DisplayColor.LIGHT_PURPLE),

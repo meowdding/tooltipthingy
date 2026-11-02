@@ -119,6 +119,10 @@
           "@value": "Pet levelz Bar",
           "desc": "Turnz pet levelz in2 a renderd element"
         },
+        "petExperienceDecimal": {
+          "@value": "Decimal XPE in Petz",
+          "desc": "Chowz dezimal pleicez in de pet level expirienc or whoteva"
+        },
         "petFavourite": {
           "@value": "Favoriet pet!!",
           "desc": "Changez fave pet star inta a showed thingy"

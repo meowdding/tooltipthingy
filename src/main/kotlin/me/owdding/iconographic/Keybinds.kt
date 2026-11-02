@@ -26,14 +26,14 @@ object Keybinds {
 
     @Subscription
     context(event: ScreenKeyPressedEvent)
-    fun onKeyDown() {
+    private fun onKeyDown() {
         if (TOGGLE_KEYBIND.matches(event)) {
             this.isTogglePressed = true
         }
     }
     @Subscription
     context(event: ScreenKeyReleasedEvent)
-    fun onKeyUp() {
+    private fun onKeyUp() {
         if (TOGGLE_KEYBIND.matches(event)) {
             this.isTogglePressed = false
         }

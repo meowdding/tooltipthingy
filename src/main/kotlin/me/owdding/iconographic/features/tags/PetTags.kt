@@ -21,7 +21,7 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
         fun pet(skill: String) {
             put(
                 "$skill Pet",
-                PetCategory(skill, "Pet") {
+                PetCategory(skill) {
                     it.substring("$skill Pet, ".length)
                 },
             )
@@ -35,7 +35,7 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
                 },
             )
         }
-        put("All Skills", PetCategory("Pet"))
+        put("All Skills", PetCategory(emptyList()))
         pet("Mining")
         mount("Mining")
         pet("Combat")
@@ -52,7 +52,7 @@ data object PetTags : TooltipFeatureWithContext<MutableList<String>>() {
         pet("Farming")
         put(
             "Gabagool Pet, feed to gain XP",
-            PetCategory("Gabagool", "Pet") {
+            PetCategory("Gabagool") {
                 it.substring("Gabagool Pet, ".length)
             },
         )

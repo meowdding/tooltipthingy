@@ -1,14 +1,28 @@
 name: Feature Request
-description: Create a Feature Request
+description: Suggest a new feature/improvement
 type: Feature
 body:
-    -   type: textarea
-        id: what-feature
-        attributes:
-            label: What Feature do you want to see added to Iconographic
-            description: |
-                Please describe the feature idea you have. 
-                Preferable attach a concept art from an existing Server/Mod or a mockup created in Paint/Aseprite/Photoshop/...
-            placeholder: Describe your idea here
-        validations:
-            required: true
+    - type: markdown
+      attributes:
+          value: |
+              > [!WARNING]
+              > Issues suspected of being created, documented, or aided with
+              > AI/LLM usage will be closed without further discussion.
+              
+              Thanks for taking the time to fill out this feature request!
+              
+              Before continuing to make the request, please make sure there are no similar requests on [the issue tracker](../issues).
+              If there are, consider contributing your information in there instead!
+              > [!TIP]
+              > You can also join the [Discord](https://meowdd.ing/discord) for more help.
+
+    - type: textarea
+      id: feature-description
+      attributes:
+          label: Request Description
+          description: |
+              A clear explanation of what the requested feature/improvement is.
+              Preferably attach a concept art from an existing Server/Mod, or a mockup created in Paint/Aseprite/Photoshop/...
+          placeholder: Leave a comment
+      validations:
+          required: true

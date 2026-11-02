@@ -16,7 +16,9 @@ import tech.thatgravyboat.skyblockapi.api.datatype.DataType
 import tech.thatgravyboat.skyblockapi.utils.extentions.get
 
 @AutoCollect("TooltipFeatures")
-annotation class RegisterFeature
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.CLASS)
+internal annotation class RegisterFeature
 
 abstract class TooltipFeatureWithContext<ContextType> {
 

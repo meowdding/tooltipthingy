@@ -23,6 +23,7 @@ import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.utils.extentions.parseFormattedFloat
 import tech.thatgravyboat.skyblockapi.utils.extentions.scissor
 import tech.thatgravyboat.skyblockapi.utils.extentions.toFormattedString
+
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.width
@@ -99,7 +100,7 @@ data object PetLevel : TooltipFeature() {
                 originalMerger.destination.add(insertIndex++, SeparatorRenderer)
             }
 
-            originalMerger.destination.add(insertIndex++, SpacerLine(height = 3))
+            originalMerger.destination.add(insertIndex, SpacerLine(height = 3))
         }
 
         return@withComponentMerger modified.asResult()
@@ -126,10 +127,10 @@ data object PetLevel : TooltipFeature() {
             this.font = ChatUtils.mc5
             this.shadowColor = null
 
-            append(owned.toFormattedString())
+            append(PetsConfig.experienceFormat(owned))
             if (isMaxed) return@of
             append("/")
-            append(required.shorten())
+            append(PetsConfig.maxExperienceFormat(required))
         }
 
         constructor(owner: Float, targetLevel: Int? = null) : this(true, owner, 0f, targetLevel)

@@ -4,7 +4,6 @@ import com.teamresourceful.resourcefulconfig.api.types.info.Translatable
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.SideTooltipLine
 import me.owdding.iconographic.TooltipLine
-import me.owdding.iconographic.config.categories.misc.MiscConfig
 import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.font
 import me.owdding.iconographic.system.RegisterFeature
@@ -13,12 +12,14 @@ import me.owdding.iconographic.system.TooltipFeature
 import me.owdding.iconographic.utils.chat.ChatUtils.mc5
 import me.owdding.iconographic.utils.chat.DisplayColor
 import me.owdding.iconographic.utils.debug.debugToggle
+import me.owdding.ktmodules.Module
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.helpers.McScreen
+import tech.thatgravyboat.skyblockapi.utils.extentions.getSkyBlockId
 import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
@@ -54,7 +55,9 @@ data object StatLines : TooltipFeature() {
             val value = result["value"]
             val extra = result["extra"]
 
-            val stat = StatType.fromName(name?.stripped?.trim() ?: "")
+            // This takeUnless is here to stop false positives from happening when a stat is used in a place where it logically would not need formatting, like maxwell's menu with accessory power
+            val hasSkyblockId = getSkyBlockId() != null
+            val stat = StatType.fromName(name?.stripped?.trim() ?: "")?.takeUnless { it.requiresSbId && !hasSkyblockId }
 
             if (name == null || value == null || stat == null) {
                 add(line)
@@ -83,8 +86,6 @@ data object StatLines : TooltipFeature() {
         modified.asResult()
     }
 }
-
-val showStatIds by debugToggle("stat_ids", "Render stat ids next to the line")
 
 val dot = Text.of("·") {
     this.color = DisplayColor.GRAY
@@ -147,6 +148,11 @@ data class StatLine(
         if (isSide && extraValue != null) {
             graphics.text(font, extraValue, x + mainTotalWidth + 16, y, -1)
         }
+    }
+
+    @Module
+    companion object {
+        val showStatIds by debugToggle("stat_ids", "Render stat ids next to the line")
     }
 }
 

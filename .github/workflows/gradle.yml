@@ -14,7 +14,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                version: [ '26.1', '26.2', '26.3' ]
+                version: [ '26.2', '26.3' ]
         steps:
             -   uses: actions/checkout@v5
             -   name: Setup JDK 25
@@ -26,9 +26,9 @@ jobs:
                 uses: gradle/actions/setup-gradle@v5
             -   run: chmod +x gradlew
             -   name: Build
-                run: ./gradlew :${{ matrix.version }}:build -PskipDetekt -Pdatagen
+                run: ./gradlew :${{ matrix.version }}:build
             -   name: Upload Artifact ${{ matrix.version }}
                 uses: actions/upload-artifact@v7.0.0
                 with:
                     archive: false
-                    path: build/libs/*-${{ matrix.version }}.jar
+                    path: build/libs/*-${{ matrix.version }}*.jar

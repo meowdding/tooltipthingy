@@ -12,6 +12,7 @@ import me.owdding.iconographic.render.SeparatorRenderer
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
+import me.owdding.iconographic.utils.ColorUtils
 import me.owdding.iconographic.utils.chat.DisplayColor
 import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import net.minecraft.client.gui.Font
@@ -72,6 +73,7 @@ data object GemstoneFeature : TooltipFeature() {
             var inBracket = false
             var currentSymbol: MutableComponent = Text.of("")
             var isEmpty = true
+            var isLocked = false
 
             var afterColon = false
             var cancelGemstoneFeature = false
@@ -88,12 +90,13 @@ data object GemstoneFeature : TooltipFeature() {
                     if (inBracket) {
                         val symbol = currentSymbol.stripped.filter { !it.isWhitespace() }
                         val slotType = symbolToSlot[symbol] ?: GemstoneSlot.UNKNOWN
-                        parsedSlots.add(ParsedSlot(currentSymbol, slotType, isEmpty))
+                        parsedSlots.add(ParsedSlot(currentSymbol, slotType, isEmpty, isLocked))
                     }
                     inBracket = false
                 } else if (inBracket) {
                     if (char.isNotBlank()) {
                         currentSymbol.append(Text.of(char).withStyle(style))
+                        isLocked = style.color?.value == TextColor.DARK_GRAY
                     }
                 } else if (char == ":") {
                     afterColon = true
@@ -130,6 +133,8 @@ data object GemstoneFeature : TooltipFeature() {
 
                 unlockedGemstones.remove(matchingGem)
                 VisualGemstoneSlot.Filled(matchingGem)
+            } else if (slot.isLocked) {
+                VisualGemstoneSlot.Locked(slot.symbol, slot.slotType)
             } else {
                 VisualGemstoneSlot.Empty(slot.symbol, slot.slotType)
             }
@@ -154,11 +159,18 @@ data object GemstoneFeature : TooltipFeature() {
         Result.modified
     }
 
-    data class ParsedSlot(val symbol: Component, val slotType: GemstoneSlot, val isEmpty: Boolean)
+    data class ParsedSlot(val symbol: Component, val slotType: GemstoneSlot, val isEmpty: Boolean, val isLocked: Boolean)
+
 
     sealed interface VisualGemstoneSlot {
+        sealed interface NonFilledSlot : VisualGemstoneSlot {
+            val symbol: Component
+            val slotType: GemstoneSlot
+        }
+
         data class Filled(val data: GemstoneSlotData) : VisualGemstoneSlot
-        data class Empty(val symbol: Component, val slotType: GemstoneSlot) : VisualGemstoneSlot
+        data class Empty(override val symbol: Component, override val slotType: GemstoneSlot) : NonFilledSlot
+        data class Locked(override val symbol: Component, override val slotType: GemstoneSlot) : NonFilledSlot
     }
 
     data class GemstoneSlotsLine(val visualSlots: List<VisualGemstoneSlot>) : ExtractableTooltipLine {
@@ -178,37 +190,10 @@ data object GemstoneFeature : TooltipFeature() {
                 slots.forEachIndexed { index, slot ->
                     val renderX = startX + (index * (slotSize + xSpacing))
 
-                    val [color, extraRenderer] = when (slot) {
-                        is VisualGemstoneSlot.Filled -> getQualityColor(slot.data.quality) to {
-                            graphics.item(slot.data.skyblockId.toItem(), renderX + (slotSize - 16) / 2, currentY + (slotSize - 16) / 2)
-                        }
-
-                        is VisualGemstoneSlot.Empty -> {
-                            val slotType = slot.slotType
-                            if (slotType != GemstoneSlot.UNKNOWN && slotType.gemstones.isNotEmpty()) {
-                                DisplayColor.DARK_GRAY to {
-                                    val gems = slotType.gemstones
-                                    val cycleIndex = ((System.currentTimeMillis() / 1500) % gems.size).toInt()
-                                    val currentGem = gems[cycleIndex]
-
-                                    graphics.blitSprite(
-                                        RenderPipelines.GUI_TEXTURED,
-                                        Iconographic.id("gemstone/gray_${currentGem.name.lowercase()}_gem"),
-                                        renderX + (slotSize - 16) / 2,
-                                        currentY + (slotSize - 16) / 2,
-                                        16,
-                                        16,
-                                        -1
-                                    )
-                                }
-                            } else {
-                                DisplayColor.DARK_GRAY to {
-                                    val charX = renderX + slotSize / 2
-                                    val charY = currentY + (slotSize - font.lineHeight) / 2 + 1
-                                    graphics.centeredText(font, slot.symbol, charX, charY, -1)
-                                }
-                            }
-                        }
+                    val color = when (slot) {
+                        is VisualGemstoneSlot.Filled -> getQualityColor(slot.data.quality)
+                        is VisualGemstoneSlot.Empty -> DisplayColor.GRAY
+                        is VisualGemstoneSlot.Locked -> DisplayColor.DARK_GRAY
                     }
 
                     graphics.blitSprite(
@@ -218,9 +203,41 @@ data object GemstoneFeature : TooltipFeature() {
                         currentY,
                         slotSize,
                         slotSize,
-                        ARGB.opaque(boostSaturation(color, 2.5f)) // idk if the boost saturation does anything here
+                        ARGB.opaque(ColorUtils.boostSaturation(color, 2.5f)), // idk if the boost saturation does anything here
                     )
-                    extraRenderer()
+
+                    when (slot) {
+                        is VisualGemstoneSlot.Filled -> {
+                            graphics.item(slot.data.skyblockId.toItem(), renderX + (slotSize - 16) / 2, currentY + (slotSize - 16) / 2)
+                        }
+
+                        is VisualGemstoneSlot.NonFilledSlot -> {
+                            val scale = when (slot) {
+                                is VisualGemstoneSlot.Empty -> 1f
+                                is VisualGemstoneSlot.Locked -> 0.5f
+                            }
+                            val slotType = slot.slotType
+                            if (slotType != GemstoneSlot.UNKNOWN && slotType.gemstones.isNotEmpty()) {
+                                val gems = slotType.gemstones
+                                val cycleIndex = ((System.currentTimeMillis() / 1500) % gems.size).toInt()
+                                val currentGem = gems[cycleIndex]
+
+                                graphics.blitSprite(
+                                    RenderPipelines.GUI_TEXTURED,
+                                    Iconographic.id("gemstone/gray_${currentGem.name.lowercase()}_gem"),
+                                    renderX + (slotSize - 16) / 2,
+                                    currentY + (slotSize - 16) / 2,
+                                    16,
+                                    16,
+                                    ARGB.scaleRGB(-1, scale),
+                                )
+                            } else {
+                                val charX = renderX + slotSize / 2
+                                val charY = currentY + (slotSize - font.lineHeight) / 2 + 1
+                                graphics.centeredText(font, slot.symbol, charX, charY, ARGB.scaleRGB(-1, scale))
+                            }
+                        }
+                    }
                 }
                 currentY += slotSize + ySpacing
             }
@@ -242,19 +259,5 @@ data object GemstoneFeature : TooltipFeature() {
             GemstoneQuality.FLAWLESS -> SkyBlockRarity.EPIC.displayColor
             GemstoneQuality.PERFECT -> SkyBlockRarity.LEGENDARY.displayColor
         }
-    }
-
-    private fun boostSaturation(color: Int, multiplier: Float): Int {
-        val r = ARGB.red(color)
-        val g = ARGB.green(color)
-        val b = ARGB.blue(color)
-
-        val lum = r * 0.3f + g * 0.59f + b * 0.11f
-
-        val newR = (lum + (r - lum) * multiplier).toInt().coerceIn(0, 255)
-        val newG = (lum + (g - lum) * multiplier).toInt().coerceIn(0, 255)
-        val newB = (lum + (b - lum) * multiplier).toInt().coerceIn(0, 255)
-
-        return ARGB.color(ARGB.alpha(color), newR, newG, newB)
     }
 }
