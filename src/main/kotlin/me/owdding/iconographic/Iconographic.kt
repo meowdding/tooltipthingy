@@ -5,7 +5,6 @@ import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import me.owdding.iconographic.TooltipInformation.Companion.toInformation
 import me.owdding.iconographic.api.ImcHandler
 import me.owdding.iconographic.config.Config
-import me.owdding.iconographic.config.categories.visuals.VisualsConfig
 import me.owdding.iconographic.generated.BuildInfo
 import me.owdding.iconographic.generated.IconographicApiDebug
 import me.owdding.iconographic.generated.IconographicModules
@@ -14,13 +13,13 @@ import me.owdding.iconographic.render.TooltipHeader
 import me.owdding.iconographic.system.CustomTooltip
 import me.owdding.iconographic.system.IconographicTooltipComponent
 import me.owdding.iconographic.utils.ColorUtils
-import me.owdding.iconographic.utils.chat.DisplayColor.displayColor
 import me.owdding.iconographic.utils.chat.sendWithPrefix
 import me.owdding.iconographic.utils.debug.DebugBuilder
 import me.owdding.iconographic.utils.debug.RegisterIconCommandEvent
 import me.owdding.iconographic.utils.debug.RegisterTttDebugEvent
 import me.owdding.ktmodules.AutoCollect
 import me.owdding.ktmodules.Module
+import me.owdding.lib.compat.meowdding.MeowddingConfigTranslationChecker
 import me.owdding.lib.utils.MeowddingLogger
 import me.owdding.lib.utils.MeowddingUpdateChecker
 import net.fabricmc.api.ClientModInitializer
@@ -32,7 +31,6 @@ import net.minecraft.network.chat.MutableComponent
 import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.SkyBlockAPI
-import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
 import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
 import tech.thatgravyboat.skyblockapi.helpers.McClient
 import tech.thatgravyboat.skyblockapi.platform.Identifiers
@@ -103,6 +101,8 @@ object Iconographic : ClientModInitializer, MeowddingLogger by MeowddingLogger.a
                 Text.of().send()
             }
         }
+
+        MeowddingConfigTranslationChecker.addModToWarn(MOD_ID)
     }
 
     @Subscription
