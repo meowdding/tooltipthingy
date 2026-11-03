@@ -36,4 +36,9 @@ val configPatches = buildList<(JsonObject) -> JsonObject> {
 
         json
     }
+    add { json ->
+        val misc = json.getAsJsonObject("misc") ?: JsonObject()
+        if (misc.has("itemAbility")) misc.add("alignedItemAbility", misc.remove("itemAbility"))
+        json
+    }
 }

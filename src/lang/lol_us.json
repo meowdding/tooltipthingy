@@ -157,7 +157,7 @@
           "@value": "Miscellaneouz Tooltipz",
           "desc": "Othir tooltip elementz."
         },
-        "itemAbility": {
+        "alignedItemAbility": {
           "@value": "Alined Item Abilidy",
           "desc": "Wight alinz the Clik actions of abilities."
         },

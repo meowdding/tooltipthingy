@@ -195,15 +195,26 @@
           "desc": "Adds an icon to Rod Parts and changes the style a bit."
         }
       },
+      "foraging": {
+        "@value": "Foraging Config",
+        "boosters": {
+          "@value": "Boosters",
+          "desc": "Modifies the appearance of boosters."
+        }
+      },
       "misc": {
         "@value": "Misc Config",
         "misc": {
           "@value": "Miscellaneous Tooltips",
           "desc": "Other tooltip elements."
         },
-        "itemAbility": {
+        "alignedItemAbility": {
           "@value": "Aligned Item Ability",
           "desc": "Right aligns the Click actions of abilities."
+        },
+        "clickIcons": {
+          "@value": "Click Icons",
+          "desc": "Adds Mouse & Keybind Icons to click and ability actions."
         },
         "enchantedBookNames": {
           "@value": "Enchanted Books Names",
