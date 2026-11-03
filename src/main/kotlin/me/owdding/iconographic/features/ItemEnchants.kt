@@ -43,8 +43,12 @@ data object ItemEnchants : TooltipFeature() {
 
     private fun Component.isEnchantmentLine() = enchantLineRegex.matches(this)
 
+    override fun ItemStack.applies(): Boolean {
+        return getData(DataTypes.ENCHANTMENTS)?.isNotEmpty() ?: false
+    }
+
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
-        if (getData(DataTypes.ENCHANTMENTS) == null || !hasNext { it.isEnchantmentLine() }) return@withComponentMerger Result.unmodified
+        if (!hasNext { it.isEnchantmentLine() }) return@withComponentMerger Result.unmodified
         addUntil {
             it.isEnchantmentLine()
         }
