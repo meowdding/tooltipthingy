@@ -7,7 +7,16 @@
       ],
       "file": "iconographic:font/buttons/sneak.png",
       "height": 10,
-      "ascent": 10
+      "ascent": 8
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "S"
+      ],
+      "file": "iconographic:font/buttons/shift.png",
+      "height": 10,
+      "ascent": 8
     },
     {
       "type": "bitmap",
@@ -15,8 +24,8 @@
         "<"
       ],
       "file": "iconographic:font/buttons/mouse_left.png",
-      "height":10,
-      "ascent": 10
+      "height": 10,
+      "ascent": 8
     },
     {
       "type": "bitmap",
@@ -24,17 +33,26 @@
         ">"
       ],
       "file": "iconographic:font/buttons/mouse_right.png",
-      "height":10,
-      "ascent": 10
+      "height": 10,
+      "ascent": 8
     },
     {
       "type": "bitmap",
       "chars": [
-        "|"
+        "v"
       ],
       "file": "iconographic:font/buttons/mouse_middle.png",
-      "height":10,
-      "ascent": 10
+      "height": 10,
+      "ascent": 8
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "^"
+      ],
+      "file": "iconographic:font/buttons/mouse_all.png",
+      "height": 10,
+      "ascent": 8
     },
     {
       "type": "space",

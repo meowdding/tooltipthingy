@@ -10,6 +10,7 @@ import me.owdding.iconographic.generated.BuildInfo
 import me.owdding.iconographic.generated.IconographicApiDebug
 import me.owdding.iconographic.generated.IconographicModules
 import me.owdding.iconographic.generated.IconographicTooltipFeatures
+import me.owdding.iconographic.lines.SpacerLine
 import me.owdding.iconographic.render.TooltipHeader
 import me.owdding.iconographic.system.CustomTooltip
 import me.owdding.iconographic.system.IconographicTooltipComponent
