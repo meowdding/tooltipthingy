@@ -23,7 +23,7 @@
       "chars": [
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       ],
-      "file": "iconographic:font/mc5.png",
+      "file": "iconographic:font/enchantment_tags/mc5.png",
       "height": 6,
       "ascent": 6
     },
@@ -32,7 +32,7 @@
       "chars": [
         "abcdefghijklmnopqrstuvwxyz"
       ],
-      "file": "iconographic:font/mc5.png",
+      "file": "iconographic:font/enchantment_tags/mc5.png",
       "height": 6,
       "ascent": 6
     },
@@ -41,7 +41,7 @@
       "chars": [
         "1234567890./,:-"
       ],
-      "file": "iconographic:font/mc5_nums.png",
+      "file": "iconographic:font/enchantment_tags/mc5_nums.png",
       "height": 6,
       "ascent": 6
     },
