@@ -10,9 +10,6 @@ import me.owdding.iconographic.system.Result
 import me.owdding.iconographic.system.TooltipFeature
 import me.owdding.iconographic.utils.chat.DisplayColor
 import me.owdding.ktmodules.Module
-import me.owdding.lib.dev.EnchantmentGuideParser
-import me.owdding.lib.events.FinishRepoLoadingEvent
-import me.owdding.lib.events.StartRepoLoadingEvent
 import me.owdding.lib.rendering.text.TextShader
 import me.owdding.lib.rendering.text.withTextShader
 import me.owdding.lib.repo.EnchantmentRepoData
@@ -23,16 +20,13 @@ import net.minecraft.network.chat.FontDescription
 import net.minecraft.network.chat.Style
 import net.minecraft.util.ARGB
 import net.minecraft.world.item.ItemStack
-import tech.thatgravyboat.repolib.api.EnchantsAPI
-import tech.thatgravyboat.repolib.api.RepoAPI
-import tech.thatgravyboat.skyblockapi.api.events.base.Subscription
-import tech.thatgravyboat.skyblockapi.api.events.repo.RepoEvent
+import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
+import tech.thatgravyboat.skyblockapi.api.datatype.getData
 import tech.thatgravyboat.skyblockapi.api.remote.api.SkyBlockId.Companion.getSkyBlockId
 import tech.thatgravyboat.skyblockapi.helpers.McFont
 import tech.thatgravyboat.skyblockapi.utils.extentions.parseRomanOrArabic
 import tech.thatgravyboat.skyblockapi.utils.extentions.toRomanNumeral
 import tech.thatgravyboat.skyblockapi.utils.regex.component.ComponentRegex
-import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextStyle.color
 import tech.thatgravyboat.skyblockapi.utils.text.TextUtils.isEmpty
@@ -44,53 +38,59 @@ data object ItemEnchants : TooltipFeature() {
     override val enabled: Boolean get() = MiscConfig.itemEnchants
     override val priority: Int = 15
 
-    private val singleEnchantMatcher = ComponentRegex("(?<=^|, )(?<name>[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*)(?<lvl>[MDCLXVI]+),?\\b")
-    private val enchantLineRegex = ComponentRegex("(?:[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*[MDCLXVI]+(?:, )?)+")
+    private val singleEnchantMatcher = ComponentRegex("(?<=^|, )(?<name>[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*)(?<lvl>[MDCLXVI]+)(?<stacking> [\\d.,]+)?,?\\b")
+    private val enchantLineRegex = ComponentRegex("(?:[A-Z][A-Za-z-]* (?:[A-Za-z-]* )*[MDCLXVI]+(?:, )?)+(?: [\\d.,+]+)?")
 
     private fun Component.isEnchantmentLine() = enchantLineRegex.matches(this)
 
+    override fun ItemStack.applies(): Boolean {
+        return getData(DataTypes.ENCHANTMENTS)?.isNotEmpty() ?: false
+    }
+
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
-        var modified = false
-        if (hasNext { it.isEnchantmentLine() }) {
-            addUntil {
-                it.isEnchantmentLine()
-            }
-
-            val enchants = mutableListOf<EnchantLine>()
-            while (canRead() && !peek().isEmpty()) {
-                val line = read()
-                if (line.isEnchantmentLine()) {
-                    singleEnchantMatcher.replace(line) { enchantMatch ->
-                        val name = enchantMatch["name"]!!
-                        val lvl = enchantMatch["lvl"]!!
-                        val enchantName = name.string.trim()
-                        val enchantLevel = lvl.string.parseRomanOrArabic()
-                        val data = EnchantmentRepoData.data.find { it.name == enchantName }
-                        val unlocked = name.color != TextColor.GRAY
-                        val ultimate = data?.isUltimate ?: false
-                        val maxLevel = data?.perItemOverrides[getSkyBlockId()] ?: data?.maxLevel
-                        val isMaxed = maxLevel == enchantLevel
-
-                        enchants += EnchantLine(
-                            enchantName,
-                            enchantLevel,
-                            unlocked,
-                            ultimate,
-                            isMaxed
-                        )
-
-                        modified = true
-                        Component.empty()
-                    }
-                } else {
-                    enchants.lastOrNull()?.description?.add(line)
-                }
-            }
-            readSafe()
-
-            if (enchants.isNotEmpty()) originalMerger.add(EnchantLines(enchants))
+        if (!hasNext { it.isEnchantmentLine() }) return@withComponentMerger Result.unmodified
+        addUntil {
+            it.isEnchantmentLine()
         }
 
+        var modified = false
+        val enchants = mutableListOf<EnchantLine>()
+        val skyblockId = getSkyBlockId()
+        while (canRead() && !peek().isEmpty()) {
+            val line = read()
+            if (line.isEnchantmentLine()) {
+                singleEnchantMatcher.replace(line) { enchantMatch ->
+                    val name = enchantMatch["name"]!!
+                    val lvl = enchantMatch["lvl"]!!
+                    val stackingProgress = enchantMatch["stacking"]?.string?.trim()
+                    val enchantName = name.string.trim()
+                    val enchantLevel = lvl.string.parseRomanOrArabic()
+                    val data = EnchantmentRepoData.data.find { it.name == enchantName }
+                    val unlocked = name.color != TextColor.GRAY
+                    val ultimate = data?.isUltimate ?: false
+                    val maxLevel = data?.perItemOverrides[skyblockId] ?: data?.maxLevel
+                    val isMaxed = maxLevel == enchantLevel
+
+                    enchants += EnchantLine(
+                        enchantName,
+                        enchantLevel,
+                        unlocked,
+                        ultimate,
+                        isMaxed,
+                        // TODO: add config option to show stacking progress even after maxed
+                        stackingProgress,
+                    )
+
+                    modified = true
+                    Component.empty()
+                }
+            } else {
+                enchants.lastOrNull()?.description?.add(line)
+            }
+        }
+        readSafe()
+
+        if (enchants.isNotEmpty()) originalMerger.add(EnchantLines(enchants))
         return@withComponentMerger modified.asResult()
     }
 
@@ -100,18 +100,20 @@ data object ItemEnchants : TooltipFeature() {
         val unlocked: Boolean,
         val ultimate: Boolean,
         val isMaxed: Boolean,
+        val stackingProgress: String? = null,
         var description: MutableList<Component> = mutableListOf()
     ) {
         fun toComponent() = fromLevelAndName(
-            enchantment,
-            if (ultimate) DisplayColor.LIGHT_PURPLE else DisplayColor.BLUE,
-            level,
-            when {
+            enchantmentName = enchantment,
+            nameColor = if (ultimate) DisplayColor.LIGHT_PURPLE else DisplayColor.BLUE,
+            level = level,
+            levelColor = when {
                 !unlocked -> DisplayColor.GRAY
                 isMaxed -> DisplayColor.GOLD
                 else -> DisplayColor.BLUE
             },
-            MiscConfig.romanEnchant
+            roman = MiscConfig.romanEnchant,
+            stackingProgress = stackingProgress,
         )
     }
 
@@ -227,11 +229,13 @@ data object ItemEnchants : TooltipFeature() {
         level: Int,
         levelColor: Int,
         roman: Boolean = false,
+        stackingProgress: String? = null,
         shader: TextShader? = null,
     ): Component {
         val levelTag = tagFromLevel(level, levelColor, roman, shader)
+        val stackingProgress = tagFromStackingProgress(stackingProgress, shader)
 
-        if (MiscConfig.noEnchantNameBackground) {
+        if (!MiscConfig.enchantNameBackground) {
             return Component.literal(enchantmentName)
                 .withStyle(
                     Style.EMPTY
@@ -242,6 +246,12 @@ data object ItemEnchants : TooltipFeature() {
                 )
                 .append(space(2))
                 .append(levelTag)
+                .apply {
+                    if (stackingProgress != null) {
+                        append(space(2)).
+                            append(stackingProgress)
+                    }
+                }
         }
 
         val nameComponent = Component.literal(enchantmentName)
@@ -249,7 +259,7 @@ data object ItemEnchants : TooltipFeature() {
                 Style.EMPTY
                     .withShadowColor(ARGB.scaleRGB(0xbfffffff.toInt(), 0.25f))
                     .withFont(font())
-                    .withColor(TextColor.WHITE)
+                    .withColor(DisplayColor.WHITE)
                     .withBold(false)
                     .withTextShader(null)
             )
@@ -271,6 +281,50 @@ data object ItemEnchants : TooltipFeature() {
             .append(space(2))
             .append(MID_TAG)
             .append(levelTag)
+            .apply {
+                if (stackingProgress != null) {
+                    append(space(-1))
+                    append(
+                        Component.literal(background(2))
+                            .append(MID_TAG)
+                            .withColor(levelColor)
+                    )
+                    append(stackingProgress)
+                }
+            }
+    }
+
+    fun tagFromStackingProgress(progress: String?, shader: TextShader? = null): Component? {
+        if (progress == null || !MiscConfig.stackingProgress) return null
+        val shouldBackground = MiscConfig.enchantNameBackground
+        val textColor = if (shouldBackground) DisplayColor.WHITE else DisplayColor.DARK_GRAY
+
+        val innerText = Component.literal(progress)
+            .withStyle(Style.EMPTY
+                .withShadowColor(ARGB.scaleRGB(0xbfffffff.toInt(), 0.25f))
+                .withFont(font())
+                .withColor(textColor)
+                .withTextShader(shader)
+            )
+
+        if (!shouldBackground) {
+            return innerText
+        }
+        val innerTextWidth = McFont.width(innerText)
+        val textBackground = buildString {
+            append(OPEN_TAG)
+            append(background(innerTextWidth))
+            append(space(-innerTextWidth))
+        }
+        return Component.literal(textBackground)
+            .withStyle(
+                Style.EMPTY
+                    .withFont(font())
+                    .withColor(DisplayColor.DARK_GRAY)
+                    .withTextShader(shader)
+            )
+            .append(innerText)
+            .append(CLOSE_TAG)
     }
 
     fun tagFromLevel(level: Int, color: Int, roman: Boolean = false, shader: TextShader? = null): Component {

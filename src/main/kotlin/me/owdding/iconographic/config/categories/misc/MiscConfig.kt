@@ -17,6 +17,7 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
     val itemEnchants by autoBoolean(true)
     val romanEnchant by autoBoolean(true)
     val smallEnchantText by autoBoolean(true)
-    val noEnchantNameBackground by autoBoolean(true)
+    val enchantNameBackground by autoBoolean(false)
     val centerEnchantments by autoBoolean(true)
+    val stackingProgress by autoBoolean(true)
 }

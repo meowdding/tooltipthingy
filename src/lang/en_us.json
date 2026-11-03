@@ -221,17 +221,25 @@
           "@value": "Item Enchants Toggle",
           "desc": "Enables fancy enchants"
         },
+        "romanEnchant": {
+          "@value": "Roman Enchants",
+          "desc": "Enables showing enchant levels as roman numerals"
+        },
         "smallEnchantText": {
           "@value": "Small Font",
           "desc": "Uses a smaller font for enchantments."
         },
-        "noEnchantNameBackground": {
-          "@value": "Remove Enchantment Name Background",
-          "desc": "Removes the background on enchantment names."
+        "enchantNameBackground": {
+          "@value": "Enchantment Name Background",
+          "desc": "Adds a background on enchantment names."
         },
         "centerEnchantments": {
           "@value": "Center Enchantments",
           "desc": "Aligns the enchant text to the center of the tooltip."
+        },
+        "stackingProgress": {
+          "@value": "Stacking Progress",
+          "desc": "Enables showing the progress of stacking enchantments"
         }
       }
     },
