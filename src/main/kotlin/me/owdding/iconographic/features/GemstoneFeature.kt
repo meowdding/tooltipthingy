@@ -23,10 +23,12 @@ import net.minecraft.network.chat.MutableComponent
 import net.minecraft.util.ARGB
 import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.data.SkyBlockRarity
+import tech.thatgravyboat.skyblockapi.api.datatype.DataType
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.api.datatype.defaults.GemstoneQuality
 import tech.thatgravyboat.skyblockapi.api.datatype.defaults.GemstoneSlot
 import tech.thatgravyboat.skyblockapi.api.datatype.defaults.GemstoneSlotData
+import tech.thatgravyboat.skyblockapi.api.datatype.getData
 import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextColor
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
@@ -59,6 +61,9 @@ data object GemstoneFeature : TooltipFeature() {
         "❂" to GemstoneSlot.UNIVERSAL,
         //"" to GemstoneSlot.OFFENSIVE, apparently removed
     )
+
+    // Fixes the feature incorrectly applying in the Hex
+    override fun ItemStack.applies(): Boolean = getData(DataTypes.RARITY) != null
 
     override fun ItemStack.modifyEntries(list: MutableList<TooltipLine>, previousResult: Result?): Result = withComponentMerger(list) {
         val unlockedGemstones = DataTypes.GEMSTONES()?.toMutableList() ?: mutableListOf()
