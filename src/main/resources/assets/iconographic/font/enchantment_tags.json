@@ -5,7 +5,7 @@
       "chars": [
         "\uE900\uE901\uE902\uE903\uE904\uE905\uE906"
       ],
-      "file": "iconographic:font/enchantment_tags.png",
+      "file": "iconographic:font/enchantment_tags/background.png",
       "height": 11,
       "ascent": 9
     },
@@ -14,7 +14,7 @@
       "chars": [
         "\uE907"
       ],
-      "file": "iconographic:font/enchantment_tags_wide.png",
+      "file": "iconographic:font/enchantment_tags/wide.png",
       "height": 11,
       "ascent": 9
     },
