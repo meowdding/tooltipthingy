@@ -3,7 +3,7 @@
     {
       "type": "bitmap",
       "chars": [
-        "s"
+        "\uE000"
       ],
       "file": "iconographic:font/buttons/sneak.png",
       "height": 10,
@@ -12,9 +12,27 @@
     {
       "type": "bitmap",
       "chars": [
-        "S"
+        "\uE001"
+      ],
+      "file": "iconographic:font/buttons/sneak_small.png",
+      "height": 10,
+      "ascent": 8
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "\uE002"
       ],
       "file": "iconographic:font/buttons/shift.png",
+      "height": 10,
+      "ascent": 8
+    },
+    {
+      "type": "bitmap",
+      "chars": [
+        "\uE003"
+      ],
+      "file": "iconographic:font/buttons/shift_small.png",
       "height": 10,
       "ascent": 8
     },

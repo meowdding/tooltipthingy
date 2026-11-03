@@ -3,6 +3,7 @@ package me.owdding.iconographic.features
 import me.owdding.iconographic.ExtractableTooltipLine
 import me.owdding.iconographic.TooltipLine
 import me.owdding.iconographic.config.categories.misc.MiscConfig
+import me.owdding.iconographic.features.ClickFeature.Style
 import me.owdding.iconographic.font
 import me.owdding.iconographic.system.RegisterFeature
 import me.owdding.iconographic.system.Result
@@ -14,11 +15,12 @@ import net.minecraft.world.item.ItemStack
 import tech.thatgravyboat.skyblockapi.api.datatype.DataTypes
 import tech.thatgravyboat.skyblockapi.utils.regex.component.match
 import tech.thatgravyboat.skyblockapi.utils.regex.component.toComponentRegex
+import tech.thatgravyboat.skyblockapi.utils.text.Text
 import tech.thatgravyboat.skyblockapi.utils.text.TextProperties.stripped
 
 @RegisterFeature
 data object ItemAbility : TooltipFeature() {
-    override val enabled: Boolean get() = MiscConfig.alignedItemAbility
+    override val enabled: Boolean get() = MiscConfig.alignedItemAbility || MiscConfig.clickIcons != Style.OFF
     override val priority: Int = 20
 
     private val abilityRegex = Regex("(?<name>.*Ability: .+?)\\s{2,}(?<key>[A-Z ]+ CLICK)").toComponentRegex()
@@ -39,14 +41,22 @@ data object ItemAbility : TooltipFeature() {
                 abilityRegex.match(read(), "name", "key") { [name, key] ->
                     var finalKey = key
 
-                    if (MiscConfig.clickIcons) {
-                        val strippedKey = key.stripped
-                        val hasSneak = "SNEAK" in strippedKey
-                        val hasLeft = "LEFT CLICK" in strippedKey
-                        val hasRight = "RIGHT CLICK" in strippedKey
+                    when (MiscConfig.clickIcons) {
+                        Style.OFF -> {}
+                        Style.REPLACE -> {
+                            val icons = ClickFeature.lookup(key.stripped.removeSuffix("CLICK"), false)
+                            if (icons != null) {
+                                finalKey = icons
+                                modified = true
+                            }
+                        }
 
-                        if (hasSneak || hasLeft || hasRight) {
-                            finalKey = ClickFeature.getIcon(hasSneak, hasLeft, hasRight)
+                        Style.INLINE -> {
+                            val icons = ClickFeature.lookup(key.stripped.removeSuffix("CLICK"), true)
+                            if (icons != null) {
+                                finalKey = Text.join(key, Text.of(" "), icons)
+                                modified = true
+                            }
                         }
                     }
 

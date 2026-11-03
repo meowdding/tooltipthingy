@@ -3,6 +3,7 @@ package me.owdding.iconographic.config.categories.misc
 import com.teamresourceful.resourcefulconfig.api.types.options.TranslatableValue
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import me.owdding.iconographic.config.AutoTranslated
+import me.owdding.iconographic.features.ClickFeature
 
 object MiscConfig : CategoryKt("misc"), AutoTranslated {
     override val translationBase: String = "iconographic.config.misc"
@@ -10,7 +11,7 @@ object MiscConfig : CategoryKt("misc"), AutoTranslated {
 
     init { autoSeparator("misc") }
     val alignedItemAbility by autoBoolean(false)
-    val clickIcons by autoBoolean(true)
+    val clickIcons by autoEnum(ClickFeature.Style.REPLACE)
     val enchantedBookNames by autoBoolean(true)
     val skillLevelBar by autoBoolean(true)
 
