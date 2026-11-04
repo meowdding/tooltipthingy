@@ -31,7 +31,7 @@ data object ClickFeature : TooltipFeature() {
     private val right = Text.of(">") { this.font = ChatUtils.clicks }
     private val middle = Text.of("v") { this.font = ChatUtils.clicks }
     private val mouseAll = Text.of("^") { this.font = ChatUtils.clicks }
-    private val clickRegex = Regex("(?<key>.*?-click|Click)(?<text> (?:to|for) .*)").toComponentRegex()
+    private val clickRegex = Regex("(?i)(?<key>.*?-click|Click)(?<text> (?:to|for) .*)").toComponentRegex()
 
     val lookup = MemoizeUtil.memoize { key: String, isInline: Boolean ->
         val keys = key.split(" ").mapNotNull { key ->
@@ -39,9 +39,8 @@ data object ClickFeature : TooltipFeature() {
                 "shift" -> if (isInline) shiftSmall else shift
                 "sneak" -> if (isInline) sneakSmall else sneak
                 "right-click", "right" -> right
-                "left-click", "left" -> left
+                "left-click", "left", "click" -> left
                 "middle-click", "middle" -> middle
-                "click" -> mouseAll
                 else -> null
             }
         }
