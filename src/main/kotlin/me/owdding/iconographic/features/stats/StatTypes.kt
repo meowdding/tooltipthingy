@@ -35,7 +35,7 @@ enum class StatType(
     SWING_RANGE('', DisplayColor.YELLOW),
 
     // Mining Stats
-    BREAKING_POWER('', DisplayColor.DARK_GREEN),
+    BREAKING_POWER('', DisplayColor.DARK_GREEN, requiresSbId = true),
     MINING_SPEED('', DisplayColor.GOLD),
     MINING_SPREAD('', DisplayColor.YELLOW),
     GEMSTONE_SPREAD('', DisplayColor.YELLOW),
@@ -132,7 +132,8 @@ enum class StatType(
         icon: Char,
         color: Int,
         vararg names: String,
-    ) : this(icon.toString(), color, names = names)
+        requiresSbId: Boolean = false
+    ) : this(icon.toString(), color, names = names, requiresSbId = requiresSbId)
 
     val id = if (icon == null) 0xe800 + idCounter.getAndIncrement() else null
     val idComponent = Text.of {
