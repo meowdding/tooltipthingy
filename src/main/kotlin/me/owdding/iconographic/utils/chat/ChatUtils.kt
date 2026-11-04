@@ -21,9 +21,9 @@ object ChatUtils {
         append("«")
         append(Text.of {
             hover = Text.of("Iconographic", CatppuccinColors.Mocha.yellow)
-            append("T", CatppuccinColors.Mocha.flamingo)
-            append("T", CatppuccinColors.Mocha.pink)
-            append("T", CatppuccinColors.Mocha.mauve)
+            append("I", CatppuccinColors.Mocha.flamingo)
+            append("c", CatppuccinColors.Mocha.pink)
+            append("o", CatppuccinColors.Mocha.mauve)
         })
         append("»")
         this.color = TextColor.GRAY
