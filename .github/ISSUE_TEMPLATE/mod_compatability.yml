@@ -10,7 +10,7 @@ body:
             description: |
                 Enter the Mod here. 
                 If it's a SkyBlock Mod, it should instead get requested to the mod themselves.
-                Share this [Documentation](https://github.com/meowdding/tooltipthingy/blob/master/COMPATABILITY.md) to them.
+                Share this [Documentation](https://github.com/meowdding/iconographic/blob/master/COMPATABILITY.md) to them.
         validations:
             required: true
     -   type: textarea
